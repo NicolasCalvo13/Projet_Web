@@ -105,6 +105,8 @@ body {
 .footer-style a:hover{
     font-weight: bold;
     text-decoration: underline;
+}
+
 .navbar {
   padding: 10px 15px;           
   background-color: white;
