@@ -32,3 +32,52 @@ body {
 .btn-compte, .btn-favs {
     display: flex;
 }
+
+.icon-style {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px; 
+}
+
+.images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    justify-items: center;  
+}
+
+.images img {
+    width: 40%;             
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.images-center {
+    width : 40%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;   /* image au-dessus, texte en dessous */
+    align-items: center;      /* centre tout horizontalement */
+    text-decoration: none;    /* enlève le style du lien */
+    color: inherit;           /* garde la couleur du texte normal */
+}
+
+.card img {
+  width: 40%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.card span {
+  margin-top: 5px;
+  text-align: center;
+  font-size: 1rem;          /* comme un texte normal */
+}
+
+
