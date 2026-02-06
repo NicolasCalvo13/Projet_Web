@@ -105,4 +105,25 @@ body {
 .footer-style a:hover{
     font-weight: bold;
     text-decoration: underline;
+.navbar {
+  padding: 10px 15px;           
+  background-color: white;
+  color: black;
+  font-family: "Century Gothic", Arial, sans-serif;
+}
+
+.navbar a {
+  color: black;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.navbar .active {
+  color: rgb(255, 115, 0);
+  font-weight: bold;
 }
