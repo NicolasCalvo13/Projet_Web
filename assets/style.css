@@ -41,7 +41,7 @@ main {
 }
 
 .navbar .active {
-    color: #008b8b; /* Un turquoise plus foncé pour l'état actif */
+    color: /*#008b8b*/#A2E9EB; /* Un turquoise plus foncé pour l'état actif */
     font-weight: bold;
 }
 
@@ -75,7 +75,7 @@ main {
     background: #f9ffff; /* Blanc très légèrement teinté turquoise */
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid paleturquoise;
+    border: 1px solid #A2E9EB;
 }
 
 .card img {
@@ -118,7 +118,7 @@ main {
 }
 
 .table-articles th {
-    background-color: paleturquoise;
+    background-color: #A2E9EB;
     color: black;
     padding: 12px;
     border: 1px solid #afeeee;
@@ -141,7 +141,7 @@ form {
     background: #f9ffff;
     padding: 30px;
     border-radius: 10px;
-    border: 1px solid paleturquoise;
+    border: 1px solid #A2E9EB;
 }
 
 .form-row {
@@ -159,13 +159,13 @@ form {
 input[type="text"], input[type="email"], input[type="password"], select, textarea {
     flex: 1;
     padding: 10px;
-    border: 1px solid paleturquoise;
+    border: 1px solid #A2E9EB;
     border-radius: 5px;
     outline-color: #008b8b;
 }
 
 input[type="submit"] {
-    background-color: paleturquoise;
+    background-color: #A2E9EB;
     color: black;
     border: 1px solid #008b8b;
     padding: 10px 25px;
@@ -180,7 +180,7 @@ input[type="submit"]:hover {
 
 /* --- FOOTER --- */
 .footer-style {
-    background-color: paleturquoise;
+    background-color: #A2E9EB;
     color: black;
     display: flex;
     justify-content: space-around;
