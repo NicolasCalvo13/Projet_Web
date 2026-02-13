@@ -41,7 +41,7 @@ main {
 }
 
 .navbar .active {
-    color: /*#008b8b*/ orange; /* Un turquoise plus foncé pour l'état actif */
+    color: #008b8b; /* Un turquoise plus foncé pour l'état actif */
     font-weight: bold;
 }
 
