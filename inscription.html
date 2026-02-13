@@ -1,0 +1,82 @@
+<!doctype html> 
+<html lang="fr"> 
+	<head> 
+		<meta charset="utf-8">
+		<meta name="author" content="Jérémy GALLET">
+		<meta name="description" content="Inscrivez-vous pour obtenir une meilleure expérience utilisateur.">
+		<title>Inscription - Lebonplan</title> 
+		<link rel="stylesheet" href="assets/style.css">
+
+	</head> 
+	<body>
+		<header>
+			<div class="text-center"> <img src="./images/logo-lbp-header.png" alt="Lebonplan - Le meilleur site d'annonces en ligne"></div>
+			 
+			 
+			<nav class="navbar">
+            	<a href="index.html">Accueil</a> |
+            	<a href="a-propos.html">A propos</a> |
+            	<a href="inscription.html"><span class="active">Inscription</span></a> |
+            	<a href="connexion.html">Connexion</a> |
+            	<a href="avis.html">Avis</a> |
+            	<a href="contact.html">Contact</a>
+        	</nav>
+			 
+		</header>
+ 
+		<main>
+ 
+			<section>
+	   
+				<h1 class="text-center">Créez un compte</h1>
+				
+				<p>Pour déposer une annonce ou bénéficier d'une expérience personnalisée avec du contenu en lien avec vos recherches inscrivez-vous, c'est rapide et gratuit !</p>
+				
+				<article>
+					<h2>Formulaire d'inscription</h2>
+					
+					<form action="#" method="post">
+						<div class="form-row">
+							<label for="gender">Civilité 
+							<select name="title">
+								<option value="" default>--Sélectionnez--</option>
+								<option value="ms">Madame</option>
+								<option value="mr">Monsieur</option>	
+							</select>
+							</label>
+						</div>
+
+						<div class="form-row">
+							<label>Nom <input name="lastname" type="text" value="" size="50" required ></label>
+						</div>
+
+						<div class="form-row">
+							<label>Prénom <input name="surname" type="text" size="50" value="" required ></label>
+						</div>
+
+						<div class="form-row">
+							<label>Courriel <input name="email" type="email" size="30" value="" required ></label>
+						</div>
+
+						<div class="form-row">
+							<label>Mot de passe <input name="password" type="password" size="30" value="" required ></label>
+						</div>
+
+						<div class="form-row">
+							<label>Confirmation <input name="password_confirm" type="password" size="30" minlength="8" value="" required ></label>
+						</div>
+
+						<button type="submit">Envoyer</button>&nbsp;<input type="reset" value="Réinitialiser" >
+					</form>
+			
+				</article>
+			</section>
+	   
+		</main>
+	 
+		<footer class="text-footer">
+			&copy;2024 - Tous droits réservés -	JGT
+		</footer>
+	 
+	</body> 
+</html> 

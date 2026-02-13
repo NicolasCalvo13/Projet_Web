@@ -1,0 +1,102 @@
+<!doctype html> 
+<html lang="fr"> 
+   <head> 
+		<meta charset="utf-8">
+		<meta name="author" content="Jérémy GALLET">
+		<meta name="description" content="Déposez un avis.">
+		<title>Avis - Lebonplan</title> 
+		<link rel="stylesheet" href="assets/style.css">
+
+   </head> 
+   <body>
+     <header>
+		<div class="text-center"><img src="./images/logo-lbp-header.png" alt="Lebonplan - Le meilleur site d'annonces en ligne"></div>
+		 
+		<nav class="navbar">
+			<a href="index.html">Accueil</a> |
+			<a href="a-propos.html">A propos</a> |
+			<a href="inscription.html">Inscription</a> |
+			<a href="connexion.html">Connexion</a> |
+			<a href="avis.html"><span class="active">Avis</span></a> |
+			<a href="contact.html">Contact</a>
+		</nav>
+	 </header>
+	 
+	 <main>
+	 
+	   <section>
+	   
+			<h1 class="text-center">Votre avis nous intéresse</h1>
+			
+			<p>Vous avez une remarque à nous faire concernant nos services ou l'un des produits achetés via notre site ? Utilisez simplement ce formulaire en nous fournissant le maximum d'informations afin de répondre au mieux à votre demande.</p>
+			
+			<article>
+			
+				<h2>Description</h2>
+
+				<form action="#" method="post">
+
+  					<div class="form-row">
+  					  <label for="nom">Nom complet*</label>
+  					  <input type="text" id="nom" name="nom">
+  					</div>
+				
+  					<div class="form-row">
+  					  <label for="courriel">Courriel*</label>
+  					  <input type="email" id="courriel" name="courriel">
+  					</div>
+				
+  					<div class="form-row">
+  					  <label for="categorie">Objet de votre demande</label>
+  					  <select id="categorie" name="categorie">
+						<option selected disabled>--Sélectionnez--</option>
+  					    <option>Produit acheté</option>
+  					    <option>Service commercial</option>
+						<option>Service technique</option>
+						<option>Autres</option>	
+  					  </select>
+  					</div>
+					
+					<div class="form-row">
+  						<label>Catégorie.s concernée.s</label> 
+						<input type="checkbox" name="category" value="property">Immobilier       
+						<input type="checkbox" name="category" value="cars">Véhicules       
+						<input type="checkbox" name="category" value="clothes">Vêtements       
+						<input type="checkbox" name="category" value="multimedia">Multimedia       
+						<input type="checkbox" name="category" value="household">Maison       
+						<input type="checkbox" name="category" value="hobbies">Loisirs 
+						<input type="checkbox" name="category" value="services">Services 	
+					</div>			
+					
+					<div class="form-row">
+						<label>Photo du produit défectueux 
+						<input type="file" accept="image/jpeg,image/png"></label>
+					</div>
+					
+					<label>Je suis satisfait</label>&nbsp;<input type="radio" name="satisfaction" value="yes" checked="checked">Oui&nbsp;<input type="radio" name="satisfaction" value="no" checked="checked">Non
+					<em><small>En cas d'insatisfaction veuillez nous en fournir la raison.</small></em>
+				
+  					<div class="form-row">
+  					  <label for="commentaires">Commentaires</label>
+  					  <textarea id="commentaires" name="commentaires" rows="6"></textarea>
+  					</div>
+				
+  					<div class="form-row">
+  					  <input type="submit" value="Envoyer">
+  					  <input type="reset" value="Effacer">
+  					</div>
+
+				</form>
+				
+			</article>					
+			
+	   </section>
+	   
+	 </main>
+	 
+	 <footer class="text-footer">
+		&copy;2024 - Tous droits réservés -	JGT
+	 </footer>
+	 
+   </body> 
+</html> 
