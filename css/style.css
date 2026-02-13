@@ -1,131 +1,200 @@
+/* --- BASE & TYPOGRAPHIE --- */
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    background-color: white; /* Fond blanc propre */
+    font-family: "Century Gothic", Arial, sans-serif;
+    color: #333;
 }
 
+main {
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+.text-center { text-align: center; }
+.text-justify { text-align: justify; }
+
+/* --- HEADER & NAVIGATION --- */
 .header-style {
-    background-color: paleturquoise;
+    background-color: paleturquoise; /* Retour au turquoise */
     position: sticky;
     top: 0;
     z-index: 1000;
-    
     display: flex; 
-
     justify-content: space-between; 
-
     align-items: center; 
-
-    padding: 10px 20px; 
+    padding: 10px 20px;
+    border-bottom: 1px solid #afeeee;
 }
 
-.logo-placement {
-    display: flex; 
+.navbar a {
+    color: black;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: 0.3s;
 }
 
+.navbar a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.navbar .active {
+    color: #008b8b; /* Un turquoise plus foncé pour l'état actif */
+    font-weight: bold;
+}
+
+/* --- BOUTONS & ICONES --- */
 .btn-placement {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.btn-compte, .btn-favs {
-    display: flex;
-}
-
 .icon-style {
     width: 30px;
     height: 30px;
-    margin-right: 8px; 
 }
 
+/* --- GRILLE D'IMAGES & CARTES --- */
 .images {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    justify-items: center;  
-}
-
-.images img {
-    width: 40%;             
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-}
-
-.images-center {
-    width : 40%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    gap: 20px;
+    justify-items: center;
+    margin: 20px 0;
 }
 
 .card {
     display: flex;
-    flex-direction: column;   /* image au-dessus, texte en dessous */
-    align-items: center;      /* centre tout horizontalement */
-    text-decoration: none;    /* enlève le style du lien */
-    color: inherit;           /* garde la couleur du texte normal */
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    background: #f9ffff; /* Blanc très légèrement teinté turquoise */
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid paleturquoise;
 }
 
 .card img {
-  width: 40%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .card span {
-  margin-top: 5px;
-  text-align: center;
-  font-size: 1rem;          /* comme un texte normal */
+    margin-top: 10px;
+    font-weight: bold;
 }
 
+/* --- SECTIONS "À PROPOS" --- */
+.apropos-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.apropos-content > article {
+    flex: 1 1 45%;
+    box-sizing: border-box;
+    border : 2px solid paleturquoise;
+    padding : 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+.apropos-content > article:nth-child(3) {
+    flex: 1 1 100%;
+}
+
+/* --- TABLEAUX --- */
+.table-articles {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table-articles th {
+    background-color: paleturquoise;
+    color: black;
+    padding: 12px;
+    border: 1px solid #afeeee;
+}
+
+.table-articles td {
+    padding: 10px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+.table-articles tbody tr:nth-child(odd) {
+    background-color: #f0ffff; /* Azure / Blanc bleuté */
+}
+
+/* --- FORMULAIRES --- */
+form {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #f9ffff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid paleturquoise;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    width: 150px;
+    color: #008b8b;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select, textarea {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid paleturquoise;
+    border-radius: 5px;
+    outline-color: #008b8b;
+}
+
+input[type="submit"] {
+    background-color: paleturquoise;
+    color: black;
+    border: 1px solid #008b8b;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #afeeee;
+}
+
+/* --- FOOTER --- */
 .footer-style {
+    background-color: paleturquoise;
+    color: black;
     display: flex;
     justify-content: space-around;
-    position: absolute; 
-    bottom: 0; 
-    left: 0; 
-    right: 0;
-    padding: 20px;
-
-    background-color: paleturquoise;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-decoration: none;
+    padding: 30px;
     font-size: 14px;
-    color: black;
-    line-height: 1.6;
+    margin-top: 50px;
 }
 
-.footer-style a{
+.footer-style a {
+    color: black;
     text-decoration: none;
-    color: black;
 }
 
-.footer-style a:hover{
+.footer-style a:hover {
     font-weight: bold;
     text-decoration: underline;
-}
-
-.navbar {
-  padding: 10px 15px;           
-  background-color: white;
-  color: black;
-  font-family: "Century Gothic", Arial, sans-serif;
-}
-
-.navbar a {
-  color: black;
-  text-decoration: none;
-  font-weight: normal;
-}
-
-.navbar a:hover {
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.navbar .active {
-  color: rgb(255, 115, 0);
-  font-weight: bold;
 }
