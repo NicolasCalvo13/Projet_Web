@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tableau de bord administrateur - StageLink">
+    <meta name="keywords" content="admin, dashboard, gestion, StageLink">
+    <title>Dashboard Admin - StageLink</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header-style">
+    <div class="logo-placement">
+        <a href="/"><img src="assets/images/logo.png" alt="Logo StageLink" class="icon-style" style="width:80px;height:auto;"></a>
+    </div>
+    <div class="btn-placement">
+        <a href="/login"><img src="./static/assets/images/icon-user.png" alt="Mon compte" class="icon-style"></a>
+        <a href="wishlist.html"><img src="./static/assets/images/icon-fav.png"  alt="Favoris" class="icon-style"></a>
+    </div>
+</header>
+
+<label class="burger-label" for="menu-toggle">
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+</label>
+
+<nav class="navbar" aria-label="Navigation principale">
+    <a href="/">Accueil</a>
+    <a href="/offres">Toutes les Offres</a>
+    <a href="/offres?type=it">Offres Informatiques</a>
+    <a href="/offres?type=btp">Offres BTP</a>
+    <a href="/register">Inscription</a>
+    <a href="/login">Connexion</a>
+    <a href="avis.html">Avis</a>
+    <a href="/contact">Contact</a>
+</nav>
+
+<main>
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/">Accueil</a><span>›</span>
+        Dashboard Admin
+    </nav>
+
+    <h1 style="color:#007575;">Tableau de bord — Administrateur</h1>
+
+    <!-- Statistiques globales -->
+    <div class="stats-grid" aria-label="Statistiques globales">
+        <div class="stat-card">
+            <div class="stat-number">--</div>
+            <div class="stat-label">Offres disponibles</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">--</div>
+            <div class="stat-label">Entreprises</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">--</div>
+            <div class="stat-label">Étudiants</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">--</div>
+            <div class="stat-label">Pilotes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">--</div>
+            <div class="stat-label">Note moyenne entreprises</div>
+        </div>
+    </div>
+
+    <!-- Raccourcis de gestion -->
+    <div class="admin-grid">
+
+        <div class="admin-card">
+            <h3>📋 Offres de stage</h3>
+            <a href="/offres">Voir toutes les offres</a>
+            <a href="create-offer.html">Créer une offre</a>
+        </div>
+
+        <div class="admin-card">
+            <h3>🏢 Entreprises</h3>
+            <a href="admin-companies.html">Gérer les entreprises</a>
+            <a href="create-company.html">Créer une entreprise</a>
+        </div>
+
+        <div class="admin-card">
+            <h3>👨‍🏫 Pilotes</h3>
+            <a href="admin-pilots.html">Gérer les pilotes</a>
+            <a href="create-pilot.html">Créer un compte pilote</a>
+        </div>
+
+        <div class="admin-card">
+            <h3>🎓 Étudiants</h3>
+            <a href="admin-students.html">Gérer les étudiants</a>
+            <a href="create-student.html">Créer un compte étudiant</a>
+        </div>
+
+        <div class="admin-card">
+            <h3>📊 Statistiques</h3>
+            <a href="stats-offers.html">Statistiques des offres</a>
+            <a href="avis.html">Voir les évaluations</a>
+        </div>
+
+    </div>
+
+</main>
+
+<footer class="footer-style">
+    <nav aria-label="Liens du footer">
+        <a href="/offres?type=it">Offres IT</a> |
+        <a href="/offres">Toutes les offres</a> |
+        <a href="/offres?type=btp">Offres BTP</a>
+    </nav>
+    <p>© 2026 - Tous droits réservés</p>
+    <nav aria-label="Liens légaux">
+        <a href="mentions-légales.html">Mentions légales</a> |
+        <a href="gestion-cookies.html">Gestion des cookies</a>
+    </nav>
+</footer>
+
+</body>
+</html>
