@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Postuler à une offre de stage - StageLink">
+    <meta name="keywords" content="postuler, candidature, stage, CV, lettre de motivation, StageLink">
+    <title>Postuler - StageLink</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header-style">
+    <div class="logo-placement">
+        <a href="index.html"><img src="assets/images/logo.png" alt="Logo StageLink" class="icon-style" style="width:80px;height:auto;"></a>
+    </div>
+    <div class="btn-placement">
+        <a href="connexion.html"><img src="../assets/images/icon-user.png" alt="Mon compte" class="icon-style"></a>
+        <a href="wishlist.html"><img src="../assets/images/icon-fav.png"  alt="Favoris" class="icon-style"></a>
+    </div>
+</header>
+
+<label class="burger-label" for="menu-toggle">
+    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+</label>
+
+<nav class="navbar" aria-label="Navigation principale">
+    <a href="index.html">Accueil</a>
+    <a href="all-offers.html">Toutes les Offres</a>
+    <a href="it-offers.html">Offres Informatiques</a>
+    <a href="BTP-offers.html">Offres BTP</a>
+    <a href="inscription.html">Inscription</a>
+    <a href="connexion.html">Connexion</a>
+    <a href="avis.html">Avis</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<main>
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a><span>›</span>
+        <a href="all-offers.html">Offres</a><span>›</span>
+        <a href="offer-detail.html">Titre de l'offre</a><span>›</span>
+        Postuler
+    </nav>
+
+    <h1 style="color:#007575;">Postuler à une offre</h1>
+
+    <!-- Récapitulatif de l'offre -->
+    <div class="apply-offer-recap" aria-label="Récapitulatif de l'offre">
+        <div>
+            <strong>Titre de l'offre</strong><br>
+            <span>Nom de l'entreprise — Ville (00)</span>
+        </div>
+        <div>
+            <span class="badge">💶 -- €/mois</span>
+            <span class="badge">⏱ -- mois</span>
+        </div>
+    </div>
+
+    <section class="section-card">
+        <h2>Votre candidature</h2>
+        <form method="POST" action="#" enctype="multipart/form-data" id="applyForm" novalidate>
+
+            <div class="form-group">
+                <label for="cv">CV (PDF uniquement, 5 Mo max) <span style="color:red">*</span></label>
+                <input type="file" id="cv" name="cv" accept=".pdf" required aria-required="true">
+                <span class="form-error" id="cv-error">Veuillez fournir un CV au format PDF.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="lm">Lettre de motivation <span style="color:red">*</span></label>
+                <textarea id="lm" name="lm" maxlength="3000" placeholder="Rédigez votre lettre de motivation ici..." required aria-required="true" oninput="updateCount(this, 'lm-count')"></textarea>
+                <div style="font-size:.8rem;color:#aaa;text-align:right;margin-top:4px;"><span id="lm-count">0</span> / 3000 caractères</div>
+                <span class="form-error" id="lm-error">La lettre de motivation est obligatoire (50 caractères minimum).</span>
+            </div>
+
+            <div class="form-group" style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
+                <button type="submit" class="btn-primary">Envoyer ma candidature</button>
+                <a href="offer-detail.html" class="btn-secondary">Annuler</a>
+            </div>
+
+        </form>
+    </section>
+
+</main>
+
+<footer class="footer-style">
+    <nav aria-label="Liens du footer">
+        <a href="it-offers.html">Offres IT</a> |
+        <a href="all-offers.html">Toutes les offres</a> |
+        <a href="BTP-offers.html">Offres BTP</a>
+    </nav>
+    <p>© 2026 - Tous droits réservés</p>
+    <nav aria-label="Liens légaux">
+        <a href="mentions-légales.html">Mentions légales</a> |
+        <a href="gestion-cookies.html">Gestion des cookies</a>
+    </nav>
+</footer>
+
+<script>
+function updateCount(el, countId) {
+    document.getElementById(countId).textContent = el.value.length;
+}
+
+document.getElementById('applyForm').addEventListener('submit', function(e) {
+    let valid = true;
+    document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+
+    const cv = document.getElementById('cv');
+    const lm = document.getElementById('lm');
+
+    if (!cv.value) {
+        document.getElementById('cv-error').style.display = 'block';
+        valid = false;
+    }
+    if (lm.value.trim().length < 50) {
+        document.getElementById('lm-error').style.display = 'block';
+        valid = false;
+    }
+    if (!valid) e.preventDefault();
+});
+</script>
+
+</body>
+</html>
