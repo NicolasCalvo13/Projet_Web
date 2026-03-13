@@ -2,9 +2,19 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: white; /* Fond blanc propre */
+    background-color: white;
     font-family: "Century Gothic", Arial, sans-serif;
     color: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 main {
@@ -15,17 +25,27 @@ main {
 .text-center { text-align: center; }
 .text-justify { text-align: justify; }
 
+
 /* --- HEADER & NAVIGATION --- */
 .header-style {
-    background-color: paleturquoise; /* Retour au turquoise */
+    background-color: paleturquoise;
     position: sticky;
     top: 0;
     z-index: 1000;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
     border-bottom: 1px solid #afeeee;
+}
+
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #f0fafa;
+    border-bottom: 1px solid #A2E9EB;
 }
 
 .navbar a {
@@ -41,9 +61,34 @@ main {
 }
 
 .navbar .active {
-    color: /*#008b8b*/#A2E9EB; /* Un turquoise plus foncé pour l'état actif */
+    color: #A2E9EB;
     font-weight: bold;
 }
+
+/* Checkbox cachée */
+#menu-toggle {
+    display: none;
+}
+
+/* Bouton hamburger — caché sur desktop */
+.burger-label {
+    display: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #f0fafa;
+    border-bottom: 1px solid #A2E9EB;
+}
+
+.burger-label .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #008b8b;
+    border-radius: 3px;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
 
 /* --- BOUTONS & ICONES --- */
 .btn-placement {
@@ -56,6 +101,7 @@ main {
     width: 30px;
     height: 30px;
 }
+
 
 /* --- GRILLE D'IMAGES & CARTES --- */
 .images {
@@ -72,7 +118,7 @@ main {
     align-items: center;
     text-decoration: none;
     color: inherit;
-    background: #f9ffff; /* Blanc très légèrement teinté turquoise */
+    background: #f9ffff;
     padding: 15px;
     border-radius: 10px;
     border: 1px solid #A2E9EB;
@@ -90,6 +136,7 @@ main {
     font-weight: bold;
 }
 
+
 /* --- SECTIONS "À PROPOS" --- */
 .apropos-content {
     display: flex;
@@ -100,8 +147,8 @@ main {
 .apropos-content > article {
     flex: 1 1 45%;
     box-sizing: border-box;
-    border : 2px solid paleturquoise;
-    padding : 20px;
+    border: 2px solid paleturquoise;
+    padding: 20px;
     background: white;
     border-radius: 8px;
 }
@@ -109,6 +156,7 @@ main {
 .apropos-content > article:nth-child(3) {
     flex: 1 1 100%;
 }
+
 
 /* --- TABLEAUX --- */
 .table-articles {
@@ -131,8 +179,9 @@ main {
 }
 
 .table-articles tbody tr:nth-child(odd) {
-    background-color: #f0ffff; /* Azure / Blanc bleuté */
+    background-color: #f0ffff;
 }
+
 
 /* --- FORMULAIRES --- */
 form {
@@ -178,12 +227,15 @@ input[type="submit"]:hover {
     background-color: #afeeee;
 }
 
+
 /* --- FOOTER --- */
 .footer-style {
     background-color: #A2E9EB;
     color: black;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
     padding: 30px;
     font-size: 14px;
     margin-top: 50px;
@@ -197,4 +249,78 @@ input[type="submit"]:hover {
 .footer-style a:hover {
     font-weight: bold;
     text-decoration: underline;
+}
+
+
+/* ════════════════════════════════════
+   RESPONSIVE — Mobile (≤ 768px)
+════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* Header */
+    .logo-placement img {
+        width: 130px;
+    }
+
+    .btn-placement img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    /* Burger visible */
+    .burger-label {
+        display: block;
+    }
+
+    /* Navbar cachée par défaut */
+    .navbar {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+    }
+
+    /* Navbar ouverte quand checkbox cochée */
+    #menu-toggle:checked ~ .navbar {
+        display: flex;
+    }
+
+    .navbar a {
+        padding: 12px 20px;
+        margin: 0;
+        border-bottom: 1px solid #A2E9EB;
+        background-color: #f9ffff;
+    }
+
+    /* Grille en colonne */
+    .images {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        width: 90%;
+    }
+
+    /* Articles à propos en pleine largeur */
+    .apropos-content > article {
+        flex: 1 1 100%;
+    }
+
+    /* Formulaire : label au-dessus du champ */
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-row label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* Footer en colonne */
+    .footer-style {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }
