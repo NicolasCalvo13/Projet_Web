@@ -1,19 +1,20 @@
-<!doctype html> 
-<html lang="fr"> 
-	<head> 
-		<meta charset="utf-8">
-		<meta name="author" content="Jérémy GALLET">
-		<meta name="description" content="Inscrivez-vous pour obtenir une meilleure expérience utilisateur.">
-		<title>Inscription - Stage-Link</title> 
-		<link rel="stylesheet" href="assets/style.css">
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Jérémy GALLET">
+    <meta name="description" content="Inscrivez-vous pour obtenir une meilleure expérience utilisateur.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Stage-Link</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
 
-	</head> 
-	<body>
+<body>
+
     <header class="header-style">
         <div class="logo-placement">
             <img src="./assets/images/logo.png" alt="Logo StageLink" width="200">
         </div>
-
         <div class="btn-placement">
             <a href="connexion.html" class="btn-compte">
                 <img src="./assets/images/icon-user.png" alt="Mon compte" width="50" height="50">
@@ -25,73 +26,84 @@
     </header>
 
     <div>
+        <input type="checkbox" id="menu-toggle">
+        <label class="burger-label" for="menu-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </label>
         <nav class="navbar">
-            <a href="index.html">Accueil</a> |
-            <a href="all-offers.html">Toutes les Offres</a> |
-            <a href="it-offers.html">Offres Informatiques</a> |
-            <a href="BTP-offers.html">Offres BTP</a> |
-            <a href="inscription.html"><span class="active">Inscription</span></a> |
-            <a href="connexion.html">Connexion</span></a> |
-            <a href="avis.html">Avis</span></a> |
-            <a href="contact.html">Contact</span></a>
+            <a href="index.html">Accueil</a>
+            <a href="all-offers.html">Toutes les Offres</a>
+            <a href="it-offers.html">Offres Informatiques</a>
+            <a href="BTP-offers.html">Offres BTP</a>
+            <a href="inscription.html"><span class="active">Inscription</span></a>
+            <a href="connexion.html">Connexion</a>
+            <a href="avis.html">Avis</a>
+            <a href="contact.html">Contact</a>
         </nav>
     </div>
- 
-		<main>
- 
-			<section>
-	   
-				<h1 class="text-center">Créez un compte</h1>
-				
-				<p>Pour déposer une annonce ou bénéficier d'une expérience personnalisée avec du contenu en lien avec vos recherches inscrivez-vous, c'est rapide et gratuit !</p>
-				
-				<article>
-					<h2>Formulaire d'inscription</h2>
-					
-					<form action="#" method="post">
-						<div class="form-row">
-							<label for="gender">Civilité 
-							<select name="title">
-								<option value="" default>--Sélectionnez--</option>
-								<option value="ms">Madame</option>
-								<option value="mr">Monsieur</option>	
-							</select>
-							</label>
-						</div>
 
-						<div class="form-row">
-							<label>Nom <input name="lastname" type="text" value="" size="50" required ></label>
-						</div>
+    <main>
+        <section>
+            <h1 class="text-center">Créez un compte</h1>
 
-						<div class="form-row">
-							<label>Prénom <input name="surname" type="text" size="50" value="" required ></label>
-						</div>
+            <p>Pour déposer une annonce ou bénéficier d'une expérience personnalisée avec du contenu en lien avec vos recherches inscrivez-vous, c'est rapide et gratuit !</p>
 
-						<div class="form-row">
-							<label>Courriel <input name="email" type="email" size="30" value="" required ></label>
-						</div>
+            <article>
+                <h2>Formulaire d'inscription</h2>
 
-						<div class="form-row">
-							<label>Mot de passe <input name="password" type="password" size="30" value="" required ></label>
-						</div>
+                <form action="#" method="post">
 
-						<div class="form-row">
-							<label>Confirmation <input name="password_confirm" type="password" size="30" minlength="8" value="" required ></label>
-						</div>
+                    <div class="form-row">
+                        <label for="gender">Civilité</label>
+                        <select name="title" id="gender">
+                            <option value="" disabled selected>--Sélectionnez--</option>
+                            <option value="ms">Madame</option>
+                            <option value="mr">Monsieur</option>
+                        </select>
+                    </div>
 
-						<button type="submit">Envoyer</button>&nbsp;<input type="reset" value="Réinitialiser" >
-					</form>
-			
-				</article>
-			</section>
-	   
-		</main>
-	 
-		<footer class="footer-style">       
+                    <div class="form-row">
+                        <label for="lastname">Nom</label>
+                        <input name="lastname" id="lastname" type="text" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="surname">Prénom</label>
+                        <input name="surname" id="surname" type="text" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="email">Courriel</label>
+                        <input name="email" id="email" type="email" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="password">Mot de passe</label>
+                        <input name="password" id="password" type="password" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="password_confirm">Confirmation</label>
+                        <input name="password_confirm" id="password_confirm" type="password" minlength="8" required>
+                    </div>
+
+                    <div class="form-row">
+                        <button type="submit">Envoyer</button>
+                        <input type="reset" value="Réinitialiser">
+                    </div>
+
+                </form>
+            </article>
+        </section>
+    </main>
+
+    <footer class="footer-style">
         <a href="mentions-légales.html"><span>Mentions légales</span></a>
-        <div>&copy 2026 - Tous droits réservés</div>
+        <div>&copy; 2026 - Tous droits réservés</div>
         <a href="cookies.html"><span>Gestion des cookies</span></a>
     </footer>
-	 
-	</body> 
-</html> 
+
+</body>
+</html>

@@ -251,6 +251,59 @@ input[type="submit"]:hover {
     text-decoration: underline;
 }
 
+/* --- CASES À COCHER & RADIO --- */
+.form-row--wrap {
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.checkbox-group,
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex: 1;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+input[type="reset"] {
+    background-color: white;
+    color: #008b8b;
+    border: 1px solid #008b8b;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+input[type="reset"]:hover {
+    background-color: #f0fafa;
+}
+
+/* --- BOUTON SUBMIT (type button) --- */
+button[type="submit"] {
+    background-color: #A2E9EB;
+    color: black;
+    border: 1px solid #008b8b;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: "Century Gothic", Arial, sans-serif;
+}
+
+button[type="submit"]:hover {
+    background-color: #afeeee;
+}
+
 
 /* ════════════════════════════════════
    RESPONSIVE — Mobile (≤ 768px)
@@ -323,4 +376,26 @@ input[type="submit"]:hover {
         align-items: center;
         text-align: center;
     }
+
+        /* Cases à cocher et radio en colonne sur mobile */
+    .form-row--wrap {
+        flex-direction: column;
+    }
+
+    .checkbox-group,
+    .radio-group {
+        gap: 8px;
+    }
+
+    .check-item {
+        white-space: normal;
+    }
+
+    input[type="reset"] {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
 }
+
+
