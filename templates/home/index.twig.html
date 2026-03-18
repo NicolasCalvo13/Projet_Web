@@ -1,0 +1,21 @@
+{% extends "base.twig.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+  <h2>Offres de stage récentes</h2>
+
+  {% if offers is not empty %}
+    <ul>
+      {% for offer in offers %}
+        <li>
+          <strong>{{ offer.title }}</strong> – {{ offer.company }} ({{ offer.location }})<br>
+          <small>{{ offer.description }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucune offre disponible pour le moment.</p>
+  {% endif %}
+{% endblock %}
+

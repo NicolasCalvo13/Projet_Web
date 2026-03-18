@@ -1,0 +1,62 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Fiche entreprise - Stage-Link{% endblock %}
+
+{% block body %}
+
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=offers">Offres</a><span>›</span>
+    Nom de l'entreprise
+  </nav>
+
+  <section class="company-hero" aria-labelledby="company-name">
+    <img src="/assets/images/company-placeholder.png" alt="Logo de l'entreprise" class="company-logo">
+    <div class="company-hero-info">
+      <h1 id="company-name">Nom de l'entreprise</h1>
+      <p>📧 <a href="#">email@entreprise.fr</a></p>
+      <p>📞 00 00 00 00 00</p>
+      <p>👥 <strong>--</strong> stagiaires ayant postulé</p>
+      <div class="rating-bar-wrap">
+        <span class="stars" aria-label="Note moyenne">★★★★☆</span>
+        <div class="rating-bar"><div class="rating-fill" style="width:80%"></div></div>
+        <strong>-- / 5</strong>
+        <span style="color:#aaa;font-size:.85rem;">(-- avis)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-card" aria-labelledby="desc-title">
+    <h2 id="desc-title">Description</h2>
+    <p>Description de l'entreprise à afficher ici.</p>
+  </section>
+
+  <section class="section-card" aria-labelledby="offers-title">
+    <h2 id="offers-title">Offres de stage disponibles</h2>
+    <div class="offer-mini">
+      <div>
+        <strong>Titre de l'offre</strong><br>
+        <span class="badge">Compétence</span>
+        <span class="badge">-- €/mois</span>
+      </div>
+      <a href="/?uri=offer_detail&id=1" class="btn-secondary">Voir l'offre</a>
+    </div>
+  </section>
+
+  <section class="section-card" aria-labelledby="avis-title">
+    <h2 id="avis-title">Avis des stagiaires</h2>
+    <div class="avis-card">
+      <span class="avis-author">Prénom N.</span>
+      <span class="avis-date">Mois Année</span>
+      <div class="stars" aria-label="Note">★★★★☆</div>
+      <p>Contenu de l'avis à afficher ici.</p>
+    </div>
+    <div style="margin-top:16px;">
+      <a href="/?uri=reviews" class="btn-primary">Laisser un avis</a>
+    </div>
+  </section>
+
+  <a href="/?uri=offers" class="btn-secondary">← Retour aux offres</a>
+
+{% endblock %}
+

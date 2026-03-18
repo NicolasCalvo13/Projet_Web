@@ -1,0 +1,87 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Mes candidatures - StageLink{% endblock %}
+
+{% block body %}
+
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    Mes candidatures
+  </nav>
+
+  <h1 style="color:#007575;">Mes candidatures</h1>
+
+  <section class="section-card">
+    <h2>Offres auxquelles j'ai postulé</h2>
+    <table class="table-list" aria-label="Liste de mes candidatures">
+      <thead>
+        <tr>
+          <th>Offre</th>
+          <th>Entreprise</th>
+          <th>Date de candidature</th>
+          <th>Statut</th>
+          <th>Documents</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {# placeholders pour l’instant #}
+        <tr>
+          <td data-label="Offre">
+            <a href="/?uri=offer_detail&id=1" style="color:#008b8b;">Titre de l'offre</a>
+          </td>
+          <td data-label="Entreprise">
+            <a href="/?uri=company_detail&id=1" style="color:#008b8b;">Nom de l'entreprise</a>
+          </td>
+          <td data-label="Date">jj/mm/aaaa</td>
+          <td data-label="Statut">
+            <span class="status-badge status-pending">En attente</span>
+          </td>
+          <td data-label="Documents">
+            <a href="#" style="color:#008b8b;font-size:.85rem;">📄 CV</a>
+            <a href="#" style="color:#008b8b;font-size:.85rem;">📝 LM</a>
+          </td>
+          <td data-label="Actions">
+            <a href="/?uri=offer_detail&id=1"
+               class="btn-secondary"
+               style="padding:6px 12px;font-size:.8rem;">
+              Voir l'offre
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td data-label="Offre">
+            <a href="/?uri=offer_detail&id=2" style="color:#008b8b;">Titre de l'offre</a>
+          </td>
+          <td data-label="Entreprise">
+            <a href="/?uri=company_detail&id=2" style="color:#008b8b;">Nom de l'entreprise</a>
+          </td>
+          <td data-label="Date">jj/mm/aaaa</td>
+          <td data-label="Statut">
+            <span class="status-badge status-ok">Accepté</span>
+          </td>
+          <td data-label="Documents">
+            <a href="#" style="color:#008b8b;font-size:.85rem;">📄 CV</a>
+            <a href="#" style="color:#008b8b;font-size:.85rem;">📝 LM</a>
+          </td>
+          <td data-label="Actions">
+            <a href="/?uri=offer_detail&id=2"
+               class="btn-secondary"
+               style="padding:6px 12px;font-size:.8rem;">
+              Voir l'offre
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:16px;font-size:.9rem;color:#777;">
+      Total : <strong>-- candidature(s)</strong>
+    </p>
+  </section>
+
+  <a href="/?uri=offers" class="btn-secondary">← Voir toutes les offres</a>
+
+{% endblock %}
+

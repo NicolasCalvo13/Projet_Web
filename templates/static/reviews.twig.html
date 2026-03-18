@@ -1,0 +1,80 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Avis - Stage-Link{% endblock %}
+
+{% block body %}
+  <section>
+    <h1 class="text-center">Votre avis nous intéresse</h1>
+
+    <p>
+      Vous avez une remarque à nous faire concernant nos services ou l'un des produits achetés via notre site ?
+      Utilisez simplement ce formulaire en nous fournissant le maximum d'informations afin de répondre au mieux à votre demande.
+    </p>
+
+    <article>
+      <h2>Description</h2>
+
+      <form action="#" method="post">
+
+        <div class="form-row">
+          <label for="nom">Nom complet*</label>
+          <input type="text" id="nom" name="nom">
+        </div>
+
+        <div class="form-row">
+          <label for="courriel">Courriel*</label>
+          <input type="email" id="courriel" name="courriel">
+        </div>
+
+        <div class="form-row">
+          <label for="categorie">Objet de votre demande</label>
+          <select id="categorie" name="categorie">
+            <option selected disabled>--Sélectionnez--</option>
+            <option>Produit acheté</option>
+            <option>Service commercial</option>
+            <option>Service technique</option>
+            <option>Autres</option>
+          </select>
+        </div>
+
+        <div class="form-row form-row--wrap">
+          <label>Catégorie(s) concernée(s)</label>
+          <div class="checkbox-group">
+            <label class="check-item"><input type="checkbox" name="category" value="property"> Immobilier</label>
+            <label class="check-item"><input type="checkbox" name="category" value="cars"> Véhicules</label>
+            <label class="check-item"><input type="checkbox" name="category" value="clothes"> Vêtements</label>
+            <label class="check-item"><input type="checkbox" name="category" value="multimedia"> Multimédia</label>
+            <label class="check-item"><input type="checkbox" name="category" value="household"> Maison</label>
+            <label class="check-item"><input type="checkbox" name="category" value="hobbies"> Loisirs</label>
+            <label class="check-item"><input type="checkbox" name="category" value="services"> Services</label>
+          </div>
+        </div>
+
+        <div class="form-row form-row--wrap">
+          <label>Photo du produit défectueux</label>
+          <input type="file" accept="image/jpeg,image/png">
+        </div>
+
+        <div class="form-row form-row--wrap">
+          <label>Je suis satisfait</label>
+          <div class="radio-group">
+            <label class="check-item"><input type="radio" name="satisfaction" value="yes" checked> Oui</label>
+            <label class="check-item"><input type="radio" name="satisfaction" value="no"> Non</label>
+          </div>
+        </div>
+        <em><small>En cas d'insatisfaction veuillez nous en fournir la raison.</small></em>
+
+        <div class="form-row">
+          <label for="commentaires">Commentaires</label>
+          <textarea id="commentaires" name="commentaires" rows="6"></textarea>
+        </div>
+
+        <div class="form-row">
+          <input type="submit" value="Envoyer">
+          <input type="reset" value="Effacer">
+        </div>
+
+      </form>
+    </article>
+  </section>
+{% endblock %}
