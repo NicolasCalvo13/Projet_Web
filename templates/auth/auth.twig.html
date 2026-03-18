@@ -1,0 +1,39 @@
+{% extends "base.twig.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+  <section>
+    <h1 class="text-center">Bonjour !</h1>
+
+    <p>Connectez-vous pour retrouver vos annonces sauvegardées et déposées.</p>
+
+    <article>
+      <h2>Formulaire de connexion</h2>
+
+      {% if error is defined and error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <form action="/?uri=login" method="post">
+        <div>
+          <label>
+            Courriel<br>
+            <input name="email" type="email" size="30" value="" required>
+          </label>
+        </div>
+
+        <div>
+          <label>
+            Mot de passe<br>
+            <input name="password" type="password" size="30" value="" required>
+          </label>
+        </div>
+
+        <button type="submit">Connexion</button>
+        <input type="reset" value="Effacer">
+      </form>
+    </article>
+  </section>
+{% endblock %}
+

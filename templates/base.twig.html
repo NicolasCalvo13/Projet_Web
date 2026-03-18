@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Jérémy GALLET">
+    <meta name="description" content="{{ meta_description|default('Stage-Link, plateforme de stages.') }}">
+    <title>{% block title %}{{ page_title|default('Stage-Link') }}{% endblock %}</title>
+    <link rel="stylesheet" href="../assets/style.css">
+  </head>
+  <body>
+    <header class="header-style">
+      <div class="logo-placement">
+        <img src="../assets/images/logo.png" alt="Logo StageLink" width="200">
+      </div>
+
+      <div class="btn-placement">
+        <a href="/?uri=login" class="btn-compte">
+          <img src="../assets/images/icon-user.png" alt="Mon compte" width="50" height="50">
+        </a>
+        <a href="/?uri=wishlist" class="btn-favs">
+          <img src="../assets/images/icon-fav.png" alt="Favoris" width="50" height="50">
+        </a>
+      </div>
+    </header>
+
+    <nav class="navbar">
+      <a href="/?uri=home">Accueil</a> |
+      <a href="/?uri=offers">Toutes les Offres</a> |
+      <a href="/?uri=it_offers">Offres Informatiques</a> |
+      <a href="/?uri=btp_offers">Offres BTP</a> |
+      <a href="/?uri=register">Inscription</a> |
+      <a href="/?uri=login"><span class="active">Connexion</span></a> |
+      <a href="/?uri=reviews">Avis</a> |
+      <a href="/?uri=contact">Contact</a>
+    </nav>
+
+    <main>
+      {% block body %}{% endblock %}
+    </main>
+
+    <footer class="footer-style">
+      <a href="/?uri=legal"><span>Mentions légales</span></a>
+      <div>&copy; 2026 - Tous droits réservés</div>
+      <a href="/?uri=cookies"><span>Gestion des cookies</span></a>
+    </footer>
+  </body>
+</html>
+
