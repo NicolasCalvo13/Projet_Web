@@ -11,6 +11,19 @@ body {
     box-sizing: border-box;
 }
 
+a {
+    color: inherit; 
+}
+
+a:visited {
+    color: inherit; /* empêche le violet des liens déjà visités */
+}
+
+a:hover {
+    color: inherit; /* au survol */
+}
+
+
 img {
     max-width: 100%;
     height: auto;
@@ -197,6 +210,7 @@ form {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+    text-decoration: none;
 }
 
 .form-row label {
