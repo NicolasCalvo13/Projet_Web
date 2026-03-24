@@ -73,10 +73,12 @@ main {
     font-weight: bold;
 }
 
-.navbar .active {
-    color: #A2E9EB;
+.navbar a.active {
+    color: #0a5f9e;
     font-weight: bold;
+    border-bottom: 2px solid #0a5f9e;
 }
+
 
 /* Checkbox cachée */
 #menu-toggle {
