@@ -1,21 +1,87 @@
 {% extends "base.twig.html" %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}{{ page_title }} - Stage-Link{% endblock %}
 
 {% block body %}
-  <h2>Offres de stage récentes</h2>
 
-  {% if offers is not empty %}
-    <ul>
-      {% for offer in offers %}
-        <li>
-          <strong>{{ offer.title }}</strong> – {{ offer.company }} ({{ offer.location }})<br>
-          <small>{{ offer.description }}</small>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Aucune offre disponible pour le moment.</p>
-  {% endif %}
+{# ===== HERO ===== #}
+<section class="home-hero" aria-labelledby="hero-title">
+    <div class="home-hero-content">
+        <h1 id="hero-title">Trouvez votre stage idéal</h1>
+        <p class="home-hero-subtitle">
+            Des centaines d'offres de stage dans l'informatique, le BTP et bien d'autres secteurs.
+            Postulez en quelques clics.
+        </p>
+        <div class="home-hero-actions">
+            <a href="/?uri=offers" class="btn-primary">Voir toutes les offres</a>
+            <a href="/?uri=register" class="btn-secondary">Créer un compte</a>
+        </div>
+    </div>
+</section>
+
+{# ===== STATS ===== #}
+<section class="home-stats" aria-label="Chiffres clés">
+    <div class="stat-card">
+        <span class="stat-number">{{ total_offers }}+</span>
+        <span class="stat-label">Offres disponibles</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">12</span>
+        <span class="stat-label">Entreprises partenaires</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Secteurs couverts</span>
+    </div>
+</section>
+
+{# ===== OFFRES RÉCENTES ===== #}
+<section class="section-card" aria-labelledby="recent-title">
+    <div class="section-header">
+        <h2 id="recent-title">Offres récentes</h2>
+        <a href="/?uri=offers" class="btn-secondary">Voir tout →</a>
+    </div>
+
+    {% if offers is not empty %}
+        <div class="offers-grid">
+            {% for offer in offers %}
+                <article class="offer-card" aria-label="{{ offer.titre }}">
+                    <div class="offer-card-header">
+                        <img
+                            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                            alt="{{ offer.entreprise_nom }}"
+                            class="offer-card-logo"
+                            width="48"
+                        >
+                        <div>
+                            <h3 class="offer-card-title">{{ offer.titre }}</h3>
+                            <span class="offer-card-company">{{ offer.entreprise_nom }}</span>
+                        </div>
+                    </div>
+                    <div class="offer-meta">
+                        <span class="badge">{{ offer.ville }}</span>
+                        <span class="badge">{{ offer.secteur }}</span>
+                        <span class="badge">{{ offer.remuneration }}€ / mois</span>
+                    </div>
+                    <p class="offer-card-excerpt">
+                        {{ (offer.description|striptags)|slice(0, 120) }}…
+                    </p>
+                    <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn-primary offer-card-btn">
+                        Voir l'offre
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">Aucune offre disponible pour le moment. Revenez bientôt !</p>
+    {% endif %}
+</section>
+
+{# ===== CTA BAS DE PAGE ===== #}
+<section class="home-cta section-card" aria-labelledby="cta-title">
+    <h2 id="cta-title">Vous êtes une entreprise ?</h2>
+    <p>Publiez vos offres de stage et trouvez les meilleurs profils étudiants.</p>
+    <a href="/?uri=login" class="btn-primary">Se connecter en tant qu'entreprise</a>
+</section>
+
 {% endblock %}
-

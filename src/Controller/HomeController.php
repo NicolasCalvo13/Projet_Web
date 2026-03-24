@@ -22,10 +22,12 @@ class HomeController
     {
         // Exemple de données récupérées depuis le modèle
         $offers = $this->model->getSampleOffers();
+        $totalOffers = $this->model->countAllOffers();
 
         return $this->twig->render('home/index.twig.html', [
-            'page_title' => 'Accueil – Stages CESI',
+            'page_title' => 'Accueil – Stages-Link',
             'offers'     => $offers,
+            'total_offers' => $totalOffers,
         ]);
     }
 }

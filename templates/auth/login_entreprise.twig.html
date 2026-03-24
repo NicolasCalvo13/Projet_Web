@@ -1,0 +1,62 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Connexion Entreprise - Stage-Link{% endblock %}
+
+{% block body %}
+
+<section>
+    <h1 class="text-center">Espace Entreprise</h1>
+    <p >Connectez-vous pour accéder à votre espace recruteur et gérer vos offres de stage.</p>
+
+    {% if error is defined %}
+        <div class="alert-info">{{ error }}</div>
+    {% endif %}
+
+    <article>
+        <h2>Connexion entreprise</h2>
+
+        <form method="post" action="/?uri=login_entreprise_check">
+
+            <div class="form-row">
+                <label for="email">Email professionnel</label>
+                <input
+                    name="email"
+                    id="email"
+                    type="email"
+                    placeholder="contact@entreprise.fr"
+                    required
+                >
+            </div>
+
+            <div class="form-row">
+                <label for="password">Mot de passe</label>
+                <input
+                    name="password"
+                    id="password"
+                    type="password"
+                    required
+                >
+            </div>
+
+            <div class="form-row">
+                <button type="submit">Connexion</button>
+                <input type="reset" value="Effacer">
+            </div>
+
+            <div class="form-row">
+                <p>Pas encore de compte entreprise ? &nbsp;
+                    <a href="/?uri=register_entreprise">Inscrivez votre entreprise !</a>
+                </p>
+            </div>
+
+            <div class="form-row">
+                <p>Vous êtes étudiant ? &nbsp;
+                    <a href="/?uri=login">Connexion étudiant</a>
+                </p>
+            </div>
+
+        </form>
+    </article>
+</section>
+
+{% endblock %}

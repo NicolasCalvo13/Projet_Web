@@ -1,18 +1,36 @@
-{% extends "base.twig.html" %}
+{% extends 'base.twig.html' %}
 
-{% block title %}Offre IT - StageLink{% endblock %}
+{% block title %}Offres Informatique - Stage-Link{% endblock %}
 
 {% block body %}
-  <div class="images">
-    <a href="/?uri=offer_detail&id=1" class="card">
-      <img src="/assets/images/placeholder.png" alt="Offres IT">
-    </a>
-    <a href="/?uri=offer_detail&id=2" class="card">
-      <img src="/assets/images/placeholder.png" alt="Toutes les offres">
-    </a>
-    <a href="/?uri=offer_detail&id=3" class="card">
-      <img src="/assets/images/placeholder.png" alt="Offres BTP">
-    </a>
-  </div>
-{% endblock %}
 
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <a href="/?uri=home">Accueil</a><span> › </span>
+  Offres Informatique
+</nav>
+
+<h1 style="color:#007575;">Offres de stage — Informatique</h1>
+
+<div class="images">
+    {% if offers is empty %}
+        <p class="empty-state">Aucune offre informatique disponible pour le moment.</p>
+    {% else %}
+        {% for offer in offers %}
+            <a href="/?uri=offer_detail&id={{ offer.id }}" class="card">
+                <img
+                    src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                    alt="{{ offer.entreprise_nom }}"
+                    onerror="this.onerror=null; this.src='/assets/images/placeholder.png';"
+                >
+                <div class="card-info">
+                    <h3>{{ offer.titre }}</h3>
+                    <p><strong>{{ offer.entreprise_nom }}</strong> — {{ offer.ville }}</p>
+                    <p>{{ offer.remuneration }}€ / mois</p>
+                    <p>Du {{ offer.date_debut }} au {{ offer.date_fin }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}
