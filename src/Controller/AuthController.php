@@ -23,6 +23,14 @@ class AuthController
         ]);
     }
 
+    public function showLoginEnterpriseForm(): string
+    {
+        return $this->twig->render('auth/login_entreprise.twig.html', [
+            'page_title'       => 'Connexion Entreprise - Stage-Link',
+            'meta_description' => 'Connectez-vous à votre espace entreprise.',
+        ]);
+    }
+
     // plus tard: traitement POST du login
     public function loginCheck(): string
     {

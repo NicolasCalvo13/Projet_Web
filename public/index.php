@@ -61,6 +61,12 @@ $router->get('login', function () use ($twig) {
     return $controller->showLoginForm();
 });
 
+// Page de login entreprise (affichage du formulaire)
+$router->get('login_entreprise', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->showLoginEnterpriseForm();
+});
+
 // Traitement du login (on l’implémentera plus tard avec la BDD)
 $router->post('login', function () use ($twig) {
     $controller = new AuthController($twig);
