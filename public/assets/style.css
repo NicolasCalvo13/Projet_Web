@@ -806,6 +806,16 @@ textarea {
     font-size: 0.8rem;
     color: #aaa;
     margin-left: 10px;
+.navbar a.active {
+    color: #0a5f9e;
+    font-weight: bold;
+    border-bottom: 2px solid #0a5f9e;
+}
+
+
+/* Checkbox cachée */
+#menu-toggle {
+    display: none;
 }
 
 .offer-mini {
