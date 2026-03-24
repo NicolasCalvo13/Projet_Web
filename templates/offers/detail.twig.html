@@ -1,123 +1,109 @@
-{% extends "base.twig.html" %}
+{% extends 'base.twig.html' %}
 
-{% block title %}{{ offer.title }} - StageLink{% endblock %}
+{% block title %}{{ offer.titre }} - Stage-Link{% endblock %}
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    <a href="/?uri=offers">Toutes les offres</a><span>›</span>
-    {{ offer.title }}
-  </nav>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span> › </span>
+    <a href="/?uri=offers">Toutes les offres</a><span> › </span>
+    {{ offer.titre }}
+</nav>
 
-  <section class="offer-hero" aria-labelledby="offer-title">
+<section class="offer-hero" aria-labelledby="offer-title">
     <div class="offer-hero-left">
-      <h1 class="offer-title" id="offer-title">{{ offer.title }}</h1>
-      <a href="/?uri=company_detail&id={{ offer.company.id }}" class="offer-company-link">
-        {{ offer.company.name }}
-      </a>
-      <div class="offer-meta">
-        <span class="badge">📍 {{ offer.location }}</span>
-        <span class="badge">📅 {{ offer.date }}</span>
-        <span class="badge">⏱ {{ offer.duration }} mois</span>
-        <span class="badge">💶 {{ offer.salary }} €/mois</span>
-        <span class="badge badge-stat">👥 {{ offer.applications_count }} candidat(s)</span>
-      </div>
+        <h1 class="offer-title" id="offer-title">{{ offer.titre }}</h1>
+        <a href="/?uri=company_detail&id={{ offer.entreprise_id }}" class="offer-company-link">
+            {{ offer.entreprise_nom }}
+        </a>
+        <div class="offer-meta">
+            <span class="badge">{{ offer.ville }}</span>
+            <span class="badge">{{ offer.date_debut }}</span>
+            <span class="badge">{{ offer.remuneration }}€ / mois</span>
+            <span class="badge">{{ offer.secteur }}</span>
+        </div>
     </div>
     <div class="offer-hero-right">
-      <a href="/?uri=apply&id={{ offer.id }}" class="btn-primary">Postuler à cette offre</a>
-      <button class="btn-secondary btn-wishlist"
-              id="wishlistBtn"
-              onclick="toggleWishlist(this)"
-              aria-pressed="false">
-        Ajouter aux favoris
-      </button>
+        <img 
+            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" 
+            alt="{{ offer.entreprise_nom }}"
+            width="80"
+        >
+        <a href="/?uri=apply_offer&id={{ offer.id }}" class="btn-primary">Postuler à cette offre</a>
+        <button class="btn-secondary btn-wishlist" id="wishlistBtn"
+                onclick="toggleWishlist(this)" aria-pressed="false">
+            Ajouter aux favoris
+        </button>
     </div>
-  </section>
+</section>
 
-  <div class="alert-info" role="note">
-    ℹ️ Vous devez être <a href="/?uri=login">connecté(e)</a> pour postuler ou ajouter une offre à vos favoris.
-  </div>
+<div class="alert-info" role="note">
+    Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
+</div>
 
-  <article class="section-card">
+<article class="section-card">
     <h2>Description du stage</h2>
-    <p>{{ offer.description }}</p>
-    {% if offer.missions is not empty %}
-      <h3 style="color:#008b8b;font-size:1rem;">Missions principales</h3>
-      <ul>
-        {% for mission in offer.missions %}
-          <li>{{ mission }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </article>
+    <p>{{ offer.description|nl2br|raw  }}</p>
+</article>
 
-  <section class="section-card" aria-labelledby="skills-title">
-    <h2 id="skills-title">Compétences requises</h2>
-    <ul class="skills-list" aria-label="Liste des compétences">
-      {% for skill in offer.skills %}
-        <li>{{ skill }}</li>
-      {% else %}
-        <li>Aucune compétence renseignée.</li>
-      {% endfor %}
-    </ul>
-  </section>
-
-  <section class="section-card" aria-labelledby="infos-title">
+<section class="section-card" aria-labelledby="infos-title">
     <h2 id="infos-title">Informations pratiques</h2>
     <table class="table-articles" aria-label="Informations pratiques">
-      <tbody>
-        <tr>
-          <td><strong>Durée</strong></td>
-          <td>{{ offer.duration }} mois</td>
-        </tr>
-        <tr>
-          <td><strong>Rémunération</strong></td>
-          <td>{{ offer.salary }} €/mois</td>
-        </tr>
-        <tr>
-          <td><strong>Localisation</strong></td>
-          <td>{{ offer.location }}</td>
-        </tr>
-        <tr>
-          <td><strong>Date de l'offre</strong></td>
-          <td>{{ offer.date }}</td>
-        </tr>
-        <tr>
-          <td><strong>Nombre de candidats</strong></td>
-          <td>{{ offer.applications_count }}</td>
-        </tr>
-      </tbody>
+        <tbody>
+            <tr>
+                <td><strong>Date de début</strong></td>
+                <td>{{ offer.date_debut }}</td>
+            </tr>
+            <tr>
+                <td><strong>Date de fin</strong></td>
+                <td>{{ offer.date_fin }}</td>
+            </tr>
+            <tr>
+                <td><strong>Rémunération</strong></td>
+                <td>{{ offer.remuneration }}€ / mois</td>
+            </tr>
+            <tr>
+                <td><strong>Localisation</strong></td>
+                <td>{{ offer.ville }}</td>
+            </tr>
+            <tr>
+                <td><strong>Secteur</strong></td>
+                <td>{{ offer.secteur }}</td>
+            </tr>
+        </tbody>
     </table>
-  </section>
+</section>
 
-  <section class="section-card" aria-labelledby="company-title">
+<section class="section-card" aria-labelledby="company-title">
     <h2 id="company-title">À propos de l'entreprise</h2>
     <div class="company-mini-card">
-      <div class="company-mini-info">
-        <p><strong>{{ offer.company.name }}</strong></p>
-        <p>📧 {{ offer.company.email }}</p>
-        <p>📞 {{ offer.company.phone }}</p>
-        <p>⭐ Note moyenne : <strong>{{ offer.company.rating }} / 5</strong></p>
-        <a href="/?uri=company_detail&id={{ offer.company.id }}" class="offer-company-link">
-          Voir la fiche complète →
-        </a>
-      </div>
+        <img 
+            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" 
+            alt="{{ offer.entreprise_nom }}"
+            width="100"
+        >
+        <div class="company-mini-info">
+            <p><strong>{{ offer.entreprise_nom }}</strong></p>
+            <p>{{ offer.entreprise_ville }}</p>
+            <p>{{ offer.entreprise_description|nl2br|raw }}</p>
+            <a href="/?uri=company_detail&id={{ offer.entreprise_id }}" class="offer-company-link">
+                Voir la fiche complète
+            </a>
+        </div>
     </div>
-  </section>
+</section>
 
-  <div style="margin-top:20px;">
-    <a href="/?uri=offers" class="btn-secondary">← Retour aux offres</a>
-  </div>
+<div style="margin-top: 20px;">
+    <a href="/?uri=offers" class="btn-secondary">Retour aux offres</a>
+</div>
 
-  <script>
-    function toggleWishlist(btn) {
-      const isActive = btn.classList.toggle('active');
-      btn.setAttribute('aria-pressed', isActive);
-      btn.textContent = isActive ? '♥ Retiré des favoris' : '♡ Ajouter aux favoris';
-      // TODO backend : appel AJAX vers wishlist controller
-    }
-  </script>
+<script>
+function toggleWishlist(btn) {
+    const isActive = btn.classList.toggle('active');
+    btn.setAttribute('aria-pressed', isActive);
+    btn.textContent = isActive ? 'Retiré des favoris' : 'Ajouter aux favoris';
+    // TODO: appel AJAX vers wishlist controller
+}
+</script>
 
 {% endblock %}
-
