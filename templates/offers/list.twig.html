@@ -4,6 +4,13 @@
 
 {% block body %}
 
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span> › </span>
+    Toutes les offres
+</nav>
+
+<h1 style="color:#007575;">Offres de stage </h1>
+
 <div class="images">
     {% if offers is empty %}
         <p>Aucune offre disponible pour le moment.</p>

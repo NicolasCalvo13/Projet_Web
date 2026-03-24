@@ -40,4 +40,10 @@ class HomeModel
 
         return $stmt->fetchAll();
     }
+
+    public function countAllOffers(): int
+    {
+        $stmt = $this->pdo->query('SELECT COUNT(*) FROM offres');
+        return (int) $stmt->fetchColumn();
+    }
 }
