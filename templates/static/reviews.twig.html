@@ -3,78 +3,134 @@
 {% block title %}Avis - Stage-Link{% endblock %}
 
 {% block body %}
-  <section>
-    <h1 class="text-center">Votre avis nous intéresse</h1>
 
-    <p>
-      Vous avez une remarque à nous faire concernant nos services ou l'un des produits achetés via notre site ?
-      Utilisez simplement ce formulaire en nous fournissant le maximum d'informations afin de répondre au mieux à votre demande.
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span> › </span>
+    Avis
+</nav>
+
+<section>
+    <h1 class="text-center">Donnez votre avis</h1>
+    <p class="text-center">
+        Vous avez effectué un stage trouvé via Stage-Link ?<br>
+        Partagez votre expérience pour aider les autres étudiants !
     </p>
 
+    {% if success is defined %}
+        <div class="alert-success">Merci ! Votre avis a bien été envoyé.</div>
+    {% endif %}
+
     <article>
-      <h2>Description</h2>
+        <h2>Votre expérience</h2>
 
-      <form action="#" method="post">
+        <form action="/?uri=reviews_submit" method="post">
 
-        <div class="form-row">
-          <label for="nom">Nom complet*</label>
-          <input type="text" id="nom" name="nom">
-        </div>
+            <div class="form-row">
+                <label for="nom">Nom complet*</label>
+                <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    placeholder="Ex : Marie Dupont"
+                    required
+                >
+            </div>
 
-        <div class="form-row">
-          <label for="courriel">Courriel*</label>
-          <input type="email" id="courriel" name="courriel">
-        </div>
+            <div class="form-row">
+                <label for="courriel">Courriel*</label>
+                <input
+                    type="email"
+                    id="courriel"
+                    name="courriel"
+                    placeholder="Ex : marie.dupont@cesi.fr"
+                    required
+                >
+            </div>
 
-        <div class="form-row">
-          <label for="categorie">Objet de votre demande</label>
-          <select id="categorie" name="categorie">
-            <option selected disabled>--Sélectionnez--</option>
-            <option>Produit acheté</option>
-            <option>Service commercial</option>
-            <option>Service technique</option>
-            <option>Autres</option>
-          </select>
-        </div>
+            <div class="form-row">
+                <label for="entreprise">Entreprise du stage*</label>
+                <input
+                    type="text"
+                    id="entreprise"
+                    name="entreprise"
+                    placeholder="Ex : Sopra Steria"
+                    required
+                >
+            </div>
 
-        <div class="form-row form-row--wrap">
-          <label>Catégorie(s) concernée(s)</label>
-          <div class="checkbox-group">
-            <label class="check-item"><input type="checkbox" name="category" value="property"> Immobilier</label>
-            <label class="check-item"><input type="checkbox" name="category" value="cars"> Véhicules</label>
-            <label class="check-item"><input type="checkbox" name="category" value="clothes"> Vêtements</label>
-            <label class="check-item"><input type="checkbox" name="category" value="multimedia"> Multimédia</label>
-            <label class="check-item"><input type="checkbox" name="category" value="household"> Maison</label>
-            <label class="check-item"><input type="checkbox" name="category" value="hobbies"> Loisirs</label>
-            <label class="check-item"><input type="checkbox" name="category" value="services"> Services</label>
-          </div>
-        </div>
+            <div class="form-row">
+                <label for="secteur">Secteur</label>
+                <select id="secteur" name="secteur">
+                    <option value="" disabled selected>-- Sélectionnez --</option>
+                    <option value="informatique">Informatique</option>
+                    <option value="btp">BTP</option>
+                    <option value="autre">Autre</option>
+                </select>
+            </div>
 
-        <div class="form-row form-row--wrap">
-          <label>Photo du produit défectueux</label>
-          <input type="file" accept="image/jpeg,image/png">
-        </div>
+            <div class="form-row">
+                <label for="note">Note globale*</label>
+                <select id="note" name="note" required>
+                    <option value="" disabled selected>-- Sélectionnez --</option>
+                    <option value="5">⭐⭐⭐⭐⭐ — Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ — Très bien</option>
+                    <option value="3">⭐⭐⭐ — Bien</option>
+                    <option value="2">⭐⭐ — Moyen</option>
+                    <option value="1">⭐ — Décevant</option>
+                </select>
+            </div>
 
-        <div class="form-row form-row--wrap">
-          <label>Je suis satisfait</label>
-          <div class="radio-group">
-            <label class="check-item"><input type="radio" name="satisfaction" value="yes" checked> Oui</label>
-            <label class="check-item"><input type="radio" name="satisfaction" value="no"> Non</label>
-          </div>
-        </div>
-        <em><small>En cas d'insatisfaction veuillez nous en fournir la raison.</small></em>
+            <div class="form-row form-row--wrap">
+                <label>Points positifs</l²abel>
+                <div class="checkbox-group">
+                    <label class="check-item">
+                        <input type="checkbox" name="positifs[]" value="ambiance"> Bonne ambiance
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" name="positifs[]" value="encadrement"> Bon encadrement
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" name="positifs[]" value="missions"> Missions intéressantes
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" name="positifs[]" value="remuneration"> Bonne rémunération
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" name="positifs[]" value="evolution"> Perspectives d'évolution
+                    </label>
+                </div>
+            </div>
 
-        <div class="form-row">
-          <label for="commentaires">Commentaires</label>
-          <textarea id="commentaires" name="commentaires" rows="6"></textarea>
-        </div>
+            <div class="form-row form-row--wrap">
+                <label>Recommanderiez-vous cette entreprise ?</label>
+                <div class="radio-group">
+                    <label class="check-item">
+                        <input type="radio" name="recommande" value="oui" checked> Oui
+                    </label>
+                    <label class="check-item">
+                        <input type="radio" name="recommande" value="non"> Non
+                    </label>
+                </div>
+            </div>
 
-        <div class="form-row">
-          <input type="submit" value="Envoyer">
-          <input type="reset" value="Effacer">
-        </div>
+            <div class="form-row">
+                <label for="commentaires">Votre avis détaillé*</label>
+                <textarea
+                    id="commentaires"
+                    name="commentaires"
+                    rows="6"
+                    placeholder="Décrivez votre expérience : missions, équipe, ambiance, points forts et points faibles..."
+                    required
+                ></textarea>
+            </div>
 
-      </form>
+            <div class="form-row">
+                <input type="submit" value="Envoyer mon avis">
+                <input type="reset" value="Effacer">
+            </div>
+
+        </form>
     </article>
-  </section>
+</section>
+
 {% endblock %}
