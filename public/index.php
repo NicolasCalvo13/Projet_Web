@@ -158,6 +158,11 @@ $router->get('register', function () use ($twig) {
     return $controller->registerForm();
 });
 
+$router->get('register_entreprise', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->registerForm_entreprise();
+});
+
 $router->get('applications', function () use ($twig){
     $controller = new ApplicationController($twig);
     return $controller->applications();

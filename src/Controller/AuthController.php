@@ -51,5 +51,13 @@ class AuthController
         ]);
     }
 
+    public function registerForm_entreprise(): string
+    {
+        return $this->twig->render('auth/register_entreprise.twig.html', [
+            'page_title'       => 'Inscription - Stage-Link',
+            'meta_description' => 'Inscrivez-vous pour obtenir une meilleure expérience utilisateur.',
+        ]);
+    }
+
 }
 
