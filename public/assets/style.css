@@ -54,9 +54,6 @@ main {
    ============================================================ */
 .header-style {
     background-color: paleturquoise;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -129,6 +126,11 @@ main {
     transition: all 0.3s ease;
 }
 
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
 /* ============================================================
    FOOTER
