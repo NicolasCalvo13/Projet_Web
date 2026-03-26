@@ -18,6 +18,7 @@ use App\Controller\AdminController;
 use App\Controller\ApplicationController;
 use App\Controller\StaticController;
 use App\Controller\CompanyController;
+use App\Controller\UserController;
 
 
 
@@ -158,6 +159,11 @@ $router->get('register', function () use ($twig) {
     return $controller->registerForm();
 });
 
+$router->get('register_entreprise', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->registerForm_entreprise();
+});
+
 $router->get('applications', function () use ($twig){
     $controller = new ApplicationController($twig);
     return $controller->applications();
@@ -166,6 +172,11 @@ $router->get('applications', function () use ($twig){
 $router->get('wishlist', function () use ($twig){
     $controller = new OfferController($twig);
     return $controller->wishlist();
+});
+
+$router->get('user_page', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->userSettings();
 });
 
 

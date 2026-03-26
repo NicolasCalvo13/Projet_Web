@@ -54,9 +54,6 @@ main {
    ============================================================ */
 .header-style {
     background-color: paleturquoise;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -107,6 +104,7 @@ main {
     border-bottom: 2px solid #0a5f9e;
 }
 
+/* Checkbox cachée pour le menu mobile */
 #menu-toggle {
     display: none;
 }
@@ -129,6 +127,11 @@ main {
     transition: all 0.3s ease;
 }
 
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
 /* ============================================================
    FOOTER
@@ -216,7 +219,8 @@ main {
     background-color: #ffe0e0;
 }
 
-input[type="submit"] {
+input[type="submit"],
+button[type="submit"] {
     background-color: #A2E9EB;
     color: black;
     border: 1px solid #008b8b;
@@ -224,9 +228,11 @@ input[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    font-family: "Century Gothic", Arial, sans-serif;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+button[type="submit"]:hover {
     background-color: #afeeee;
 }
 
@@ -244,22 +250,6 @@ input[type="reset"] {
 input[type="reset"]:hover {
     background-color: #f0fafa;
 }
-
-button[type="submit"] {
-    background-color: #A2E9EB;
-    color: black;
-    border: 1px solid #008b8b;
-    padding: 10px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: "Century Gothic", Arial, sans-serif;
-}
-
-button[type="submit"]:hover {
-    background-color: #afeeee;
-}
-
 
 /* ============================================================
    ALERTES
@@ -283,7 +273,6 @@ button[type="submit"]:hover {
     color: #1a5c2e;
     margin-bottom: 20px;
 }
-
 
 /* ============================================================
    BADGES & STATUTS
@@ -358,7 +347,6 @@ button[type="submit"]:hover {
     margin: 0 6px;
 }
 
-
 /* ============================================================
    SECTION CARD (bloc générique)
    ============================================================ */
@@ -390,10 +378,15 @@ button[type="submit"]:hover {
     margin-bottom: 0;
 }
 
-
 /* ============================================================
    TABLEAUX
    ============================================================ */
+/* Wrapper pour forcer le scroll horizontal sur mobile */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .table-articles {
     width: 100%;
     border-collapse: collapse;
@@ -543,7 +536,6 @@ textarea {
 
 /* ============================================================
    GRILLE DE CARTES (.images / .card)
-   — utilisée dans offers/list.twig.html
    ============================================================ */
 .images {
     display: grid;
@@ -578,7 +570,7 @@ textarea {
 .card img {
     width: 100px;
     height: 100px;
-    object-fit: contain;  /* contain pour ne pas dÃ©former les logos */
+    object-fit: contain;
     border-radius: 5px;
     align-self: center;
     background: white;
@@ -606,12 +598,8 @@ textarea {
     margin: 0;
 }
 
-
-
-
 /* ============================================================
    PAGE : À PROPOS
-   — utilisée dans static/apropos
    ============================================================ */
 .apropos-content {
     display: flex;
@@ -634,7 +622,6 @@ textarea {
 
 /* ============================================================
    PAGE : DÉTAIL OFFRE
-   — utilisée dans offers/detail.twig.html
    ============================================================ */
 .offer-hero {
     background: linear-gradient(135deg, #e0fafa, #f9ffff);
@@ -684,12 +671,6 @@ textarea {
     margin-top: 16px;
 }
 
-.badge-stat {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    color: #7a5f00;
-}
-
 .btn-wishlist::before {
     content: "♡";
     font-size: 1.2rem;
@@ -731,10 +712,8 @@ textarea {
     color: #004d4d;
 }
 
-
 /* ============================================================
    PAGE : DÉTAIL ENTREPRISE
-   — utilisée dans companies/detail.twig.html
    ============================================================ */
 .company-hero {
     background: linear-gradient(135deg, #e0fafa, #f9ffff);
@@ -806,18 +785,6 @@ textarea {
     font-size: 0.8rem;
     color: #aaa;
     margin-left: 10px;
-
-}
-.navbar a.active {
-    color: #0a5f9e;
-    font-weight: bold;
-    border-bottom: 2px solid #0a5f9e;
-}
-
-
-/* Checkbox cachée */
-#menu-toggle {
-    display: none;
 }
 
 .offer-mini {
@@ -834,10 +801,8 @@ textarea {
     border-bottom: none;
 }
 
-
 /* ============================================================
    PAGE : POSTULER
-   — utilisée dans applications/apply.twig.html
    ============================================================ */
 .apply-offer-recap {
     background: #e0fafa;
@@ -857,10 +822,8 @@ textarea {
     font-size: 1.05rem;
 }
 
-
 /* ============================================================
    PAGE : ADMIN DASHBOARD
-   — utilisée dans admin/dashboard.twig.html
    ============================================================ */
 .stats-grid {
     display: grid;
@@ -934,7 +897,6 @@ textarea {
 
 /* ============================================================
    PAGE : HOME
-   — utilisée dans home/index.twig.html
    ============================================================ */
 .home-hero {
     background: linear-gradient(135deg, #008b8b 0%, #005f5f 100%);
@@ -1083,12 +1045,25 @@ textarea {
     font-style: italic;
 }
 
-
 /* ============================================================
    RESPONSIVE — Mobile (≤ 768px)
    ============================================================ */
 @media (max-width: 768px) {
+    /* Ajustement des espacements globaux pour gagner de la place */
+    main {
+        padding: 10px;
+    }
 
+    .section-card {
+        padding: 15px;
+    }
+
+    form {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    /* HEADER & NAVIGATION */
     .logo-placement img {
         width: 130px;
     }
@@ -1109,6 +1084,7 @@ textarea {
         padding: 0;
     }
 
+    /* Révéler la navbar quand la checkbox est cochée */
     #menu-toggle:checked ~ .navbar {
         display: flex;
     }
@@ -1118,20 +1094,23 @@ textarea {
         margin: 0;
         border-bottom: 1px solid #A2E9EB;
         background-color: #f9ffff;
+        text-align: center;
     }
 
+    /* GRILLES ET CARTES */
     .images {
         grid-template-columns: 1fr;
     }
 
     .card {
-        width: 90%;
+        width: 100%;
     }
 
     .apropos-content > article {
         flex: 1 1 100%;
     }
 
+    /* FORMULAIRES ET BOUTONS */
     .form-row {
         flex-direction: column;
         align-items: flex-start;
@@ -1155,17 +1134,27 @@ textarea {
         white-space: normal;
     }
 
-    input[type="reset"] {
+    /* Boutons en pleine largeur sur mobile pour être plus faciles à toucher */
+    input[type="submit"], 
+    button[type="submit"], 
+    input[type="reset"], 
+    .btn-primary, 
+    .btn-secondary {
+        width: 100%;
         margin-left: 0;
         margin-top: 10px;
+        box-sizing: border-box;
     }
 
+    /* FOOTER */
     .footer-style {
         flex-direction: column;
         align-items: center;
         text-align: center;
+        padding: 20px 10px;
     }
 
+    /* PAGES SPÉCIFIQUES */
     .offer-hero-left,
     .offer-hero-right {
         flex: 1 1 100%;
@@ -1177,12 +1166,22 @@ textarea {
 
     .company-hero {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
     }
 
     .company-logo {
-        width: 70px;
-        height: 70px;
+        width: 80px;
+        height: 80px;
+    }
+
+    /* TABLEAUX */
+    /* Empêche le tableau des articles de déborder de l'écran */
+    .table-articles {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     .table-list thead {
@@ -1192,6 +1191,8 @@ textarea {
     .table-list td {
         display: block;
         padding: 8px 12px;
+        text-align: right;
+        border-bottom: 1px solid #e0fafa;
     }
 
     .table-list td::before {
@@ -1200,8 +1201,16 @@ textarea {
         color: #007575;
         display: block;
         font-size: 0.8rem;
+        text-align: left;
     }
 
+    .table-list tr {
+        display: block;
+        border-bottom: 2px solid #A2E9EB;
+        margin-bottom: 10px;
+    }
+
+    /* HOME */
     .home-hero {
         padding: 40px 20px;
     }
