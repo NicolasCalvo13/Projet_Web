@@ -19,6 +19,8 @@ use App\Controller\ApplicationController;
 use App\Controller\StaticController;
 use App\Controller\CompanyController;
 use App\Controller\UserController;
+use App\Controller\StudentController;
+use App\Controller\PiloteController;
 
 
 
@@ -159,6 +161,11 @@ $router->get('register', function () use ($twig) {
     return $controller->registerForm();
 });
 
+$router->post('register', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->register();
+});
+
 $router->get('register_entreprise', function () use ($twig) {
     $controller = new AuthController($twig);
     return $controller->registerForm_entreprise();
@@ -174,9 +181,29 @@ $router->get('wishlist', function () use ($twig){
     return $controller->wishlist();
 });
 
-$router->get('user_page', function () use ($twig) {
-    $controller = new UserController($twig);
-    return $controller->userSettings();
+$router->get('student_dashboard', function () use ($twig) {
+    $controller = new StudentController($twig);
+    return $controller->dashboard();
+});
+
+$router->get('logout', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->logout();
+});
+
+$router->get('account', function () use ($twig) {
+    $controller = new StudentController($twig);
+    return $controller->account();
+});
+
+$router->get('pilot_dashboard', function () use ($twig) {
+    $controller = new PiloteController($twig);
+    return $controller->dashboard();
+});
+
+$router->get('admin_dashboard', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->dashboard();
 });
 
 

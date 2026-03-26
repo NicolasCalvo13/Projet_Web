@@ -59,6 +59,7 @@ class OfferController
         return $this->twig->render('offers/detail.twig.html', [
             'page_title' => $offer['titre'],
             'offer' => $offer,
+            'user'       => $_SESSION['user_id'] ?? null,
         ]);
     }
 

@@ -166,6 +166,7 @@ main {
     color: black;
     border: 1px solid #008b8b;
     padding: 12px 20px;
+    margin-bottom: 10px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
@@ -206,6 +207,7 @@ main {
     color: #c0392b;
     border: 1px solid #e74c3c;
     padding: 10px 18px;
+    margin-bottom: 10px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
@@ -271,6 +273,26 @@ input[type="reset"]:hover {
     border-radius: 5px;
     font-size: 0.9rem;
     color: #1a5c2e;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background-color: #fdf0f0;
+    border-left: 4px solid #e74c3c;
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: #922b21;
+    margin-bottom: 20px;
+}
+
+.alert-warning {
+    background-color: #fef9e7;
+    border-left: 4px solid #f39c12;
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: #7d6608;
     margin-bottom: 20px;
 }
 
