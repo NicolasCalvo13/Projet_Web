@@ -24,73 +24,83 @@
         </tr>
       </thead>
       <tbody id="wishlist-body">
-        {# placeholders, plus tard tu boucleras sur une liste d’offres favoris #}
+        
+        {% for item in wishlist %}
         <tr>
           <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=1" style="color:#008b8b;">Titre de l'offre</a>
+            <a href="/?uri=offer_detail&id={{ item.offre_id }}" style="color:#008b8b;">{{ item.titre }}</a>
           </td>
           <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=1" style="color:#008b8b;">Nom de l'entreprise</a>
+            {{ item.entreprise_nom }}
           </td>
-          <td data-label="Rémunération">-- €/mois</td>
+          <td data-label="Rémunération">{{ item.remuneration }}</td>
           <td data-label="Compétences"><span class="badge">Compétence</span></td>
           <td data-label="Actions">
-            <a href="/?uri=apply&id=1"
+            <a href="/?uri=apply&id={{ item.offre_id }}"
                class="btn-primary"
                style="padding:7px 14px;font-size:.85rem;">Postuler</a>
+            
+            {# On passe l'ID de la ligne wishlist (item.id) à la fonction JS #}
             <button class="btn-danger"
-                    onclick="removeWishlist(this)"
+                    onclick="removeWishlist(this, {{ item.id }})"
                     aria-label="Retirer de la wish-list"
                     style="padding:7px 14px;font-size:.85rem;">
               ✕ Retirer
             </button>
           </td>
         </tr>
+        {% else %}
+        <tr id="empty-row">
+          <td colspan="5" style="text-align: center; padding: 20px;">
+            Votre wish-list est vide pour le moment.
+          </td>
+        </tr>
+        {% endfor %}
 
-        <tr>
-          <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=2" style="color:#008b8b;">Titre de l'offre</a>
-          </td>
-          <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=2" style="color:#008b8b;">Nom de l'entreprise</a>
-          </td>
-          <td data-label="Rémunération">-- €/mois</td>
-          <td data-label="Compétences"><span class="badge">Compétence</span></td>
-          <td data-label="Actions">
-            <a href="/?uri=apply&id=2"
-               class="btn-primary"
-               style="padding:7px 14px;font-size:.85rem;">Postuler</a>
-            <button class="btn-danger"
-                    onclick="removeWishlist(this)"
-                    aria-label="Retirer de la wish-list"
-                    style="padding:7px 14px;font-size:.85rem;">
-              ✕ Retirer
-            </button>
-          </td>
-        </tr>
       </tbody>
     </table>
 
     <p style="margin-top:16px;font-size:.9rem;color:#777;">
-      Total : <strong id="wishlist-count">--</strong> offre(s) en favoris
+      Total : <strong id="wishlist-count">{{ wishlist|length }}</strong> offre(s) en favoris
     </p>
   </section>
 
   <a href="/?uri=offers" class="btn-secondary">← Voir toutes les offres</a>
 
   <script>
-    function removeWishlist(btn) {
+    function removeWishlist(btn, wishlistId) {
       const row = btn.closest('tr');
       row.style.transition = 'opacity .3s';
       row.style.opacity = '0';
-      setTimeout(() => {
-        row.remove();
-        const remaining = document.querySelectorAll('#wishlist-body tr').length;
-        document.getElementById('wishlist-count').textContent = remaining;
-      }, 300);
-      // TODO backend : appel AJAX DELETE /wishlist/{id}
+
+      // Appel AJAX vers la nouvelle méthode du contrôleur
+      fetch(`/?uri=remove_wishlist&id=${wishlistId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setTimeout(() => {
+            row.remove();
+            
+            // Mise à jour dynamique du compteur
+            const remaining = document.querySelectorAll('#wishlist-body tr:not(#empty-row)').length;
+            document.getElementById('wishlist-count').textContent = remaining;
+
+            // Affichage du message vide si c'était le dernier élément
+            if (remaining === 0) {
+                document.getElementById('wishlist-body').innerHTML = '<tr id="empty-row"><td colspan="5" style="text-align: center; padding: 20px;">Votre wish-list est vide pour le moment.</td></tr>';
+            }
+          }, 300);
+        } else {
+          alert("Erreur: " + data.message);
+          row.style.opacity = '1';
+        }
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+        alert("Impossible de joindre le serveur.");
+        row.style.opacity = '1';
+      });
     }
   </script>
 
 {% endblock %}
-
