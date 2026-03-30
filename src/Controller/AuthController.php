@@ -23,8 +23,8 @@ class AuthController {
             switch ($_SESSION['role']) {
                 case 'admin':
                     header('Location: /?uri=admin_dashboard'); break;
-                case 'pilote':
-                    header('Location: /?uri=pilot_dashboard'); break;
+                case 'entreprise':
+                    header('Location: /?uri=company_dashboard'); break;
                 case 'student':
                     header('Location: /?uri=student_dashboard'); break;
                 default:
