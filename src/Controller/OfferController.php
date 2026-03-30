@@ -65,22 +65,20 @@ class OfferController
 
     public function wishlist(): string
     {
-        // On sécurise en vérifiant que l'utilisateur est bien connecté
-        // J'utilise $_SESSION['user_id'] comme tu l'as fait dans ta méthode show()
+        // On récupère l'ID de l'utilisateur connecté (null s'il ne l'est pas)
         $studentId = $_SESSION['user_id'] ?? null;
+        $mesFavoris = [];
 
-        if ($studentId === null) {
-            // Si non connecté, on peut rediriger vers l'accueil ou la page de connexion
-            header('Location: /?uri=home');
-            exit;
+        // S'il est connecté, on va chercher ses favoris dans la base de données
+        if ($studentId !== null) {
+            $mesFavoris = $this->model->getWishlistByStudent((int) $studentId);
         }
 
-        // On appelle le modèle pour récupérer les offres favorites
-        $mesFavoris = $this->model->getWishlistByStudent((int) $studentId);
-
+        // On rend la vue en lui passant les favoris ET l'identifiant de l'utilisateur
         return $this->twig->render('offers/wishlist.twig.html', [
             'page_title' => 'Wishlist - Stage-Link',
-            'wishlist'   => $mesFavoris
+            'wishlist'   => $mesFavoris,
+            'user_id'    => $studentId // Cette variable va nous servir pour le {% if %}
         ]);
     }
 
