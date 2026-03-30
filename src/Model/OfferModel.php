@@ -10,11 +10,11 @@ class OfferModel
 {
     private PDO $db;
 
-    public function __construct()
+    public function __construct(?PDO $db = null)
     {
-        $this->db = Database::getConnection();
+        $this->db = $db ?? 
+    Database::getConnection();
     }
-
     public function findAll(): array
     {
         $stmt = $this->db->query('

@@ -22,6 +22,7 @@ class ComposerStaticInit09af22a214e618e1f0e2024b3632b771
         'T' => 
         array (
             'Twig\\' => 5,
+            'Tests\\' => 6,
         ),
         'S' => 
         array (
@@ -46,6 +47,10 @@ class ComposerStaticInit09af22a214e618e1f0e2024b3632b771
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Tests\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/tests',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
