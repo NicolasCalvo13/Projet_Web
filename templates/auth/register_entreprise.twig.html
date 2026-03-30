@@ -14,7 +14,7 @@
     <article>
       <h2>Formulaire d'inscription</h2>
 
-      <form action="#" method="post">
+      <form action="/?uri=register_entreprise" method="post">
         <div class="form-row">
           <label for="name">Nom de l'entreprise *</label>
           <input name="name" id="name" type="text" required>
@@ -27,11 +27,16 @@
 
         <div class="form-row">
           <label for="secteur">Secteur *</label>
-          <input name="secteur" id="secteur" type="text" required>
+          <select id="secteur" name="secteur">
+            <option value="" disabled selected>-- Sélectionnez --</option>
+            <option value="informatique">Informatique</option>
+            <option value="btp">BTP</option>
+            <option value="autre">Autre</option>
+          </select>
         </div>
 
         <div class="form-row">
-          <label for="email">Courriel *</label>
+          <label for="email">Email *</label>
           <input name="email" id="email" type="email" required>
         </div>
 

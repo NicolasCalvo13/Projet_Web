@@ -11,8 +11,7 @@
     <article>
       <h2>Formulaire de connexion</h2>
 
-      {# plus tard: action vers la route de traitement du login #}
-      <form method="post" action="/?uri=login_check">
+      <form method="post" action="/?uri=login">
         <div class="form-row">
           <label for="email">Courriel</label>
           <input name="email" id="email" type="email" required>
@@ -27,6 +26,9 @@
           <button type="submit">Connexion</button>
           <input type="reset" value="Effacer">
         </div>
+        {% if error %}
+          <p class="alert alert-error">{{ error }}</p>
+        {% endif %}
         <div class="form-row">
           <p>Pas encore de compte ? &nbsp </p><a href="/?uri=register"> Inscrivez-vous !</a>
         </div>

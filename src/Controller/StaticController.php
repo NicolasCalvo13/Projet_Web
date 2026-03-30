@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Twig\Environment;
+use App\Model\ReviewModel;
 
 class StaticController
 {
@@ -20,6 +21,8 @@ class StaticController
         return $this->twig->render('static/reviews.twig.html', [
             'page_title'       => 'Avis - Stage-Link',
             'meta_description' => 'Déposez un avis.',
+            'entreprises'      => (new \App\Model\ReviewModel())->findEntreprises(),
+            'user'             => $_SESSION['user_id'] ?? null,
         ]);
     }
 

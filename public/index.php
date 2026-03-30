@@ -19,6 +19,8 @@ use App\Controller\ApplicationController;
 use App\Controller\StaticController;
 use App\Controller\CompanyController;
 use App\Controller\UserController;
+use App\Controller\StudentController;
+use App\Controller\PiloteController;
 
 
 
@@ -62,16 +64,21 @@ $router->get('login', function () use ($twig) {
     return $controller->showLoginForm();
 });
 
+// Traitement du login (on l’implémentera plus tard avec la BDD)
+$router->post('login', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->login();
+});
+
 // Page de login entreprise (affichage du formulaire)
 $router->get('login_entreprise', function () use ($twig) {
     $controller = new AuthController($twig);
     return $controller->showLoginEnterpriseForm();
 });
 
-// Traitement du login (on l’implémentera plus tard avec la BDD)
-$router->post('login', function () use ($twig) {
+$router->post('login_entreprise', function () use ($twig) {
     $controller = new AuthController($twig);
-    return $controller->login();
+    return $controller->login_entreprise();
 });
 
 $router->get('offers', function () use ($twig) {
@@ -159,9 +166,19 @@ $router->get('register', function () use ($twig) {
     return $controller->registerForm();
 });
 
+$router->post('register', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->register();
+});
+
 $router->get('register_entreprise', function () use ($twig) {
     $controller = new AuthController($twig);
     return $controller->registerForm_entreprise();
+});
+
+$router->post('register_entreprise', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->register_entreprise();
 });
 
 $router->get('applications', function () use ($twig){
@@ -174,9 +191,29 @@ $router->get('wishlist', function () use ($twig){
     return $controller->wishlist();
 });
 
-$router->get('user_page', function () use ($twig) {
+$router->get('logout', function () use ($twig) {
+    $controller = new AuthController($twig);
+    return $controller->logout();
+});
+
+$router->get('account', function () use ($twig) {
+    $controller = new StudentController($twig);
+    return $controller->account();
+});
+
+$router->get('company_dashboard', function () use ($twig) {
     $controller = new UserController($twig);
-    return $controller->userSettings();
+    return $controller->company_dashboard();
+});
+
+$router->get('admin_dashboard', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->admin_dashboard();
+});
+
+$router->get('student_dashboard', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->student_dashboard();
 });
 
 

@@ -29,9 +29,9 @@ class HomeModel
                 o.description,
                 o.remuneration,
                 e.nom    AS entreprise_nom,
-                e.ville,
+                o.lieu   AS ville,
                 e.secteur,
-                e.logo   AS entreprise_logo
+                e.logo_path   AS entreprise_logo
             FROM offres o
             JOIN entreprises e ON o.entreprise_id = e.id
             ORDER BY o.created_at DESC
@@ -46,4 +46,18 @@ class HomeModel
         $stmt = $this->pdo->query('SELECT COUNT(*) FROM offres');
         return (int) $stmt->fetchColumn();
     }
+
+    public function countAllEntreprises(): int
+    {
+        $stmt = $this->pdo->query('SELECT COUNT(*) FROM entreprises');
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function countAllSectors(): int
+    {
+        $stmt = $this->pdo->query('SELECT COUNT(DISTINCT secteur) FROM entreprises');
+        return (int) $stmt->fetchColumn();
+    }
+
+    
 }

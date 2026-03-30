@@ -36,10 +36,11 @@
         </button>
     </div>
 </section>
-
-<div class="alert-info" role="note">
-    Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
-</div>
+{%if not user %}
+    <div class="alert-info" role="note">
+        Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
+    </div>
+{% endif %}
 
 <article class="section-card">
     <h2>Description du stage</h2>
