@@ -28,6 +28,8 @@ class HomeController
             'page_title' => 'Accueil – Stages-Link',
             'offers'     => $offers,
             'total_offers' => $totalOffers,
+            'total_companies' => $this->model->countAllEntreprises(),
+            'total_sectors' => $this->model->countAllSectors(),
         ]);
     }
 }
