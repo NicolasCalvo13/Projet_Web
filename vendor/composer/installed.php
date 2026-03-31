@@ -3,7 +3,7 @@
         'name' => 'cesi/projet-stages',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '43129935d8e3f27af4d227ecfc2fa9c0add518b1',
+        'reference' => '39c131cc425b55235ae0f1cedefa1c368d22d495',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'cesi/projet-stages' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '43129935d8e3f27af4d227ecfc2fa9c0add518b1',
+            'reference' => '39c131cc425b55235ae0f1cedefa1c368d22d495',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -10,9 +10,10 @@ class OfferModel
 {
     private PDO $db;
 
-    public function __construct()
+    public function __construct(?PDO $db = null)
     {
-        $this->db = Database::getConnection();
+        $this->db = $db ?? 
+    Database::getConnection();
     }
 
     /**
@@ -158,5 +159,40 @@ class OfferModel
         }
 
         return false;
+    }
+}
+    public function getWishlistByStudent(int $studentId): array
+    {
+        // On fait une double jointure : 
+        // 1. Pour lier la wishlist à l'offre
+        // 2. Pour lier l'offre à l'entreprise et récupérer son nom
+        $stmt = $this->db->prepare('
+            SELECT w.id, w.offre_id, o.titre, o.remuneration, e.nom AS entreprise_nom
+            FROM wishlist w
+            JOIN offres o ON w.offre_id = o.id
+            LEFT JOIN entreprises e ON o.entreprise_id = e.id
+            WHERE w.student_id = :student_id
+        ');
+        
+        $stmt->execute(['student_id' => $studentId]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Supprime une offre de la wishlist
+     */
+    public function deleteFromWishlist(int $wishlistId, int $studentId): bool
+    {
+        // On supprime la ligne en vérifiant l'ID de la wishlist ET l'ID de l'étudiant
+        $stmt = $this->db->prepare('
+            DELETE FROM wishlist 
+            WHERE id = :id AND student_id = :student_id
+        ');
+        
+        return $stmt->execute([
+            'id' => $wishlistId,
+            'student_id' => $studentId
+        ]);
     }
 }

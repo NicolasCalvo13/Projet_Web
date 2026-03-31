@@ -11,86 +11,108 @@
 
   <h1 style="color:#007575;">Ma wish-list ♡</h1>
 
-  <section class="section-card">
-    <h2>Offres sauvegardées</h2>
-    <table class="table-list" aria-label="Ma wish-list">
-      <thead>
-        <tr>
-          <th>Offre</th>
-          <th>Entreprise</th>
-          <th>Rémunération</th>
-          <th>Compétences</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="wishlist-body">
-        {# placeholders, plus tard tu boucleras sur une liste d’offres favoris #}
-        <tr>
-          <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=1" style="color:#008b8b;">Titre de l'offre</a>
-          </td>
-          <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=1" style="color:#008b8b;">Nom de l'entreprise</a>
-          </td>
-          <td data-label="Rémunération">-- €/mois</td>
-          <td data-label="Compétences"><span class="badge">Compétence</span></td>
-          <td data-label="Actions">
-            <a href="/?uri=apply&id=1"
-               class="btn-primary"
-               style="padding:7px 14px;font-size:.85rem;">Postuler</a>
-            <button class="btn-danger"
-                    onclick="removeWishlist(this)"
-                    aria-label="Retirer de la wish-list"
-                    style="padding:7px 14px;font-size:.85rem;">
-              ✕ Retirer
-            </button>
-          </td>
-        </tr>
+  {# On vérifie si l'utilisateur est connecté grâce à la variable envoyée par le contrôleur #}
+  {% if user_id %}
+    
+    <section class="section-card">
+      <h2>Offres sauvegardées</h2>
+      <table class="table-list" aria-label="Ma wish-list">
+        <thead>
+          <tr>
+            <th>Offre</th>
+            <th>Entreprise</th>
+            <th>Rémunération</th>
+            <th>Compétences</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="wishlist-body">
+          
+          {% for item in wishlist %}
+          <tr>
+            <td data-label="Offre">
+              <a href="/?uri=offer_detail&id={{ item.offre_id }}" style="color:#008b8b;">{{ item.titre }}</a>
+            </td>
+            <td data-label="Entreprise">
+              {{ item.entreprise_nom }}
+            </td>
+            <td data-label="Rémunération">{{ item.remuneration }}</td>
+            <td data-label="Compétences"><span class="badge">Compétence</span></td>
+            <td data-label="Actions">
+              <a href="/?uri=apply&id={{ item.offre_id }}"
+                 class="btn-primary"
+                 style="padding:7px 14px;font-size:.85rem;">Postuler</a>
+              
+              <button class="btn-danger"
+                      onclick="removeWishlist(this, {{ item.id }})"
+                      aria-label="Retirer de la wish-list"
+                      style="padding:7px 14px;font-size:.85rem;">
+                ✕ Retirer
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr id="empty-row">
+            <td colspan="5" style="text-align: center; padding: 20px;">
+              Votre wish-list est vide pour le moment.
+            </td>
+          </tr>
+          {% endfor %}
 
-        <tr>
-          <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=2" style="color:#008b8b;">Titre de l'offre</a>
-          </td>
-          <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=2" style="color:#008b8b;">Nom de l'entreprise</a>
-          </td>
-          <td data-label="Rémunération">-- €/mois</td>
-          <td data-label="Compétences"><span class="badge">Compétence</span></td>
-          <td data-label="Actions">
-            <a href="/?uri=apply&id=2"
-               class="btn-primary"
-               style="padding:7px 14px;font-size:.85rem;">Postuler</a>
-            <button class="btn-danger"
-                    onclick="removeWishlist(this)"
-                    aria-label="Retirer de la wish-list"
-                    style="padding:7px 14px;font-size:.85rem;">
-              ✕ Retirer
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
 
-    <p style="margin-top:16px;font-size:.9rem;color:#777;">
-      Total : <strong id="wishlist-count">--</strong> offre(s) en favoris
-    </p>
-  </section>
+      <p style="margin-top:16px;font-size:.9rem;color:#777;">
+        Total : <strong id="wishlist-count">{{ wishlist|length }}</strong> offre(s) en favoris
+      </p>
+    </section>
 
-  <a href="/?uri=offers" class="btn-secondary">← Voir toutes les offres</a>
+  {% else %}
+    
+    {# Si l'utilisateur n'est pas connecté, on affiche ce message à la place de la section #}
+    <section class="section-card" style="text-align: center; padding: 40px;">
+      <p class="alert alert-info" style="font-size: 1.1rem;">
+        Vous devez être <a href="/?uri=login" style="color:#008b8b; font-weight:bold; text-decoration:underline;">connecté</a> pour voir et gérer votre wish-list.
+      </p>
+    </section>
 
+  {% endif %}
+
+  <a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Voir toutes les offres</a>
+
+  {# Le script JS ne sert que si l'utilisateur est connecté, on peut le laisser ici sans problème #}
   <script>
-    function removeWishlist(btn) {
+    function removeWishlist(btn, wishlistId) {
       const row = btn.closest('tr');
       row.style.transition = 'opacity .3s';
       row.style.opacity = '0';
-      setTimeout(() => {
-        row.remove();
-        const remaining = document.querySelectorAll('#wishlist-body tr').length;
-        document.getElementById('wishlist-count').textContent = remaining;
-      }, 300);
-      // TODO backend : appel AJAX DELETE /wishlist/{id}
+
+      fetch(`/?uri=remove_wishlist&id=${wishlistId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setTimeout(() => {
+            row.remove();
+            
+            const remaining = document.querySelectorAll('#wishlist-body tr:not(#empty-row)').length;
+            const countElement = document.getElementById('wishlist-count');
+            if(countElement) countElement.textContent = remaining;
+
+            if (remaining === 0) {
+                document.getElementById('wishlist-body').innerHTML = '<tr id="empty-row"><td colspan="5" style="text-align: center; padding: 20px;">Votre wish-list est vide pour le moment.</td></tr>';
+            }
+          }, 300);
+        } else {
+          alert("Erreur: " + data.message);
+          row.style.opacity = '1';
+        }
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+        alert("Impossible de joindre le serveur.");
+        row.style.opacity = '1';
+      });
     }
   </script>
 
 {% endblock %}
-
