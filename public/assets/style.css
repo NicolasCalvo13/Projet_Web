@@ -133,6 +133,67 @@ main {
     z-index: 1000;
 }
 
+/* Conteneur principal aligné à droite */
+.header-search {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    margin: 0 20px;
+}
+
+/* On stylise le formulaire COMME SI c'était la barre de recherche complète */
+.header-search form {
+    display: flex;
+    align-items: stretch;
+    /* Pour que le bouton prenne toute la hauteur */
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: 2px solid #008b8b;
+    border-radius: 25px;
+    /* L'arrondi global de la pilule */
+    width: 100%;
+    max-width: 350px;
+    overflow: hidden;
+    /* MAGIQUE : coupe le bouton pour qu'il suive l'arrondi ! */
+}
+
+/* Effet quand on clique dans la barre */
+.header-search form:focus-within {
+    box-shadow: 0 0 8px rgba(0, 139, 139, 0.4);
+}
+
+/* L'input devient transparent et sans bordure */
+.header-search input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    outline: none;
+    /* Enlève la bordure bleue moche par défaut du navigateur */
+}
+
+/* Le bouton de recherche */
+.header-search button {
+    background-color: #A2E9EB;
+    /* Ton bleu clair de la DA */
+    border: none;
+    border-left: 1px solid #008b8b;
+    /* Petite séparation esthétique */
+    color: #008b8b;
+    padding: 0 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.2s;
+    border-radius: 0;
+    /* Pas besoin d'arrondi, le form s'en charge */
+}
+
+.header-search button:hover {
+    background-color: #afeeee;
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -629,7 +690,7 @@ textarea {
     gap: 20px;
 }
 
-.apropos-content > article {
+.apropos-content>article {
     flex: 1 1 45%;
     box-sizing: border-box;
     border: 2px solid paleturquoise;
@@ -638,7 +699,7 @@ textarea {
     border-radius: 8px;
 }
 
-.apropos-content > article:nth-child(3) {
+.apropos-content>article:nth-child(3) {
     flex: 1 1 100%;
 }
 
@@ -1108,7 +1169,7 @@ textarea {
     margin-top: 10px;
     flex-wrap: wrap;
 }
-   
+
 .dashboard-stats {
     display: flex;
     gap: 20px;
@@ -1162,6 +1223,7 @@ textarea {
    RESPONSIVE — Mobile (≤ 768px)
    ============================================================ */
 @media (max-width: 768px) {
+
     /* Ajustement des espacements globaux pour gagner de la place */
     main {
         padding: 10px;
@@ -1198,7 +1260,7 @@ textarea {
     }
 
     /* Révéler la navbar quand la checkbox est cochée */
-    #menu-toggle:checked ~ .navbar {
+    #menu-toggle:checked~.navbar {
         display: flex;
     }
 
@@ -1219,7 +1281,7 @@ textarea {
         width: 100%;
     }
 
-    .apropos-content > article {
+    .apropos-content>article {
         flex: 1 1 100%;
     }
 
@@ -1248,10 +1310,10 @@ textarea {
     }
 
     /* Boutons en pleine largeur sur mobile pour être plus faciles à toucher */
-    input[type="submit"], 
-    button[type="submit"], 
-    input[type="reset"], 
-    .btn-primary, 
+    input[type="submit"],
+    button[type="submit"],
+    input[type="reset"],
+    .btn-primary,
     .btn-secondary {
         width: 100%;
         margin-left: 0;
@@ -1338,5 +1400,24 @@ textarea {
 
     .offers-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Ajustements de la barre de recherche sur mobile */
+    .header-style {
+        flex-wrap: wrap;
+        /* Permet aux éléments de passer à la ligne */
+        gap: 15px;
+    }
+
+    .header-search {
+        order: 3;
+        /* Place la barre en bas */
+        margin: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-search form {
+        max-width: 100%;
     }
 }
