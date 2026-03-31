@@ -29,6 +29,8 @@ class UserController
             'candidatures'  => $this->userModel->getRecentCandidatures($studentId, 2),
             'wishlist'      => $this->userModel->getRecentWishlist($studentId, 2),
             'stats'         => $this->userModel->getStudentStats($studentId),
+            'success'      => isset($_GET['success']),
+            'error'   => isset($_GET['error']),
         ]);
     }
 
@@ -56,7 +58,55 @@ class UserController
             'stats'        => $stats,
             'offres'       => $offres,
             'candidatures' => $candidatures,
+            'entreprise'   => $this->userModel->getEntrepriseInfo($companyId),
+            'success'      => isset($_GET['success']),
+            'error'   => isset($_GET['error']),
         ]);
+    }
+
+
+    public function editStudent(): string
+    {
+        $student = $this->userModel->findById($_SESSION['user_id']); // ✅ décommenté
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom        = trim($_POST['nom'] ?? '');
+            $prenom     = trim($_POST['prenom'] ?? '');
+            $email      = trim($_POST['email'] ?? '');
+            $telephone  = trim($_POST['telephone'] ?? '');
+            $ecole      = trim($_POST['ecole'] ?? '');
+            $formation  = trim($_POST['formation'] ?? '');
+
+            $photo = $student['photo'];
+            if (!empty($_FILES['photo']['name'])) {
+                $photo = 'assets/images/photos/' . basename($_FILES['photo']['name']);
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photo);
+            }
+
+            $cv = $student['cv_path'];
+            if (!empty($_FILES['cv']['name'])) {
+                $cv = 'assets/images/cv/' . basename($_FILES['cv']['name']);
+                move_uploaded_file($_FILES['cv']['tmp_name'], $cv);
+            }
+
+            $this->userModel->updateStudent(
+                $_SESSION['user_id'],
+                $nom, $prenom, $email, $telephone, $ecole, $formation, $photo, $cv
+            );
+
+            header('Location: /?uri=student_dashboard&success=1');
+            exit;
+        }
+
+        try {
+            return $this->twig->render('auth/edit_profile.twig.html', [
+                'student' => $student,
+                'success' => isset($_GET['success']),
+                'error'   => null, 
+            ]);
+        } catch (\Exception $e) {
+            return '<pre>' . $e->getMessage() . '</pre>';
+        }
     }
 
 
