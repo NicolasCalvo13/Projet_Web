@@ -39,14 +39,16 @@ class UserModel {
             $stmt->execute([':email' => $email, ':password' => $hash]);
             $userId = $this->pdo->lastInsertId();
 
-            $stmt2 = $this->pdo->prepare("INSERT INTO entreprises (user_id, nom, siret, secteur) VALUES (:user_id, :nom, :siret, :secteur)");
-            $stmt2->execute([':user_id' => $userId, ':nom' => $name, ':siret' => $siret, ':secteur' => $secteur]);
+            $logo_path = "/assets/logos/" . strtolower(str_replace(' ', '', $name)) . ".svg";
+
+            $stmt2 = $this->pdo->prepare("INSERT INTO entreprises (user_id, nom, siret, secteur, logo_path) VALUES (:user_id, :nom, :siret, :secteur, :logo_path)");
+            $stmt2->execute([':user_id' => $userId, ':nom' => $name, ':siret' => $siret, ':secteur' => $secteur, ':logo_path' => $logo_path]);
 
             $this->pdo->commit();
             return true;
         } catch (Exception $e) {
             $this->pdo->rollBack();
-            return false;
+            return false; 
         }
     }
 
@@ -87,7 +89,7 @@ class UserModel {
 
     public function findById(int $id): ?array {
         $stmt = $this->pdo->prepare("
-            SELECT u.*, s.id AS student_id, s.nom, s.prenom, s.gender, s.ecole, s.formation, s.cv_path, s.photo
+            SELECT u.*, s.id AS student_id, s.nom, s.prenom, s.gender, s.ecole, s.formation, s.cv_path, s.photo, s.telephone
             FROM utilisateurs u
             LEFT JOIN student s ON s.user_id = u.id
             WHERE u.id = :id
@@ -197,14 +199,20 @@ class UserModel {
     public function getRecentCompanyOffers(int $companyId): ?array
 {
     $stmt = $this->pdo->prepare("
-        SELECT *
-        FROM offres
-        WHERE entreprise_id = :id
-        ORDER BY created_at DESC
-        LIMIT 1
+        SELECT 
+            o.*,
+            e.nom       AS entreprise_nom,
+            e.secteur   AS entreprise_secteur,
+            e.taille    AS entreprise_taille,
+            e.logo_path AS entreprise_logo
+        FROM offres o
+        JOIN entreprises e ON o.entreprise_id = e.id
+        WHERE o.entreprise_id = :id
+        ORDER BY o.created_at DESC
+        LIMIT 5;
     ");
     $stmt->execute([':id' => $companyId]);
-    $offer = $stmt->fetch(\PDO::FETCH_ASSOC);
+    $offer = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     return $offer ?: null;
 }
@@ -232,6 +240,38 @@ class UserModel {
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getEntrepriseInfo(int $entrepriseId): ?array
+    {
+        $sql = "
+            SELECT 
+                e.nom,
+                e.secteur,
+                u.email,
+                e.telephone
+            FROM entreprises e
+            JOIN utilisateurs u ON e.user_id = u.id
+            WHERE e.id = :id
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $entrepriseId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    public function updateStudent(int $id, string $nom, string $prenom, string $email, string $telephone, string $ecole, string $formation, string $photo, string $cv): void
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE student s
+            JOIN utilisateurs u ON u.id = s.user_id
+            SET s.nom = ?, s.prenom = ?, s.telephone = ?, s.ecole = ?, s.formation = ?, s.photo = ?, s.cv_path = ?,
+                u.email = ?
+            WHERE u.id = ?
+        ");
+        $stmt->execute([$nom, $prenom, $telephone, $ecole, $formation, $photo, $cv, $email, $id]);
     }
 
 }

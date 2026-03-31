@@ -69,4 +69,50 @@ class OfferController
             'page_title' => 'Wishlist - Stage-Link',
         ]);
     }
+
+    public function createOfferForm(): string {
+        return $this->twig->render('offers/create_offer.twig.html', [
+            'page_title' => 'Créer une offre - Stage-Link',
+            'meta_description' => 'Publiez une nouvelle offre de stage.',
+        ]);
+    }
+
+    public function createOffer()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $errors = [];
+            $old    = $_POST;
+
+            if (empty($_POST['titre']))       $errors['titre'] = "Le titre est obligatoire.";
+            if (empty($_POST['ville']))       $errors['ville'] = "La ville est obligatoire.";
+            if (empty($_POST['description'])) $errors['description'] = "La description est obligatoire.";
+
+            if (empty($errors)) {
+                $entrepriseId = $_SESSION['entreprise_id']; // adapte selon ton système
+
+                // ICI on appelle le modèle, pas $this->db
+                $offerId = $this->model->createOffer($_POST, $entrepriseId);
+
+                if ($offerId !== false) {
+                    header('Location: /?uri=offer_detail&id=' . $offerId);
+                    exit;
+                }
+
+                $flash = [
+                    'type'    => 'danger',
+                    'message' => "Une erreur est survenue lors de l'enregistrement de l'offre."
+                ];
+            }
+
+            echo $this->twig->render('create_offer.twig.html', [
+                'errors' => $errors,
+                'old'    => $old,
+                'flash'  => $flash ?? null,
+            ]);
+            return;
+        }
+
+        echo $this->twig->render('create_offer.twig.html');
+    }
 }

@@ -1,21 +1,28 @@
-{% extends "base.twig.html" %}
+{% extends 'base.twig.html' %}
 
 {% block title %}Tableau de bord - Stage-Link{% endblock %}
 
 {% block body %}
 <section class="dashboard">
 
-    {# === HEADER BIENVENUE === #}
+    {% if success %}
+        <div class="alert alert-success">✅ Profil mis à jour avec succès !</div>
+    {% endif %}
+    {% if error %}
+        <div class="alert alert-error">❌ Une erreur est survenue, vos modifications n'ont pas été enregistrées.</div>
+    {% endif %}
+
+    {# HEADER BIENVENUE #}
     <div class="dashboard-header">
         <h1>Bonjour, {{ user.prenom }} 👋</h1>
         <p>Bienvenue sur votre espace étudiant Stage-Link</p>
     </div>
 
-    {# === STATS RAPIDES === #}
+    {# STATS RAPIDES #}
     <div class="dashboard-stats">
         <div class="stat-card">
             <span class="stat-number">{{ stats.total_candidatures }}</span>
-            <span class="stat-label">Candidature(s)</span>
+            <span class="stat-label">Candidatures</span>
         </div>
         <div class="stat-card">
             <span class="stat-number">{{ stats.total_wishlist }}</span>
@@ -25,88 +32,138 @@
 
     <div class="dashboard-grid">
 
-        {# === MES CANDIDATURES (2 dernières) === #}
+        {# MES CANDIDATURES #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mes candidatures</h2>
-                <a href="/?uri=applications" class="btn-link">Voir tout →</a>
+                <a href="?uri=applications" class="btn-link">Voir tout →</a>
             </div>
-
             {% if candidatures is empty %}
                 <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
-                <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
+                <a href="?uri=offers" class="btn btn-primary">Parcourir les offres</a>
             {% else %}
                 <ul class="candidature-list">
                     {% for c in candidatures %}
-                    <li class="candidature-item">
-                        <div class="candidature-info">
-                            <strong>{{ c.titre }}</strong>
-                            <span class="company">{{ c.entreprise_nom }}</span>
-                            <span class="location">📍 {{ c.ville }}</span>
-                        </div>
-                        <span class="badge badge-{{ c.statut }}">
-                            {% if c.statut == 'en_attente' %}En attente
-                            {% elseif c.statut == 'acceptee' %}Acceptée ✅
-                            {% elseif c.statut == 'refusee' %}Refusée ❌
-                            {% endif %}
-                        </span>
-                    </li>
+                        <li class="candidature-item">
+                            <div class="candidature-info">
+                                <strong>{{ c.titre }}</strong>
+                                <span class="company">{{ c.entreprise_nom }}</span>
+                                <span class="location">📍 {{ c.ville }}</span>
+                            </div>
+                            <span class="badge badge-{{ c.statut }}">
+                                {% if c.statut == 'en_attente' %}En attente
+                                {% elseif c.statut == 'acceptee' %}Acceptée
+                                {% elseif c.statut == 'refusee' %}Refusée
+                                {% endif %}
+                            </span>
+                        </li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </article>
 
-        {# === MES FAVORIS (2 derniers) === #}
+        {# MES FAVORIS #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mes favoris</h2>
-                <a href="/?uri=wishlist" class="btn-link">Voir tout →</a>
+                <a href="?uri=wishlist" class="btn-link">Voir tout →</a>
             </div>
-
             {% if wishlist is empty %}
                 <p class="empty-state">Aucune offre en favoris pour l'instant.</p>
             {% else %}
                 <ul class="wishlist-list">
                     {% for w in wishlist %}
-                    <li class="wishlist-item">
-                        <div>
-                            <strong>{{ w.titre }}</strong>
-                            <span class="company">{{ w.entreprise_nom }}</span>
-                        </div>
-                        <a href="/?uri=offer_detail&id={{ w.id }}" class="btn btn-sm">Voir</a>
-                    </li>
+                        <li class="wishlist-item">
+                            <div>
+                                <strong>{{ w.titre }}</strong>
+                                <span class="company">{{ w.entreprise_nom }}</span>
+                            </div>
+                            <a href="?uri=offer&detail&id={{ w.id }}" class="btn btn-sm">Voir</a>
+                        </li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </article>
 
-        {# === MON PROFIL === #}
+        {# MON PROFIL #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mon profil</h2>
             </div>
-            <div class="profil-info">
-                <p><strong>Nom :</strong> {{ user.prenom }} {{ user.nom }}</p>
-                <p><strong>Email :</strong> {{ user.email }}</p>
+        
+            <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            
+                {# COLONNE GAUCHE : photo + infos #}
+                <div style="flex: 1;">
+                
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        {% if user.photo %}
+                            <img src="{{ user.photo }}"
+                                 alt="Photo de profil"
+                                 style="width: 90px; height: 90px; border-radius: 50%;
+                                        object-fit: cover; border: 3px solid #e0e0e0;">
+                        {% else %}
+                            <div style="width: 90px; height: 90px; border-radius: 50%;
+                                        background: #e0e0e0; display: flex;
+                                        align-items: center; justify-content: center;
+                                        font-size: 2rem; margin: 0 auto;">
+                                
+                            </div>
+                        {% endif %}
+                    </div>
+                
+                    <p><strong>{{ user.prenom }} {{ user.nom }}</strong></p>
+                    <p>{{ user.email }}</p>
+                    <p>{{ user.telephone }}</p>
+                    <p>{{ user.formation }}</p>
+                    <p>{{ user.ecole }}</p>
+                
+                </div>
+            
+                {# COLONNE DROITE : aperçu CV #}
+                {% if user.cv_path %}
+                    <div style="flex-shrink: 0;">
+                        <p style="margin-bottom: 0.4rem; font-weight: 600; text-align: center;"> Mon CV</p>
+                        <div style="width: 300px; height: 424px; overflow: hidden;
+                                    border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <iframe src="{{ user.cv_path }}#toolbar=0&navpanes=0&scrollbar=0"
+                                    style="width: 794px; height: 1123px;
+                                           transform: scale(0.378);
+                                           transform-origin: top left;
+                                           pointer-events: none;
+                                           border: none;">
+                            </iframe>
+                        </div>
+                    </div>
+                {% endif %}
+                
             </div>
-            <a href="/?uri=account" class="btn btn-secondary">✏️ Modifier mes informations</a>
+        
+            <a href="?uri=edit_profile" class="btn btn-secondary" style="margin-top: 1rem; display: inline-block;">
+                Modifier mes informations
+            </a>
         </article>
 
-        {# === ACTIONS RAPIDES === #}
+        {# ACTIONS RAPIDES #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Actions rapides</h2>
             </div>
             <div class="quick-actions">
-                <a href="/?uri=offers"     class="btn btn-primary">🔍 Chercher un stage</a>
-                <a href="/?uri=it_offers"  class="btn btn-primary">💻 Offres informatique</a>
-                <a href="/?uri=btp_offers" class="btn btn-primary">🏗️ Offres BTP</a>
-                <a href="/?uri=reviews"    class="btn btn-primary">⭐ Voir les avis</a>
+                <a href="?uri=offers"    class="btn btn-primary">Chercher un stage</a>
+                <a href="?uri=itoffers"  class="btn btn-primary">Offres informatiques</a>
+                <a href="?uri=btpoffers" class="btn btn-primary">Offres BTP</a>
+                <a href="?uri=reviews"   class="btn btn-primary">Voir les avis</a>
             </div>
         </article>
+
     </div>
+
+    <div>
+        <a href="?uri=logout" class="btn btn-danger">Déconnexion</a>
+    </div>
+
 </section>
-<div>
-    <a href="/?uri=logout" class="btn btn-danger">Déconnexion</a>
-</div>
+
+<script src="../assets/js/alerts.js"></script>
 {% endblock %}

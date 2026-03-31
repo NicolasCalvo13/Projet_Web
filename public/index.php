@@ -216,6 +216,26 @@ $router->get('student_dashboard', function () use ($twig) {
     return $controller->student_dashboard();
 });
 
+$router->get('create_offer', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->createOfferForm();
+});
+
+$router->post('create_offer', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->createOffer();
+});
+
+$router->get('edit_profile', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->editStudent();
+});
+
+$router->post('edit_profile', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->editStudent();
+});
+
 
 // 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
 $uri    = $_GET['uri'] ?? 'home';

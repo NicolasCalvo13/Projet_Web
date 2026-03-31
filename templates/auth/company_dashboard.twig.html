@@ -7,8 +7,8 @@
 
     {# === HEADER BIENVENUE === #}
     <div class="dashboard-header">
-        <h1>Bonjour, {{ company.nom }} 👋</h1>
-        <p>Bienvenue sur votre espace entreprise Stage-Link</p>
+        <h1>Bonjour, {{ company.name }} 👋</h1>
+        <p>Bienvenue sur votre espace entreprise Stage-Link</p> 
     </div>
 
     {# === STATS RAPIDES === #}
@@ -35,33 +35,48 @@
                 <h2>Mes offres</h2>
                 <div>
                     <a href="/?uri=company_offers" class="btn-link">Voir toutes les offres →</a>
-                    <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une offre</a>
                 </div>
             </div>
 
-            {% if offres is empty %}
-                <p class="empty-state">Vous n'avez pas encore publié d'offre.</p>
-                <a href="/?uri=create_offer" class="btn btn-primary">Publier ma première offre</a>
-            {% else %}
-                <ul class="offer-list">
-                    {% for o in offres %}
-                    <li class="offer-item">
-                        <div class="offer-info">
-                            <strong>{{ o.titre }}</strong>
-                            <span class="location">📍 {{ o.ville }}</span>
-                            <span class="meta">
-                                Publiée le {{ o.date_publication|date("d/m/Y") }}
-                                • {{ o.nb_candidatures }} candidature(s)
-                            </span>
+        {% if offres is empty %}
+            <p class="empty-state">Vous n'avez pas encore publié d'offre.</p>
+            <a href="/?uri=create_offer" class="btn btn-primary">Publier ma première offre</a>
+        {% else %}
+        <div class="offers-grid">
+            <ul class="offer-list">
+                {% for offre in offres %}
+                <article class="offer-card" aria-label="{{ offre.titre }}">
+                    <div class="offer-card-header">
+                        <img
+                            src="{{ offre.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                            alt="{{ offre.entreprise_nom }}"
+                            class="offer-card-logo"
+                            width="48"
+                        >
+                        <div>
+                            <h3 class="offer-card-title">{{ offre.titre }}</h3>
+                            <span class="offer-card-company">{{ offre.entreprise_nom }}</span>
                         </div>
-                        <div class="offer-actions">
-                            <a href="/?uri=offer_detail&id={{ o.id }}" class="btn btn-sm">Voir</a>
-                            <a href="/?uri=edit_offer&id={{ o.id }}" class="btn btn-sm btn-secondary">Modifier</a>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                    </div>
+                    <div class="offer-meta">
+                        <span class="badge">{{ offre.lieu }}</span>
+                        <span class="badge">{{ offre.entreprise_secteur }}</span>
+                        <span class="badge">{{ offre.remuneration }}€ / mois</span>
+                    </div>
+                    <p class="offer-card-excerpt">
+                        {{ (offre.description|striptags)|slice(0, 120) }}…
+                    </p>
+                    <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-primary offer-card-btn">
+                        Voir l'offre
+                    </a>
+                </article>
+            {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une offre</a>
+        </div>
+        {% endif %}
         </article>
 
         {# === CANDIDATURES RECUES (dernières) === #}
@@ -103,11 +118,10 @@
                 <h2>Mon profil entreprise</h2>
             </div>
             <div class="profil-info">
-                <p><strong>Raison sociale :</strong> {{ company.nom }}</p>
-                <p><strong>Secteur :</strong> {{ company.secteur }}</p>
-                <p><strong>Ville :</strong> {{ company.ville }}</p>
-                <p><strong>Email :</strong> {{ company.email }}</p>
-                <p><strong>Téléphone :</strong> {{ company.telephone }}</p>
+                <p>Raison sociale : {{ entreprise.nom }}</p>
+                <p>Secteur : {{ entreprise.secteur }}</p>
+                <p>Email : {{ entreprise.email }}</p>
+                <p>Téléphone : {{ entreprise.telephone }}</p>
             </div>
             <a href="/?uri=company_account" class="btn btn-secondary">✏️ Modifier les informations</a>
         </article>
