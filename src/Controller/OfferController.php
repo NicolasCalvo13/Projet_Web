@@ -57,9 +57,9 @@ class OfferController
             return 'Offre introuvable';
         }
         return $this->twig->render('offers/detail.twig.html', [
-            'page_title' => $offer['titre'],
-            'offer' => $offer,
-            'user'       => $_SESSION['user_id'] ?? null,
+            'page_title'    => $offer['titre'],
+            'offer'         => $offer,
+            'user'          => $_SESSION['user_id'] ?? null,
         ]);
     }
 

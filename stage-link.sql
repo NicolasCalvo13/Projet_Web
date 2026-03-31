@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 30 mars 2026 à 12:30
+-- Généré le : mar. 31 mars 2026 à 14:16
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -64,15 +64,16 @@ CREATE TABLE `entreprises` (
   `secteur` varchar(100) DEFAULT NULL,
   `taille` enum('1-10','11-50','51-200','200+') DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `logo_path` varchar(255) DEFAULT NULL
+  `logo_path` varchar(255) DEFAULT NULL,
+  `telephone` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `entreprises`
 --
 
-INSERT INTO `entreprises` (`id`, `user_id`, `nom`, `siret`, `secteur`, `taille`, `description`, `logo_path`) VALUES
-(1, 4, 'Sopra Steria', '326 820 065 00', 'informatique', NULL, NULL, NULL);
+INSERT INTO `entreprises` (`id`, `user_id`, `nom`, `siret`, `secteur`, `taille`, `description`, `logo_path`, `telephone`) VALUES
+(1, 4, 'Sopra Steria', '326 820 065 00', 'informatique', NULL, NULL, '/assets/images/logos/soprasteria.svg', '0912345678');
 
 -- --------------------------------------------------------
 
@@ -92,6 +93,13 @@ CREATE TABLE `offres` (
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `offres`
+--
+
+INSERT INTO `offres` (`id`, `entreprise_id`, `titre`, `description`, `lieu`, `duree`, `remuneration`, `date_debut`, `created_at`) VALUES
+(1, 1, 'Stage - Développeur/euse Java - Aix-en-Provence', 'Sopra Steria, acteur majeur de la Tech en Europe, avec 50 000 collaborateurs dans près de 30 pays, est reconnu pour ses activités de conseil, de services et solutions numériques. Il aide ses clients à mener leur transformation digitale et à obtenir des bénéfices concrets et durables. Le Groupe apporte une réponse globale aux enjeux de compétitivité des grandes entreprises et organisations, en combinant une connaissance approfondie des secteurs d’activité et des technologies à une approche collaborative.\r\n\r\nSopra Steria place l’humain au cœur de son action et s’engage auprès de ses clients à tirer le meilleur parti du numérique pour construire un avenir positif. En 2024, le Groupe a réalisé un chiffre d’affaires de 5,8 milliards d’euros.\r\n\r\nThe world is how we shape it*\r\nLe monde est tel que nous le façonnons\r\n\r\nDescription du poste\r\n\r\nIntéressé/e par la transformation digitale et les innovations technologiques ?\r\n\r\nVoici 4 bonnes raisons de rejoindre la région Sud-Est :\r\n\r\nUne variété de projets pour des entreprises locales et des grands groupes dans des secteurs divers : énergie, télécoms, transports, industrie, tertiaire, aéronautique, santé, services publics, défense\r\nDes postes diversifiés en intégration sur des domaines innovants : Cloud, Big Data, IA, SAP\r\nUn accompagnement RH, une proximité managériale et des perspectives de carrière\r\nDes équipes dynamiques à taille humaine et des communautés métier aux compétences variées.\r\nPar exemple, nous vous proposons de prendre part à l’initiative Tech’me UP qui a pour but de valoriser les filières techniques chez Sopra Steria.\r\n\r\nLes axes principaux sont les suivants :\r\n\r\nExcellence Tech : développer les compétences par du craftsmanship et de l’algorithmie, améliorer les environnements de développement pour répondre aux enjeux de time-to-market et de qualité ;\r\nImage Tech : préparation et répétition de talk en interne et en externe, conférences et rédaction de billets tech ;\r\nDéveloppement humain : permettre à chaque développeur/euse et architecte de trouver sa voie d’évolution jusqu’au plus haut niveau et mettre en lumière les compétences des expert/es !\r\nVotre rôle et vos missions :\r\n\r\nPour le compte d\'un client majeur, Sopra Steria assure une double mission dans le cadre de la gestion d\'une partie du système d\'information : maintenance corrective et évolutive et conduite de projets de développement.\r\n\r\nDans le cadre de votre alternance, vous êtes accueilli/e dans les locaux Sopra Steria au sein d\'une équipe de conception et développement et différentes responsabilités vous sont confiées :\r\n\r\nAnalyser fonctionnellement et/ou techniquement les besoins clients\r\nConcevoir, développer et tester des composants logiciels\r\nRédiger et exécuter des plans de tests de qualification et d\'intégration\r\nParticiper activement aux différentes cérémonies agiles du projet\r\nÊtre acteur/trice d\'un collectif dynamique et convivial\r\nEnvironnement technologique/fonctionnel :\r\n\r\nDes technologies avec les dernières versions du marché : Java, PHP, Angular, .Net, Springboot.\r\nUne dimension industrialisation est fortement présente sur les projets avec l\'usage de pipeline DevOps, supportés par Gitlab CI, Docker, Jenkins et le cloud Azure (AWS : Amazon Web Service).\r\nLes apports de l\'alternance :\r\n\r\nAcquérir des compétences techniques avec nos experts.\r\nDécouvrir et/ou appliquer les bonnes pratiques de développement dans un contexte professionnel.\r\nIntervenir sur les différentes phases du développement logiciel (spécification / conception / développement / déploiement).\r\nS\'approprier une méthodologie agile.\r\nS\'intégrer au sein d\'une équipe d\'environ 5/6 personnes et participer de manière active à la dynamique collective.\r\n(Re)Découvrir le fonctionnement d\'une des plus grandes ESN françaises (Entreprise de services du numérique) aux dimensions internationales.', 'Aix-en-Provence', '6', 450.00, '2026-04-06', '2026-03-30 15:10:42');
+
 -- --------------------------------------------------------
 
 --
@@ -107,15 +115,16 @@ CREATE TABLE `student` (
   `ecole` varchar(150) DEFAULT NULL,
   `formation` varchar(150) DEFAULT NULL,
   `cv_path` varchar(255) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL
+  `photo` varchar(255) DEFAULT NULL,
+  `telephone` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `student`
 --
 
-INSERT INTO `student` (`id`, `user_id`, `nom`, `prenom`, `gender`, `ecole`, `formation`, `cv_path`, `photo`) VALUES
-(3, 3, 'Billet', 'Matis', 'mr', NULL, NULL, NULL, NULL);
+INSERT INTO `student` (`id`, `user_id`, `nom`, `prenom`, `gender`, `ecole`, `formation`, `cv_path`, `photo`, `telephone`) VALUES
+(3, 3, 'Billet', 'Matis', 'mr', 'Cesi école d\'ingénieur', 'Ingénieur Informatique', 'assets/images/cv/CV Matis BILLET aix .pdf', 'assets/images/photos/pdp.jpg', '0666924421');
 
 -- --------------------------------------------------------
 
@@ -234,7 +243,7 @@ ALTER TABLE `entreprises`
 -- AUTO_INCREMENT pour la table `offres`
 --
 ALTER TABLE `offres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `student`
