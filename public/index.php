@@ -241,6 +241,11 @@ $router->post('edit_profile', function () use ($twig) {
     return $controller->editStudent();
 });
 
+$router->get('search', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->search();
+});
+
 
 // 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
 $uri    = $_GET['uri'] ?? 'home';

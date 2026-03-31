@@ -19,7 +19,7 @@
     </p>
 
     {% if success is defined %}
-        <div class="alert-success">Merci ! Votre avis a bien été envoyé.</div>
+    <div class="alert-success">Merci ! Votre avis a bien été envoyé.</div>
     {% endif %}
 
     <article>
@@ -32,7 +32,7 @@
                 <select id="Entreprise" name="Entreprise">
                     <option value="" disabled selected>-- Sélectionnez Entreprise --</option>
                     {% for entreprise in entreprises %}
-                        <option value="{{ entreprise.id }}">{{ entreprise.nom }}</option>
+                    <option value="{{ entreprise.id }}">{{ entreprise.nom }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -73,13 +73,9 @@
 
             <div class="form-row">
                 <label for="commentaires">Votre avis détaillé*</label>
-                <textarea
-                    id="commentaires"
-                    name="commentaires"
-                    rows="6"
+                <textarea id="commentaires" name="commentaires" rows="6"
                     placeholder="Décrivez votre expérience : missions, équipe, ambiance, points forts et points faibles..."
-                    required
-                ></textarea>
+                    required></textarea>
             </div>
 
             <div class="form-row">
@@ -90,9 +86,9 @@
         </form>
 
         {% else %}
-            <p class="alert alert-info">
-                Vous devez être <a href="/?uri=login">connecté</a> en tant qu'étudiant pour laisser un avis.
-            </p>
+        <p class="alert alert-info">
+            Vous devez être <a href="/?uri=login">connecté</a> en tant qu'étudiant pour laisser un avis.
+        </p>
         {% endif %}
     </article>
 </section>

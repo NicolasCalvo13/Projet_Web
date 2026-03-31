@@ -8,7 +8,7 @@
     {# === HEADER BIENVENUE === #}
     <div class="dashboard-header">
         <h1>Bonjour, {{ entreprise.nom }} 👋</h1>
-        <p>Bienvenue sur votre espace entreprise Stage-Link</p> 
+        <p>Bienvenue sur votre espace entreprise Stage-Link</p>
     </div>
 
     {# === STATS RAPIDES === #}
@@ -38,45 +38,41 @@
                 </div>
             </div>
 
-        {% if offres is empty %}
+            {% if offres is empty %}
             <p class="empty-state">Vous n'avez pas encore publié d'offre.</p>
             <a href="/?uri=create_offer" class="btn btn-primary">Publier ma première offre</a>
-        {% else %}
-        <div class="offers-grid">
-            <ul class="offer-list">
-                {% for offre in offres %}
-                <article class="offer-card" aria-label="{{ offre.titre }}">
-                    <div class="offer-card-header">
-                        <img
-                            src="{{ offre.entreprise_logo ?? '/assets/images/placeholder.png' }}"
-                            alt="{{ offre.entreprise_nom }}"
-                            class="offer-card-logo"
-                            width="48"
-                        >
-                        <div>
-                            <h3 class="offer-card-title">{{ offre.titre }}</h3>
-                            <span class="offer-card-company">{{ offre.entreprise_nom }}</span>
+            {% else %}
+            <div class="offers-grid">
+                <ul class="offer-list">
+                    {% for offre in offres %}
+                    <article class="offer-card" aria-label="{{ offre.titre }}">
+                        <div class="offer-card-header">
+                            <img src="{{ offre.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                                alt="{{ offre.entreprise_nom }}" class="offer-card-logo" width="48">
+                            <div>
+                                <h3 class="offer-card-title">{{ offre.titre }}</h3>
+                                <span class="offer-card-company">{{ offre.entreprise_nom }}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="offer-meta">
-                        <span class="badge">{{ offre.lieu }}</span>
-                        <span class="badge">{{ offre.entreprise_secteur }}</span>
-                        <span class="badge">{{ offre.remuneration }}€ / mois</span>
-                    </div>
-                    <p class="offer-card-excerpt">
-                        {{ (offre.description|striptags)|slice(0, 120) }}…
-                    </p>
-                    <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-primary offer-card-btn">
-                        Voir l'offre
-                    </a>
-                </article>
-            {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une offre</a>
-        </div>
-        {% endif %}
+                        <div class="offer-meta">
+                            <span class="badge">{{ offre.lieu }}</span>
+                            <span class="badge">{{ offre.entreprise_secteur }}</span>
+                            <span class="badge">{{ offre.remuneration }}€ / mois</span>
+                        </div>
+                        <p class="offer-card-excerpt">
+                            {{ (offre.description|striptags)|slice(0, 120) }}…
+                        </p>
+                        <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-primary offer-card-btn">
+                            Voir l'offre
+                        </a>
+                    </article>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une offre</a>
+            </div>
+            {% endif %}
         </article>
 
         {# === CANDIDATURES RECUES (dernières) === #}
@@ -87,28 +83,28 @@
             </div>
 
             {% if candidatures is empty %}
-                <p class="empty-state">Vous n'avez pas encore reçu de candidature.</p>
+            <p class="empty-state">Vous n'avez pas encore reçu de candidature.</p>
             {% else %}
-                <ul class="candidature-list">
-                    {% for c in candidatures %}
-                    <li class="candidature-item">
-                        <div class="candidature-info">
-                            <strong>{{ c.candidat_prenom }} {{ c.candidat_nom }}</strong>
-                            <span class="offer-title">Sur l'offre : {{ c.offre_titre }}</span>
-                            <span class="meta">
-                                Reçue le {{ c.date_candidature|date("d/m/Y") }}
-                            </span>
-                        </div>
-                        <span class="badge badge-{{ c.statut }}">
-                            {% if c.statut == 'en_attente' %}En attente
-                            {% elseif c.statut == 'acceptee' %}Acceptée ✅
-                            {% elseif c.statut == 'refusee' %}Refusée ❌
-                            {% endif %}
+            <ul class="candidature-list">
+                {% for c in candidatures %}
+                <li class="candidature-item">
+                    <div class="candidature-info">
+                        <strong>{{ c.candidat_prenom }} {{ c.candidat_nom }}</strong>
+                        <span class="offer-title">Sur l'offre : {{ c.offre_titre }}</span>
+                        <span class="meta">
+                            Reçue le {{ c.date_candidature|date("d/m/Y") }}
                         </span>
-                        <a href="/?uri=application_detail&id={{ c.id }}" class="btn btn-sm">Détails</a>
-                    </li>
-                    {% endfor %}
-                </ul>
+                    </div>
+                    <span class="badge badge-{{ c.statut }}">
+                        {% if c.statut == 'en_attente' %}En attente
+                        {% elseif c.statut == 'acceptee' %}Acceptée ✅
+                        {% elseif c.statut == 'refusee' %}Refusée ❌
+                        {% endif %}
+                    </span>
+                    <a href="/?uri=application_detail&id={{ c.id }}" class="btn btn-sm">Détails</a>
+                </li>
+                {% endfor %}
+            </ul>
             {% endif %}
         </article>
 

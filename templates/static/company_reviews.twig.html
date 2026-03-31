@@ -13,20 +13,21 @@
     <div class="dashboard-grid">
         <article class="dashboard-card" style="grid-column: 1 / -1;">
             {% if reviews is empty %}
-                <p class="empty-state">Vous n'avez pas encore reçu d'avis.</p>
+            <p class="empty-state">Vous n'avez pas encore reçu d'avis.</p>
             {% else %}
-                <ul class="candidature-list">
-                    {% for review in reviews %}
-                    <li class="candidature-item" style="display: block; padding-bottom: 15px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong>Avis de {{ review.stagiaire_prenom }}</strong>
-                            <span class="badge badge-success">{{ review.note }}/5 ⭐</span>
-                        </div>
-                        <p style="margin-top: 5px; font-style: italic;">"{{ review.commentaire }}"</p>
-                        <small style="color: #777;">Publié le {{ review.created_at|date("d/m/Y à H:i") }}</small>
-                    </li>
-                    {% endfor %}
-                </ul>
+            <ul class="candidature-list">
+                {% for review in reviews %}
+                <li class="candidature-item" style="display: block; padding-bottom: 15px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong>Avis de {{ review.stagiaire_prenom }}</strong>
+                        <span class="badge badge-success">{{ review.note }}/5 ⭐</span>
+                    </div>
+                    <p style="margin-top: 5px; font-style: italic;">"{{ review.commentaire }}"</p>
+                    <small style="color: #777;">Publié le {{ review.created_at|date("d/m/Y à H:i") }}</small>
+                </li>
+                {% endfor %}
+            </ul>
             {% endif %}
         </article>
     </div>
