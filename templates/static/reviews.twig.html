@@ -32,7 +32,7 @@
                 <select id="Entreprise" name="Entreprise">
                     <option value="" disabled selected>-- Sélectionnez Entreprise --</option>
                     {% for entreprise in entreprises %}
-                        <option value="{{ entreprise.nom }}">{{ entreprise.nom }}</option>
+                        <option value="{{ entreprise.id }}">{{ entreprise.nom }}</option>
                     {% endfor %}
                 </select>
             </div>
