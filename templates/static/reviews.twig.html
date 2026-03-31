@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{% if user %}
+{% if user and is_student %}
 
 <nav class="breadcrumb" aria-label="Fil d'Ariane">
     <a href="/?uri=home">Accueil</a><span> › </span>
@@ -91,7 +91,7 @@
 
         {% else %}
             <p class="alert alert-info">
-                Vous devez être <a href="/?uri=login">connecté</a> pour laisser un avis.
+                Vous devez être <a href="/?uri=login">connecté</a> en tant qu'étudiant pour laisser un avis.
             </p>
         {% endif %}
     </article>
