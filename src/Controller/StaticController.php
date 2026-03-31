@@ -23,6 +23,8 @@ class StaticController
             'meta_description' => 'Déposez un avis.',
             'entreprises'      => (new \App\Model\ReviewModel())->findEntreprises(),
             'user'             => $_SESSION['user_id'] ?? null,
+            // On ajoute cette ligne pour savoir si c'est un étudiant :
+            'is_student'       => isset($_SESSION['student_id'])
         ]);
     }
 
@@ -114,6 +116,6 @@ class StaticController
         ]);
     }
 
-    
+
 }
 
