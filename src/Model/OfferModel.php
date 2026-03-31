@@ -160,7 +160,7 @@ class OfferModel
 
         return false;
     }
-}
+
     public function getWishlistByStudent(int $studentId): array
     {
         // On fait une double jointure : 
