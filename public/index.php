@@ -140,8 +140,8 @@ $router->get('company_dashboard', function () use ($twig) {
 });
 
 $router->get('admin_dashboard', function () use ($twig) {
-    $controller = new UserController($twig);
-    return $controller->admin_dashboard(); // J'ai gardé UserController au lieu d'AdminController pour le dashboard d'après tes doublons
+    $controller = new AdminController($twig); // On utilise le bon contrôleur
+    return $controller->dashboard();          // On appelle la méthode dashboard()
 });
 
 $router->get('company_detail', function () use ($twig) {
@@ -266,6 +266,10 @@ $router->get('search', function () use ($twig) {
     return $controller->search();
 });
 
+$router->post('admin_company_submit', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->createCompanySubmit();
+});
 
 // 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
 $uri    = $_GET['uri'] ?? 'home';

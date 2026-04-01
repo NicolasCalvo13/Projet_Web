@@ -14,36 +14,47 @@
 
   <section class="section-card">
     <h2>Informations de l'entreprise</h2>
-    <form method="POST" action="#" id="createCompanyForm" novalidate>
+    
+    {% if session.flash_error is defined %}
+        <div class="alert-error">{{ session.flash_error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/?uri=admin_company_submit" id="createCompanyForm" novalidate>
 
       <div class="form-group">
         <label for="comp-name">Nom de l'entreprise <span style="color:red">*</span></label>
-        <input type="text" id="comp-name" name="name" maxlength="150"
-               placeholder="Ex : TechCorp Solutions" required aria-required="true">
+        <input type="text" id="comp-name" name="name" maxlength="150" placeholder="Ex : TechCorp Solutions" required>
         <span class="form-error" id="cname-error">Le nom est obligatoire.</span>
       </div>
 
       <div class="form-group">
-        <label for="comp-desc">Description <span style="color:red">*</span></label>
-        <textarea id="comp-desc" name="description" maxlength="2000"
-                  placeholder="Décrivez l'activité de l'entreprise..." required aria-required="true"></textarea>
-        <span class="form-error" id="cdesc-error">La description est obligatoire.</span>
+        <label for="comp-siret">Numéro SIRET <span style="color:red">*</span></label>
+        <input type="text" id="comp-siret" name="siret" maxlength="14" placeholder="Ex : 12345678901234" required>
       </div>
 
       <div class="form-group">
-        <label for="comp-email">Email de contact <span style="color:red">*</span></label>
-        <input type="email" id="comp-email" name="email"
-               placeholder="Ex : contact@entreprise.fr" required aria-required="true">
+        <label for="comp-secteur">Secteur d'activité <span style="color:red">*</span></label>
+        <select id="comp-secteur" name="secteur" required>
+            <option value="" disabled selected>-- Sélectionnez --</option>
+            <option value="Informatique">Informatique</option>
+            <option value="BTP">BTP</option>
+            <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="comp-email">Email de connexion <span style="color:red">*</span></label>
+        <input type="email" id="comp-email" name="email" placeholder="Ex : contact@entreprise.fr" required>
         <span class="form-error" id="cemail-error">Veuillez saisir un email valide.</span>
       </div>
 
       <div class="form-group">
-        <label for="comp-phone">Téléphone</label>
-        <input type="tel" id="comp-phone" name="phone" placeholder="Ex : 01 23 45 67 89">
+        <label for="comp-password">Mot de passe provisoire <span style="color:red">*</span></label>
+        <input type="text" id="comp-password" name="password" placeholder="Mot de passe pour l'entreprise" required>
       </div>
 
-      <div style="display:flex;gap:15px;flex-wrap:wrap;">
-        <button type="submit" class="btn-primary">Enregistrer</button>
+      <div style="display:flex;gap:15px;flex-wrap:wrap; margin-top: 20px;">
+        <button type="submit" class="btn-primary">Enregistrer l'entreprise</button>
         <a href="/?uri=admin_dashboard" class="btn-secondary">Annuler</a>
       </div>
 
@@ -51,21 +62,17 @@
   </section>
 
   <script>
+    // Validation simple en JS
     document.getElementById('createCompanyForm').addEventListener('submit', function(e) {
       let valid = true;
       document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
 
       const name = document.getElementById('comp-name');
-      const desc = document.getElementById('comp-desc');
       const email = document.getElementById('comp-email');
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!name.value.trim()) {
         document.getElementById('cname-error').style.display = 'block';
-        valid = false;
-      }
-      if (!desc.value.trim()) {
-        document.getElementById('cdesc-error').style.display = 'block';
         valid = false;
       }
       if (!emailRegex.test(email.value)) {
@@ -77,4 +84,3 @@
   </script>
 
 {% endblock %}
-

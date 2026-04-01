@@ -4,6 +4,12 @@
 
 {% block body %}
 
+{% if session.flash_success %}
+    <div class="alert-success">
+        {{ session.flash_success }}
+    </div>
+{% endif %}
+
   <nav class="breadcrumb" aria-label="Fil d'Ariane">
     <a href="/?uri=home">Accueil</a><span>›</span>
     Dashboard Admin
@@ -47,7 +53,7 @@
     <div class="admin-card">
       <h3>🏢 Entreprises</h3>
       <a href="/?uri=admin_companies">Gérer les entreprises</a>
-      <a href="/?uri=company_create">Créer une entreprise</a>
+      <a href="/?uri=admin_company_create">Créer une entreprise</a>
     </div>
 
     <div class="admin-card">
