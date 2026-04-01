@@ -133,7 +133,7 @@ main {
     z-index: 1000;
 }
 
-/* Conteneur principal aligné à droite */
+/* Conteneur principal */
 .header-search {
     display: flex;
     flex-grow: 1;
@@ -141,57 +141,50 @@ main {
     margin: 0 20px;
 }
 
-/* On stylise le formulaire COMME SI c'était la barre de recherche complète */
+/* Le formulaire agit comme la bordure externe globale */
 .header-search form {
     display: flex;
-    align-items: stretch;
-    /* Pour que le bouton prenne toute la hauteur */
+    align-items: stretch; 
     margin: 0;
     padding: 0;
     background-color: white;
     border: 2px solid #008b8b;
-    border-radius: 25px;
-    /* L'arrondi global de la pilule */
+    border-radius: 25px; /* Arrondi parfait */
     width: 100%;
     max-width: 350px;
-    overflow: hidden;
-    /* MAGIQUE : coupe le bouton pour qu'il suive l'arrondi ! */
+    overflow: hidden; /* La magie est ici : coupe tout ce qui dépasse ! */
+    height: 42px; /* On fixe une hauteur pour que tout s'aligne bien */
 }
 
-/* Effet quand on clique dans la barre */
-.header-search form:focus-within {
-    box-shadow: 0 0 8px rgba(0, 139, 139, 0.4);
-}
-
-/* L'input devient transparent et sans bordure */
+/* On annule totalement les styles globaux de l'input */
 .header-search input[type="text"] {
     flex-grow: 1;
-    border: none;
+    border: none !important;
+    border-radius: 0 !important;
     background: transparent;
-    padding: 10px 15px;
-    font-size: 0.95rem;
+    padding: 0 15px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
     outline: none;
-    /* Enlève la bordure bleue moche par défaut du navigateur */
 }
 
-/* Le bouton de recherche */
-.header-search button {
-    background-color: #A2E9EB;
-    /* Ton bleu clair de la DA */
-    border: none;
-    border-left: 1px solid #008b8b;
-    /* Petite séparation esthétique */
-    color: #008b8b;
-    padding: 0 20px;
+/* On annule totalement les styles globaux du bouton */
+.header-search button[type="submit"] {
+    background-color: #A2E9EB !important;
+    border: none !important;
+    border-left: 2px solid #008b8b !important; /* Ligne de séparation nette */
+    border-radius: 0 !important; /* On enlève l'arrondi du bouton pour qu'il remplisse l'espace */
+    padding: 0 20px !important;
+    margin: 0 !important;
     cursor: pointer;
-    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background-color 0.2s;
-    border-radius: 0;
-    /* Pas besoin d'arrondi, le form s'en charge */
 }
 
-.header-search button:hover {
-    background-color: #afeeee;
+.header-search button[type="submit"]:hover {
+    background-color: #afeeee !important;
 }
 
 /* ============================================================

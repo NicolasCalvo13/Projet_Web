@@ -20,7 +20,9 @@
         <form action="/" method="GET">
           <input type="hidden" name="uri" value="search">
           <input type="text" name="q" placeholder="Métier, ville, mots-clés..." value="{{ keyword ?? '' }}" required>
-          <button type="submit" title="Rechercher">🔍</button>
+          <button type="submit" title="Rechercher">
+            <img src="../assets/images/search-logo.png" alt="search-logo" width = "25" height="25">
+          </button>
         </form>
       </div>
 
