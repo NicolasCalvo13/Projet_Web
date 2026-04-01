@@ -103,6 +103,16 @@ $router->get('register_entreprise', function () use ($twig) {
     return $controller->registerForm_entreprise();
 });
 
+$router->post('apply_offer', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->publishApplication();
+});
+
+
+$router->get('reviews', function () use ($twig) {
+    $controller = new StaticController($twig);
+    return $controller->reviews();
+});
 $router->post('register_entreprise', function () use ($twig) {
     $controller = new AuthController($twig);
     return $controller->register_entreprise();
@@ -239,6 +249,16 @@ $router->get('edit_profile', function () use ($twig) {
 $router->post('edit_profile', function () use ($twig) {
     $controller = new UserController($twig);
     return $controller->editStudent();
+});
+
+$router->get('application_detail', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->applicationDetail();
+});
+
+$router->post('application_detail', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->applicationDetail();
 });
 
 $router->get('search', function () use ($twig) {

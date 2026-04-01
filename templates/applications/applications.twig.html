@@ -4,84 +4,94 @@
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    Mes candidatures
-  </nav>
+    {% if success %}
+        <div class="alert alert-success">✅ Candidature envoyée avec succès !</div>
+    {% endif %}
 
-  <h1 style="color:#007575;">Mes candidatures</h1>
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/?uri=home">Accueil</a><span>›</span>
+        Mes candidatures
+    </nav>
 
-  <section class="section-card">
-    <h2>Offres auxquelles j'ai postulé</h2>
-    <table class="table-list" aria-label="Liste de mes candidatures">
-      <thead>
-        <tr>
-          <th>Offre</th>
-          <th>Entreprise</th>
-          <th>Date de candidature</th>
-          <th>Statut</th>
-          <th>Documents</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {# placeholders pour l’instant #}
-        <tr>
-          <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=1" style="color:#008b8b;">Titre de l'offre</a>
-          </td>
-          <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=1" style="color:#008b8b;">Nom de l'entreprise</a>
-          </td>
-          <td data-label="Date">jj/mm/aaaa</td>
-          <td data-label="Statut">
-            <span class="status-badge status-pending">En attente</span>
-          </td>
-          <td data-label="Documents">
-            <a href="#" style="color:#008b8b;font-size:.85rem;">📄 CV</a>
-            <a href="#" style="color:#008b8b;font-size:.85rem;">📝 LM</a>
-          </td>
-          <td data-label="Actions">
-            <a href="/?uri=offer_detail&id=1"
-               class="btn-secondary"
-               style="padding:6px 12px;font-size:.8rem;">
-              Voir l'offre
-            </a>
-          </td>
-        </tr>
+    <h1 style="color:#007575;">Mes candidatures</h1>
 
-        <tr>
-          <td data-label="Offre">
-            <a href="/?uri=offer_detail&id=2" style="color:#008b8b;">Titre de l'offre</a>
-          </td>
-          <td data-label="Entreprise">
-            <a href="/?uri=company_detail&id=2" style="color:#008b8b;">Nom de l'entreprise</a>
-          </td>
-          <td data-label="Date">jj/mm/aaaa</td>
-          <td data-label="Statut">
-            <span class="status-badge status-ok">Accepté</span>
-          </td>
-          <td data-label="Documents">
-            <a href="#" style="color:#008b8b;font-size:.85rem;">📄 CV</a>
-            <a href="#" style="color:#008b8b;font-size:.85rem;">📝 LM</a>
-          </td>
-          <td data-label="Actions">
-            <a href="/?uri=offer_detail&id=2"
-               class="btn-secondary"
-               style="padding:6px 12px;font-size:.8rem;">
-              Voir l'offre
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <section class="section-card">
+        <h2>Offres auxquelles j'ai postulé</h2>
 
-    <p style="margin-top:16px;font-size:.9rem;color:#777;">
-      Total : <strong>-- candidature(s)</strong>
-    </p>
-  </section>
+        {% if candidatures is empty %}
+            <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
+            <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
+        {% else %}
+            <table class="table-list" aria-label="Liste de mes candidatures">
+                <thead>
+                    <tr>
+                        <th>Offre</th>
+                        <th>Entreprise</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Documents</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in candidatures %}
+                        <tr>
+                            <td data-label="Offre">
+                                <a href="/?uri=offer_detail&id={{ c.offre_id }}" style="color:#008b8b;">
+                                    {{ c.offre_titre }}
+                                </a>
+                            </td>
+                            <td data-label="Entreprise">
+                                <a href="/?uri=company_detail&id={{ c.entreprise_id }}" style="color:#008b8b;">
+                                    {{ c.entreprise_nom }}
+                                </a>
+                            </td>
+                            <td data-label="Date">
+                                {{ c.created_at|date('d/m/Y') }}
+                            </td>
+                            <td data-label="Statut">
+                                {% if c.statut == 'en_attente' %}
+                                    <span class="status-badge status-pending">⏳ En attente</span>
+                                {% elseif c.statut == 'acceptee' %}
+                                    <span class="status-badge status-ok">✅ Acceptée</span>
+                                {% elseif c.statut == 'refusee' %}
+                                    <span class="status-badge status-ko">❌ Refusée</span>
+                                {% endif %}
+                            </td>
+                            <td data-label="Documents">
+                                {% if c.cv %}
+                                    <a href="{{ c.cv }}" target="_blank"
+                                       style="color:#008b8b; font-size:.85rem;">
+                                        📄 CV
+                                    </a>
+                                {% else %}
+                                    <span style="color:#bbb; font-size:.85rem;">—</span>
+                                {% endif %}
+                                {% if c.Lettre %}
+                                    <span title="{{ c.Lettre }}"
+                                          style="color:#008b8b; font-size:.85rem; cursor:help;">
+                                        📝 LM
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td data-label="Actions">
+                                <a href="/?uri=offer_detail&id={{ c.offre_id }}"
+                                   class="btn-secondary"
+                                   style="padding:6px 12px; font-size:.8rem;">
+                                    Voir l'offre
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-  <a href="/?uri=offers" class="btn-secondary">← Voir toutes les offres</a>
+            <p style="margin-top:16px; font-size:.9rem; color:#777;">
+                Total : <strong>{{ total }} candidature{{ total > 1 ? 's' : '' }}</strong>
+            </p>
+        {% endif %}
+    </section>
+
+    <a href="/?uri=offers" class="btn-secondary">← Voir toutes les offres</a>
 
 {% endblock %}
-

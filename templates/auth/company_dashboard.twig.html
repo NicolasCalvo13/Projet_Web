@@ -75,7 +75,7 @@
             {% endif %}
         </article>
 
-        {# === CANDIDATURES RECUES (dernières) === #}
+        {# === CANDIDATURES REÇUES (dernières) === #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Candidatures récentes</h2>
@@ -85,26 +85,32 @@
             {% if candidatures is empty %}
             <p class="empty-state">Vous n'avez pas encore reçu de candidature.</p>
             {% else %}
-            <ul class="candidature-list">
-                {% for c in candidatures %}
-                <li class="candidature-item">
-                    <div class="candidature-info">
-                        <strong>{{ c.candidat_prenom }} {{ c.candidat_nom }}</strong>
-                        <span class="offer-title">Sur l'offre : {{ c.offre_titre }}</span>
-                        <span class="meta">
-                            Reçue le {{ c.date_candidature|date("d/m/Y") }}
-                        </span>
-                    </div>
-                    <span class="badge badge-{{ c.statut }}">
-                        {% if c.statut == 'en_attente' %}En attente
-                        {% elseif c.statut == 'acceptee' %}Acceptée ✅
-                        {% elseif c.statut == 'refusee' %}Refusée ❌
-                        {% endif %}
-                    </span>
-                    <a href="/?uri=application_detail&id={{ c.id }}" class="btn btn-sm">Détails</a>
-                </li>
-                {% endfor %}
-            </ul>
+            <div class="offers-grid">
+                <ul class="offer-list">
+                    {% for c in candidatures %}
+                    <article class="offer-card" aria-label="{{ c.candidat_prenom }} {{ c.candidat_nom }}">
+                        <div class="offer-card-header">
+                            <div>
+                                <h3 class="offer-card-title">{{ c.candidat_prenom }} {{ c.candidat_nom }}</h3>
+                                <span class="offer-card-company">Sur l'offre : {{ c.offre_titre }}</span>
+                            </div>
+                        </div>
+                        <div class="offer-meta">
+                            <span class="badge">📅 {{ c.created_at|date('d/m/Y') }}</span>
+                            <span class="badge badge-{{ c.statut }}">
+                                {% if c.statut == 'en_attente' %}⏳ En attente
+                                {% elseif c.statut == 'acceptee' %}✅ Acceptée
+                                {% elseif c.statut == 'refusee' %}❌ Refusée
+                                {% endif %}
+                            </span>
+                        </div>
+                        <a href="/?uri=application_detail&id={{ c.id }}" class="btn-primary offer-card-btn">
+                            Voir la candidature
+                        </a>
+                    </article>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endif %}
         </article>
 
