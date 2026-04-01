@@ -60,6 +60,7 @@ class OfferController
             'page_title'    => $offer['titre'],
             'offer'         => $offer,
             'user'          => $_SESSION['user_id'] ?? null,
+            'error' => $_GET['error'] ?? null,
         ]);
     }
 

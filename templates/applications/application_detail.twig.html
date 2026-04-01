@@ -1,0 +1,123 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Candidature - {{ candidature.candidat_prenom }} {{ candidature.candidat_nom }}{% endblock %}
+
+{% block body %}
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/?uri=home">Accueil</a><span>›</span>
+        <a href="/?uri=company_dashboard">Dashboard</a><span>›</span>
+        Candidature de {{ candidature.candidat_prenom }} {{ candidature.candidat_nom }}
+    </nav>
+
+    <h1 style="color:#007575;">Détail de la candidature</h1>
+
+    <section class="section-card">
+        <div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
+
+            {# COLONNE GAUCHE : infos + actions #}
+            <div style="flex: 1; min-width: 250px;">
+
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    {% if candidature.candidat_photo %}
+                        <img src="{{ candidature.candidat_photo }}"
+                             alt="Photo de {{ candidature.candidat_prenom }}"
+                             style="width: 90px; height: 90px; border-radius: 50%;
+                                    object-fit: cover; border: 3px solid #e0e0e0;">
+                    {% else %}
+                        <div style="width: 90px; height: 90px; border-radius: 50%;
+                                    background: #e0e0e0; display: flex;
+                                    align-items: center; justify-content: center;
+                                    font-size: 2rem; margin: 0 auto;">👤</div>
+                    {% endif %}
+                </div>
+
+                <h2 style="margin-bottom: 1rem;">
+                    {{ candidature.candidat_prenom }} {{ candidature.candidat_nom }}
+                </h2>
+
+                <div class="profil-info">
+                    <p>📧 {{ candidature.candidat_email }}</p>
+                    <p>📞 {{ candidature.candidat_telephone }}</p>
+                    <p>🎓 {{ candidature.candidat_formation }}</p>
+                    <p>🏫 {{ candidature.candidat_ecole }}</p>
+                    <p>📅 Reçue le {{ candidature.created_at|date('d/m/Y') }}</p>
+                    <p>Sur : <a href="/?uri=offer_detail&id={{ candidature.offre_id }}"
+                                style="color:#008b8b;">{{ candidature.offre_titre }}</a></p>
+                </div>
+
+                {# STATUT #}
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Statut actuel :</p>
+                    {% if candidature.statut == 'en_attente' %}
+                        <span class="status-badge status-pending">⏳ En attente</span>
+                    {% elseif candidature.statut == 'acceptee' %}
+                        <span class="status-badge status-ok">✅ Acceptée</span>
+                    {% elseif candidature.statut == 'refusee' %}
+                        <span class="status-badge status-ko">❌ Refusée</span>
+                    {% endif %}
+                </div>
+
+                {# FORMULAIRE ACTIONS #}
+                <form method="POST"
+                      action="/?uri=application_detail&id={{ candidature.id }}"
+                      style="margin-top: 1.5rem;">
+                    <div class="quick-actions">
+                        {% if candidature.statut != 'acceptee' %}
+                            <button type="submit" name="statut" value="acceptee"
+                                    class="btn btn-primary">✅ Accepter</button>
+                        {% endif %}
+                        {% if candidature.statut != 'refusee' %}
+                            <button type="submit" name="statut" value="refusee"
+                                    class="btn btn-danger">❌ Refuser</button>
+                        {% endif %}
+                        {% if candidature.statut != 'en_attente' %}
+                            <button type="submit" name="statut" value="en_attente"
+                                    class="btn btn-secondary">↩ Remettre en attente</button>
+                        {% endif %}
+                    </div>
+                </form>
+
+            </div>
+
+            {# COLONNE DROITE : LM + CV #}
+            <div style="flex: 1; min-width: 280px;">
+
+                {% if candidature.Lettre %}
+                    <h3 style="margin-bottom: 0.75rem;">📝 Lettre de motivation</h3>
+                    <div style="background: #f9f9f9; border: 1px solid #e0e0e0;
+                                border-radius: 8px; padding: 1.25rem;
+                                white-space: pre-wrap; line-height: 1.7;
+                                font-size: 0.95rem; margin-bottom: 2rem;">
+                        {{ candidature.Lettre }}
+                    </div>
+                {% endif %}
+
+                {% if candidature.cv %}
+                    <h3 style="margin-bottom: 0.75rem;">📄 CV</h3>
+                    <div style="width: 100%; height: 500px; overflow: hidden;
+                                border: 1px solid #e0e0e0; border-radius: 8px;">
+                        <iframe src="{{ candidature.cv }}#toolbar=0&navpanes=0"
+                                width="100%" height="500px"
+                                style="border: none; pointer-events: auto;">
+                        </iframe>
+                    </div>
+                    <a href="{{ candidature.cv }}" target="_blank"
+                       class="btn btn-secondary"
+                       style="margin-top: 0.75rem; display: inline-block;">
+                        📥 Télécharger le CV
+                    </a>
+                {% else %}
+                    <p style="color: #aaa;">Aucun CV fourni.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+    <a href="/?uri=company_dashboard" class="btn-secondary"
+       style="margin-top: 1rem; display: inline-block;">
+        ← Retour au dashboard
+    </a>
+
+{% endblock %}

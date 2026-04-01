@@ -4,6 +4,12 @@
 
 {% block body %}
 
+{% if error == 'exists' %}
+    <div class="alert alert-error">
+        ⚠️ Vous avez déjà postulé à cette offre.
+    </div>
+{% endif %}
+
 <nav class="breadcrumb" aria-label="Fil d'Ariane">
     <a href="/?uri=home">Accueil</a><span> › </span>
     <a href="/?uri=offers">Toutes les offres</a><span> › </span>

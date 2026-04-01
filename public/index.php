@@ -96,6 +96,12 @@ $router->get('apply_offer', function () use ($twig) {
     return $controller->showApplyForm();
 });
 
+$router->post('apply_offer', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->publishApplication();
+});
+
+
 $router->get('reviews', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->reviews();
@@ -234,6 +240,16 @@ $router->get('edit_profile', function () use ($twig) {
 $router->post('edit_profile', function () use ($twig) {
     $controller = new UserController($twig);
     return $controller->editStudent();
+});
+
+$router->get('application_detail', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->applicationDetail();
+});
+
+$router->post('application_detail', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->applicationDetail();
 });
 
 

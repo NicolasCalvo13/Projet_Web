@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 31 mars 2026 à 14:16
+-- Généré le : mer. 01 avr. 2026 à 10:28
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -46,9 +46,18 @@ CREATE TABLE `candidatures` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `offre_id` int(11) NOT NULL,
-  `statut` enum('en_attente','acceptee','refusee') DEFAULT 'en_attente',
-  `created_at` datetime DEFAULT current_timestamp()
+  `statut` enum('en_attente','acceptee','refusee') NOT NULL DEFAULT 'en_attente',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `cv` varchar(255) NOT NULL,
+  `Lettre` varchar(600) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `candidatures`
+--
+
+INSERT INTO `candidatures` (`id`, `student_id`, `offre_id`, `statut`, `created_at`, `cv`, `Lettre`) VALUES
+(1, 3, 1, 'en_attente', '2026-04-01 10:14:46', 'assets/images/cv/CV Matis BILLET aix .pdf', 'je veux vraiment être avec vous');
 
 -- --------------------------------------------------------
 
@@ -231,7 +240,7 @@ ALTER TABLE `avis`
 -- AUTO_INCREMENT pour la table `candidatures`
 --
 ALTER TABLE `candidatures`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `entreprises`

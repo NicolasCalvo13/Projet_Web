@@ -33,34 +33,44 @@
     <div class="dashboard-grid">
 
         {# MES CANDIDATURES #}
-        <article class="dashboard-card">
-            <div class="card-header">
-                <h2>Mes candidatures</h2>
-                <a href="?uri=applications" class="btn-link">Voir tout →</a>
-            </div>
-            {% if candidatures is empty %}
-                <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
-                <a href="?uri=offers" class="btn btn-primary">Parcourir les offres</a>
-            {% else %}
-                <ul class="candidature-list">
-                    {% for c in candidatures %}
-                        <li class="candidature-item">
-                            <div class="candidature-info">
-                                <strong>{{ c.titre }}</strong>
-                                <span class="company">{{ c.entreprise_nom }}</span>
-                                <span class="location">📍 {{ c.ville }}</span>
+<article class="dashboard-card">
+    <div class="card-header">
+        <h2>Mes candidatures</h2>
+        <a href="/?uri=applications" class="btn-link">Voir tout →</a>
+    </div>
+
+    {% if candidatures is empty %}
+        <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
+        <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
+    {% else %}
+        <div class="offers-grid">
+            <ul class="offer-list">
+                {% for c in candidatures %}
+                    <article class="offer-card" aria-label="{{ c.titre }}">
+                        <div class="offer-card-header">
+                            <div>
+                                <h3 class="offer-card-title">{{ c.titre }}</h3>
+                                <span class="offer-card-company">{{ c.entreprise_nom }}</span>
                             </div>
+                        </div>
+                        <div class="offer-meta">
+                            <span class="badge">📍 {{ c.ville }}</span>
                             <span class="badge badge-{{ c.statut }}">
-                                {% if c.statut == 'en_attente' %}En attente
-                                {% elseif c.statut == 'acceptee' %}Acceptée
-                                {% elseif c.statut == 'refusee' %}Refusée
+                                {% if c.statut == 'en_attente' %}⏳ En attente
+                                {% elseif c.statut == 'acceptee' %}✅ Acceptée
+                                {% elseif c.statut == 'refusee' %}❌ Refusée
                                 {% endif %}
                             </span>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </article>
+                        </div>
+                        <a href="/?uri=offer_detail&id={{ c.offre_id }}" class="btn-primary offer-card-btn">
+                            Voir l'offre
+                        </a>
+                    </article>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</article>
 
         {# MES FAVORIS #}
         <article class="dashboard-card">
