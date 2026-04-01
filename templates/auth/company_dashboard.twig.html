@@ -1,0 +1,148 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Espace entreprise - Stage-Link{% endblock %}
+
+{% block body %}
+<section class="dashboard">
+
+    {# === HEADER BIENVENUE === #}
+    <div class="dashboard-header">
+        <h1>Bonjour, {{ entreprise.nom }} 👋</h1>
+        <p>Bienvenue sur votre espace entreprise Stage-Link</p> 
+    </div>
+
+    {# === STATS RAPIDES === #}
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <span class="stat-number">{{ stats.total_offres }}</span>
+            <span class="stat-label">Offre(s) publiée(s)</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ stats.total_candidatures }}</span>
+            <span class="stat-label">Candidature(s) reçue(s)</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ stats.total_candidats }}</span>
+            <span class="stat-label">Candidat(s) différent(s)</span>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+
+        {# === MES OFFRES (dernières) === #}
+        <article class="dashboard-card">
+            <div class="card-header">
+                <h2>Mes offres</h2>
+                <div>
+                    <a href="/?uri=company_offers" class="btn-link">Voir toutes les offres →</a>
+                </div>
+            </div>
+
+        {% if offres is empty %}
+            <p class="empty-state">Vous n'avez pas encore publié d'offre.</p>
+            <a href="/?uri=create_offer" class="btn btn-primary">Publier ma première offre</a>
+        {% else %}
+        <div class="offers-grid">
+            <ul class="offer-list">
+                {% for offre in offres %}
+                <article class="offer-card" aria-label="{{ offre.titre }}">
+                    <div class="offer-card-header">
+                        <img
+                            src="{{ offre.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                            alt="{{ offre.entreprise_nom }}"
+                            class="offer-card-logo"
+                            width="48"
+                        >
+                        <div>
+                            <h3 class="offer-card-title">{{ offre.titre }}</h3>
+                            <span class="offer-card-company">{{ offre.entreprise_nom }}</span>
+                        </div>
+                    </div>
+                    <div class="offer-meta">
+                        <span class="badge">{{ offre.lieu }}</span>
+                        <span class="badge">{{ offre.entreprise_secteur }}</span>
+                        <span class="badge">{{ offre.remuneration }}€ / mois</span>
+                    </div>
+                    <p class="offer-card-excerpt">
+                        {{ (offre.description|striptags)|slice(0, 120) }}…
+                    </p>
+                    <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-primary offer-card-btn">
+                        Voir l'offre
+                    </a>
+                </article>
+            {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une offre</a>
+        </div>
+        {% endif %}
+        </article>
+
+        {# === CANDIDATURES RECUES (dernières) === #}
+        <article class="dashboard-card">
+            <div class="card-header">
+                <h2>Candidatures récentes</h2>
+                <a href="/?uri=company_applications" class="btn-link">Voir toutes les candidatures →</a>
+            </div>
+
+            {% if candidatures is empty %}
+                <p class="empty-state">Vous n'avez pas encore reçu de candidature.</p>
+            {% else %}
+                <ul class="candidature-list">
+                    {% for c in candidatures %}
+                    <li class="candidature-item">
+                        <div class="candidature-info">
+                            <strong>{{ c.candidat_prenom }} {{ c.candidat_nom }}</strong>
+                            <span class="offer-title">Sur l'offre : {{ c.offre_titre }}</span>
+                            <span class="meta">
+                                Reçue le {{ c.date_candidature|date("d/m/Y") }}
+                            </span>
+                        </div>
+                        <span class="badge badge-{{ c.statut }}">
+                            {% if c.statut == 'en_attente' %}En attente
+                            {% elseif c.statut == 'acceptee' %}Acceptée ✅
+                            {% elseif c.statut == 'refusee' %}Refusée ❌
+                            {% endif %}
+                        </span>
+                        <a href="/?uri=application_detail&id={{ c.id }}" class="btn btn-sm">Détails</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </article>
+
+        {# === PROFIL ENTREPRISE === #}
+        <article class="dashboard-card">
+            <div class="card-header">
+                <h2>Mon profil entreprise</h2>
+            </div>
+            <div class="profil-info">
+                <p>Raison sociale : {{ entreprise.nom }}</p>
+                <p>Secteur : {{ entreprise.secteur }}</p>
+                <p>Email : {{ entreprise.email }}</p>
+                <p>Téléphone : {{ entreprise.telephone }}</p>
+            </div>
+            <a href="/?uri=company_account" class="btn btn-secondary">✏️ Modifier les informations</a>
+        </article>
+
+        {# === ACTIONS RAPIDES === #}
+        <article class="dashboard-card">
+            <div class="card-header">
+                <h2>Actions rapides</h2>
+            </div>
+            <div class="quick-actions">
+                <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une nouvelle offre</a>
+                <a href="/?uri=company_offers" class="btn btn-primary">📄 Gérer mes offres</a>
+                <a href="/?uri=company_applications" class="btn btn-primary">👥 Gérer les candidatures</a>
+                <a href="/?uri=reviews_company" class="btn btn-primary">⭐ Voir les avis étudiants</a>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<div>
+    <a href="/?uri=logout" class="btn btn-danger">Déconnexion</a>
+</div>
+{% endblock %}

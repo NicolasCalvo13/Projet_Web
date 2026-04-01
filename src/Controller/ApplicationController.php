@@ -13,12 +13,14 @@ class ApplicationController
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
+        $this->model = new OfferModel();
     }
 
     public function showApplyForm(): string
     {
         return $this->twig->render('applications/apply.twig.html', [
             'page_title' => 'Postuler à une offre - Stage-Link',
+            'offre'      => $this->model->getById($id),
         ]);
     }
 

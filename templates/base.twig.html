@@ -24,7 +24,7 @@
       </header>
 
       <nav class="navbar">
-        <a href="/?uri=home" class="active">Accueil</a> |
+        <a href="/?uri=home">Accueil</a> |
         <a href="/?uri=offers">Toutes les Offres</a> |
         <a href="/?uri=it_offers">Offres Informatiques</a> |
         <a href="/?uri=btp_offers">Offres BTP</a> |
@@ -32,10 +32,6 @@
         <a href="/?uri=contact">Contact</a>
       </nav>
     </div>
-
-
-
-
 
     <main>
       {% block body %}{% endblock %}
@@ -46,6 +42,28 @@
       <div>&copy; 2026 - Tous droits réservés</div>
       <a href="/?uri=cookies"><span>Gestion des cookies</span></a>
     </footer>
+    <script src="../assets/js/alerts.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // On récupère les paramètres de l'URL (ex: ?uri=offers)
+        const params = new URLSearchParams(window.location.search);
+        
+        // On extrait la valeur de "uri" (si elle n'existe pas, on considère qu'on est sur "home")
+        const currentUri = params.get('uri') || 'home';
+        
+        // On cible tous les liens de la barre de navigation
+        const navLinks = document.querySelectorAll('.navbar a');
+        
+        // On parcourt chaque lien
+        navLinks.forEach(link => {
+          // Si le lien correspond à la page actuelle, on lui ajoute la classe "active"
+          if (link.getAttribute('href') === '/?uri=' + currentUri) {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
   </body>
 </html>
 

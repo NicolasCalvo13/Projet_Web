@@ -18,18 +18,17 @@
     </div>
 </section>
 
-
 <section class="home-stats" aria-label="Chiffres clés">
     <div class="stat-card">
         <span class="stat-number">{{ total_offers }}+</span>
         <span class="stat-label">Offres disponibles</span>
     </div>
     <div class="stat-card">
-        <span class="stat-number">12</span>
+        <span class="stat-number">{{ total_companies }}+</span>
         <span class="stat-label">Entreprises partenaires</span>
     </div>
     <div class="stat-card">
-        <span class="stat-number">2</span>
+        <span class="stat-number">{{ total_sectors }}+</span>
         <span class="stat-label">Secteurs couverts</span>
     </div>
 </section>
@@ -75,10 +74,13 @@
     {% endif %}
 </section>
 
+{# On affiche ce bloc uniquement si ce n'est PAS une entreprise #}
+{% if not is_company %}
 <section class="home-cta section-card" aria-labelledby="cta-title">
     <h2 id="cta-title">Vous êtes une entreprise ?</h2>
     <p>Publiez vos offres de stage et trouvez les meilleurs profils étudiants.</p>
-    <a href="/?uri=login" class="btn-primary">Se connecter en tant qu'entreprise</a>
+    <a href="/?uri=switch_to_company" class="btn-primary">Se connecter en tant qu'entreprise</a>
 </section>
+{% endif %}
 
 {% endblock %}

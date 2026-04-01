@@ -24,10 +24,17 @@ class HomeController
         $offers = $this->model->getSampleOffers();
         $totalOffers = $this->model->countAllOffers();
 
+        // On vérifie si une entreprise est connectée (true ou false)
+        $isCompany = isset($_SESSION['entreprise_id']);
+
         return $this->twig->render('home/index.twig.html', [
-            'page_title' => 'Accueil – Stages-Link',
-            'offers'     => $offers,
-            'total_offers' => $totalOffers,
+            'page_title'      => 'Accueil – Stages-Link',
+            'offers'          => $offers,
+            'total_offers'    => $totalOffers,
+            'total_companies' => $this->model->countAllEntreprises(),
+            'total_sectors'   => $this->model->countAllSectors(),
+            // 👇 On envoie l'info à Twig
+            'is_company'      => $isCompany, 
         ]);
     }
 }

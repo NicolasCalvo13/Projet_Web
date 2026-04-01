@@ -16,12 +16,12 @@
     <!-- Récapitulatif de l'offre -->
     <div class="apply-offer-recap" aria-label="Récapitulatif de l'offre">
         <div>
-            <strong>Titre de l'offre</strong><br>
-            <span>Nom de l'entreprise — Ville (00)</span>
+            <strong>{{ offre.titre }}</strong><br>
+            <span>{{ offre.entreprise }}</span>
         </div>
         <div>
-            <span class="badge">💶 -- €/mois</span>
-            <span class="badge">⏱ -- mois</span>
+            <span class="badge">{{ offre.remuneration }} €/mois</span>
+            <span class="badge">⏱ {{ offre.duree }} mois</span>
         </div>
     </div>
 

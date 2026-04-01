@@ -13,6 +13,7 @@ class AdminController
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
+        $this->requireRole('admin');
     }
 
     public function dashboard(): string

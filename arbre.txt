@@ -1,10 +1,12 @@
 .
+├── README.md
 ├── arbre.txt
 ├── composer.json
 ├── composer.lock
 ├── public
 │   ├── assets
 │   │   ├── images
+│   │   │   ├── cv
 │   │   │   ├── icon-all-offer.jpg
 │   │   │   ├── icon-fav.png
 │   │   │   ├── icon-offer-BTP.jpg
@@ -13,6 +15,22 @@
 │   │   │   ├── icon-offer-IT.png
 │   │   │   ├── icon-user.png
 │   │   │   ├── logo.png
+│   │   │   ├── logos
+│   │   │   │   ├── altran.svg
+│   │   │   │   ├── bouygues.png
+│   │   │   │   ├── bouygues.svg
+│   │   │   │   ├── capgemini.svg
+│   │   │   │   ├── colas.png
+│   │   │   │   ├── colas.svg
+│   │   │   │   ├── eiffage.svg
+│   │   │   │   ├── gtm.svg
+│   │   │   │   ├── ibm.svg
+│   │   │   │   ├── orange.svg
+│   │   │   │   ├── soprasteria.svg
+│   │   │   │   ├── spie.svg
+│   │   │   │   ├── thales.svg
+│   │   │   │   └── vinci.svg
+│   │   │   ├── photos
 │   │   │   └── placeholder.png
 │   │   └── style.css
 │   └── index.php
@@ -21,15 +39,24 @@
 │   │   ├── AdminController.php
 │   │   ├── ApplicationController.php
 │   │   ├── AuthController.php
+│   │   ├── BaseController.php
 │   │   ├── CompanyController.php
 │   │   ├── HomeController.php
 │   │   ├── OfferController.php
-│   │   └── StaticController.php
+│   │   ├── PilotController.php
+│   │   ├── StaticController.php
+│   │   ├── StudentController.php
+│   │   └── UserController.php
+│   ├── Database
+│   │   └── Database.php
 │   ├── Model
 │   │   ├── HomeModel.php
-│   │   └── OfferModel.php
+│   │   ├── OfferModel.php
+│   │   ├── ReviewModel.php
+│   │   └── UserModel.php
 │   └── Routing
 │       └── Router.php
+├── stage-link.sql
 ├── templates
 │   ├── admin
 │   │   ├── company_create.twig.html
@@ -42,8 +69,13 @@
 │   │   └── apply.twig.html
 │   ├── auth
 │   │   ├── auth.twig.html
+│   │   ├── company_dashboard.twig.html
+│   │   ├── edit_profile.twig.html
 │   │   ├── login.twig.html
-│   │   └── register.twig.html
+│   │   ├── login_entreprise.twig.html
+│   │   ├── register.twig.html
+│   │   ├── register_entreprise.twig.html
+│   │   └── student_dashboard.twig.html
 │   ├── base.twig.html
 │   ├── companies
 │   │   └── detail.twig.html
@@ -53,6 +85,7 @@
 │   │   ├── BTPlist.twig.html
 │   │   ├── ITlist.twig.html
 │   │   ├── apply.twig.html
+│   │   ├── create_offer.twig.html
 │   │   ├── detail.twig.html
 │   │   ├── list.twig.html
 │   │   └── wishlist.twig.html
@@ -2309,4 +2342,4 @@
                     ├── ReflectionCallable.php
                     └── TemplateDirIterator.php
 
-295 directories, 2015 files
+299 directories, 2044 files

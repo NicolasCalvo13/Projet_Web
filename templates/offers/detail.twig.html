@@ -30,16 +30,22 @@
             width="80"
         >
         <a href="/?uri=apply_offer&id={{ offer.id }}" class="btn-primary">Postuler à cette offre</a>
-        <button class="btn-secondary btn-wishlist" id="wishlistBtn"
-                onclick="toggleWishlist(this)" aria-pressed="false">
-            Ajouter aux favoris
+        
+        {# 👇 LE BOUTON WISHLIST EST MIS À JOUR ICI 👇 #}
+        <button class="btn-secondary btn-wishlist {% if is_favori %}active{% endif %}" 
+                id="wishlistBtn"
+                onclick="toggleWishlist({{ offer.id }}, this)" 
+                aria-pressed="{{ is_favori ? 'true' : 'false' }}">
+            {{ is_favori ? 'Retiré des favoris' : 'Ajouter aux favoris' }}
         </button>
     </div>
 </section>
 
-<div class="alert-info" role="note">
-    Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
-</div>
+{% if not user %}
+    <div class="alert-info" role="note">
+        Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
+    </div>
+{% endif %}
 
 <article class="section-card">
     <h2>Description du stage</h2>
@@ -97,12 +103,42 @@
     <a href="/?uri=offers" class="btn-secondary">Retour aux offres</a>
 </div>
 
+{# 👇 LE NOUVEAU SCRIPT AJAX EST ICI 👇 #}
 <script>
-function toggleWishlist(btn) {
-    const isActive = btn.classList.toggle('active');
-    btn.setAttribute('aria-pressed', isActive);
-    btn.textContent = isActive ? 'Retiré des favoris' : 'Ajouter aux favoris';
-    // TODO: appel AJAX vers wishlist controller
+function toggleWishlist(offerId, btn) {
+    // Désactive le bouton pendant la requête
+    btn.disabled = true;
+
+    fetch('/?uri=toggle_wishlist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ offer_id: offerId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.is_active) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+                btn.textContent = 'Retiré des favoris';
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+                btn.textContent = 'Ajouter aux favoris';
+            }
+        } else {
+            alert(data.message || "Une erreur est survenue.");
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert("Vous devez être connecté pour ajouter aux favoris.");
+    })
+    .finally(() => {
+        btn.disabled = false; // Réactive le bouton
+    });
 }
 </script>
 
