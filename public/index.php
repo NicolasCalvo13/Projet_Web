@@ -19,16 +19,17 @@ use App\Controller\CompanyController;
 use App\Controller\UserController;
 use App\Controller\StudentController;
 use App\Controller\PiloteController;
-
+session_start();
 // 2. Initialisation du moteur de templates Twig
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 $twig   = new \Twig\Environment($loader, [
     'cache' => false, // met un dossier de cache en prod
     'debug' => true,
+    
 ]);
+$twig->addGlobal('session_role', $_SESSION['role'] ?? null);
 
-// 3. Initialisation (simple) de la session
-session_start();
+
 
 // 4. Création du Router
 $router = new Router();
