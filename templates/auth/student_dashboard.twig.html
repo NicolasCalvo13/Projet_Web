@@ -33,19 +33,19 @@
     <div class="dashboard-grid">
 
         {# MES CANDIDATURES #}
-<article class="dashboard-card">
-    <div class="card-header">
-        <h2>Mes candidatures</h2>
-        <a href="/?uri=applications" class="btn-link">Voir tout →</a>
-    </div>
+        <article class="dashboard-card">
+            <div class="card-header">
+                <h2>Mes candidatures</h2>
+                <a href="/?uri=applications" class="btn-link">Voir tout →</a>
+            </div>
 
-    {% if candidatures is empty %}
-        <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
-        <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
-    {% else %}
-        <div class="offers-grid">
-            <ul class="offer-list">
-                {% for c in candidatures %}
+            {% if candidatures is empty %}
+            <p class="empty-state">Vous n'avez pas encore postulé à une offre.</p>
+            <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
+            {% else %}
+            <div class="offers-grid">
+                <ul class="offer-list">
+                    {% for c in candidatures %}
                     <article class="offer-card" aria-label="{{ c.titre }}">
                         <div class="offer-card-header">
                             <div>
@@ -66,11 +66,11 @@
                             Voir l'offre
                         </a>
                     </article>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-</article>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </article>
 
         {# MES FAVORIS #}
         <article class="dashboard-card">
@@ -101,44 +101,33 @@
                 <h2>Mon profil</h2>
             </div>
 
-            <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div class="profil-content">
 
                 {# COLONNE GAUCHE : photo + infos #}
-                <div style="flex: 1;">
-
+                <div class="profil-infos">
                     <div style="text-align: center; margin-bottom: 1rem;">
                         {% if user.photo %}
-                        <img src="{{ user.photo }}" alt="Photo de profil" style="width: 90px; height: 90px; border-radius: 50%;
-                                        object-fit: cover; border: 3px solid #e0e0e0;">
+                        <img src="{{ user.photo }}" alt="Photo de profil"
+                            style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #e0e0e0;">
                         {% else %}
-                        <div style="width: 90px; height: 90px; border-radius: 50%;
-                                        background: #e0e0e0; display: flex;
-                                        align-items: center; justify-content: center;
-                                        font-size: 2rem; margin: 0 auto;">
-
-                        </div>
+                        <div style="width:90px;height:90px;border-radius:50%;background:#e0e0e0;
+                                display:flex;align-items:center;justify-content:center;
+                                font-size:2rem;margin:0 auto;">👤</div>
                         {% endif %}
                     </div>
-
                     <p><strong>{{ user.prenom }} {{ user.nom }}</strong></p>
                     <p>{{ user.email }}</p>
                     <p>{{ user.telephone }}</p>
                     <p>{{ user.formation }}</p>
                     <p>{{ user.ecole }}</p>
-
                 </div>
 
                 {# COLONNE DROITE : aperçu CV #}
                 {% if user.cv_path %}
-                <div style="flex-shrink: 0;">
-                    <p style="margin-bottom: 0.4rem; font-weight: 600; text-align: center;"> Mon CV</p>
-                    <div style="width: 300px; height: 424px; overflow: hidden;
-                                    border: 1px solid #e0e0e0; border-radius: 8px;">
-                        <iframe src="{{ user.cv_path }}#toolbar=0&navpanes=0&scrollbar=0" style="width: 794px; height: 1123px;
-                                           transform: scale(0.378);
-                                           transform-origin: top left;
-                                           pointer-events: none;
-                                           border: none;">
+                <div class="cv-preview-wrapper">
+                    <p style="margin-bottom:0.4rem;font-weight:600;text-align:center;">Mon CV</p>
+                    <div class="cv-preview-box">
+                        <iframe src="{{ user.cv_path }}#toolbar=0&navpanes=0&scrollbar=0" class="cv-preview-iframe">
                         </iframe>
                     </div>
                 </div>
@@ -146,7 +135,7 @@
 
             </div>
 
-            <a href="?uri=edit_profile" class="btn btn-secondary" style="margin-top: 1rem; display: inline-block;">
+            <a href="?uri=edit_profile" class="btn btn-secondary" style="margin-top:1rem;display:inline-block;">
                 Modifier mes informations
             </a>
         </article>
