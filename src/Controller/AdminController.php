@@ -42,15 +42,22 @@ class AdminController
 
     public function dashboard(): string
     {
-        // On stocke le message pour la vue
+        // Gestion du message flash
         $flashSuccess = $_SESSION['flash_success'] ?? null;
-        
-        // On supprime le message pour qu'il ne s'affiche plus au prochain rafraîchissement
         unset($_SESSION['flash_success']);
+
+        // Appel au nouveau modèle pour récupérer les statistiques
+        $adminModel = new \App\Model\AdminModel();
+        $stats = $adminModel->getDashboardStats();
 
         return $this->twig->render('admin/dashboard.twig.html', [
             'page_title'       => 'Dashboard Admin - Stage-Link',
-            'session'          => ['flash_success' => $flashSuccess] // On passe le flash à Twig
+            'meta_description' => 'Tableau de bord administrateur - StageLink',
+            'admin_nom'        => $_SESSION['nom'] ?? 'Admin',
+            'admin_prenom'     => $_SESSION['prenom'] ?? '',
+            'session'          => ['flash_success' => $flashSuccess],
+            // On envoie le tableau de stats à Twig !
+            'stats'            => $stats 
         ]);
     }
 
