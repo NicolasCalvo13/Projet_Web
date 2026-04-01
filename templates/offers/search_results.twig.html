@@ -1,0 +1,40 @@
+{% extends "base.twig.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="offers-container">
+    <h1 class="text-center">Résultats de recherche</h1>
+    <p class="text-center">
+        {% if offers|length > 0 %}
+        Nous avons trouvé <strong>{{ offers|length }}</strong> offre(s) pour "<strong>{{ keyword }}</strong>".
+        {% else %}
+        Aucune offre ne correspond à votre recherche "<strong>{{ keyword }}</strong>".
+        {% endif %}
+    </p>
+
+    <div class="offers-grid mt-4">
+        {% for offer in offers %}
+        <article class="dashboard-card mb-3">
+            <div class="card-header">
+                <h2>{{ offer.titre }}</h2>
+                <span class="badge badge-primary">{{ offer.entreprise_nom }}</span>
+            </div>
+            <div class="offer-details mt-2">
+                <p>📍 <strong>Lieu :</strong> {{ offer.lieu }}</p>
+                <p>⏳ <strong>Durée :</strong> {{ offer.duree }}</p>
+                <p>📅 <strong>Début :</strong> {{ offer.date_debut|date("d/m/Y") }}</p>
+            </div>
+            <div class="offer-actions mt-3">
+                <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn btn-primary">Voir l'offre</a>
+            </div>
+        </article>
+        {% else %}
+        <div class="empty-state text-center">
+            <p>Essayez d'autres mots-clés (ex: "développeur", "Paris", "marketing"...)</p>
+            <a href="/?uri=offers" class="btn btn-secondary mt-3">Toutes les offres</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

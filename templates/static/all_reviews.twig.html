@@ -1,0 +1,45 @@
+{% extends "base.twig.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+<section class="reviews-container">
+    <h1 class="text-center">Avis des étudiants sur les entreprises</h1>
+
+    <div class="sort-container text-center mb-4">
+        <form action="/" method="GET">
+            <input type="hidden" name="uri" value="all_reviews">
+            <label for="sort">Trier par :</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="recent" {% if current_sort=='recent' %}selected{% endif %}>Les plus récents</option>
+                <option value="note_desc" {% if current_sort=='note_desc' %}selected{% endif %}>Mieux notés d'abord
+                </option>
+                <option value="note_asc" {% if current_sort=='note_asc' %}selected{% endif %}>Moins bien notés d'abord
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <div class="reviews-grid">
+        {% for review in reviews %}
+        <article class="dashboard-card mb-3">
+            <div class="card-header">
+                <h3>{{ review.nom_entreprise }}</h3>
+                <span class="badge badge-primary">{{ review.note }}/5 ⭐</span>
+            </div>
+            <div class="review-body mt-2">
+                <p><em>"{{ review.commentaire }}"</em></p>
+            </div>
+            <div class="review-footer mt-2" style="font-size: 0.9em; color: #666;">
+                Laissé par <strong>{{ review.stagiaire_prenom }}</strong> le {{ review.created_at|date("d/m/Y") }}
+            </div>
+        </article>
+        {% else %}
+        <p class="empty-state">Aucun avis n'a encore été publié sur la plateforme.</p>
+        {% endfor %}
+    </div>
+    <div>
+        <a href="?uri=reviews" class="btn btn-primary">Laisser un avis</a>
+    </div>
+</section>
+{% endblock %}

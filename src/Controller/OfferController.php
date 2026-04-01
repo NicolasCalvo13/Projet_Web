@@ -154,4 +154,27 @@ class OfferController
             echo json_encode(['success' => false, 'message' => 'Requête invalide']);
         }
     }
+
+
+    public function search(): string
+    {
+        // On récupère le mot clé depuis l'URL (?uri=search&q=motcle)
+        $keyword = $_GET['q'] ?? '';
+        $keyword = trim(htmlspecialchars($keyword));
+
+        // Si la recherche est vide, on redirige vers la liste complète
+        if ($keyword === '') {
+            header('Location: /?uri=offers');
+            exit;
+        }
+
+        // On récupère les offres correspondantes
+        $offers = $this->model->searchOffers($keyword);
+
+        return $this->twig->render('offers/search_results.twig.html', [
+            'page_title' => 'Recherche : ' . $keyword . ' - Stage-Link',
+            'offers'     => $offers,
+            'keyword'    => $keyword // Pour réafficher le mot-clé dans la barre
+        ]);
+    }
 }

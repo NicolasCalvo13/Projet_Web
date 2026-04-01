@@ -195,4 +195,40 @@ class OfferModel
             'student_id' => $studentId
         ]);
     }
+
+
+    /**
+     * Recherche des offres selon un mot-clé (dans le titre, description, lieu ou nom entreprise)
+     */
+    public function searchOffers(string $keyword): array
+    {
+        $sql = '
+            SELECT 
+                o.id,
+                o.titre,
+                o.description,
+                o.lieu,
+                o.duree,
+                o.remuneration,
+                o.date_debut,
+                o.created_at,
+                e.id        AS entreprise_id,
+                e.nom       AS entreprise_nom,
+                e.secteur   AS entreprise_secteur,
+                e.taille    AS entreprise_taille,
+                e.logo_path AS entreprise_logo
+            FROM offres o
+            LEFT JOIN entreprises e ON o.entreprise_id = e.id
+            WHERE o.titre LIKE :keyword 
+               OR o.description LIKE :keyword 
+               OR o.lieu LIKE :keyword 
+               OR e.nom LIKE :keyword
+            ORDER BY o.created_at DESC
+        ';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['keyword' => '%' . $keyword . '%']);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
