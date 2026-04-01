@@ -48,6 +48,95 @@ main {
     text-align: justify;
 }
 
+/* === HEADER SHRINK === */
+.header-style {
+    transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-shrink {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-logo {
+    transition: width 0.3s ease;
+}
+
+/* === BURGER BUTTON === */
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.burger-btn span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animation burger → croix */
+.burger-btn[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.burger-btn[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-btn[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* === BURGER MENU === */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding: 0.5rem 0;
+}
+
+.burger-menu.open {
+    display: flex;
+}
+
+.burger-menu a {
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+}
+
+.burger-menu a:hover {
+    background: #f5f5f5;
+}
+
+/* === NAVBAR RESPONSIVE === */
+/* Seuil à adapter selon ta navbar actuelle */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .burger-btn {
+        display: flex;
+    }
+}
 
 /* ============================================================
    HEADER & NAVIGATION
@@ -78,6 +167,7 @@ main {
 }
 
 .navbar {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -104,28 +194,6 @@ main {
     border-bottom: 2px solid #0a5f9e;
 }
 
-/* Checkbox cachée pour le menu mobile */
-#menu-toggle {
-    display: none;
-}
-
-.burger-label {
-    display: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    background-color: #f0fafa;
-    border-bottom: 1px solid #A2E9EB;
-}
-
-.burger-label .bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #008b8b;
-    border-radius: 3px;
-    margin: 5px 0;
-    transition: all 0.3s ease;
-}
 
 .sticky-wrapper {
     position: sticky;
@@ -144,16 +212,19 @@ main {
 /* Le formulaire agit comme la bordure externe globale */
 .header-search form {
     display: flex;
-    align-items: stretch; 
+    align-items: stretch;
     margin: 0;
     padding: 0;
     background-color: white;
     border: 2px solid #008b8b;
-    border-radius: 25px; /* Arrondi parfait */
+    border-radius: 25px;
+    /* Arrondi parfait */
     width: 100%;
     max-width: 350px;
-    overflow: hidden; /* La magie est ici : coupe tout ce qui dépasse ! */
-    height: 42px; /* On fixe une hauteur pour que tout s'aligne bien */
+    overflow: hidden;
+    /* La magie est ici : coupe tout ce qui dépasse ! */
+    height: 42px;
+    /* On fixe une hauteur pour que tout s'aligne bien */
 }
 
 /* On annule totalement les styles globaux de l'input */
@@ -172,8 +243,10 @@ main {
 .header-search button[type="submit"] {
     background-color: #A2E9EB !important;
     border: none !important;
-    border-left: 2px solid #008b8b !important; /* Ligne de séparation nette */
-    border-radius: 0 !important; /* On enlève l'arrondi du bouton pour qu'il remplisse l'espace */
+    border-left: 2px solid #008b8b !important;
+    /* Ligne de séparation nette */
+    border-radius: 0 !important;
+    /* On enlève l'arrondi du bouton pour qu'il remplisse l'espace */
     padding: 0 20px !important;
     margin: 0 !important;
     cursor: pointer;
@@ -1211,6 +1284,67 @@ textarea {
 }
 
 
+/* ============================================================
+   DASHBOARD — Profil + CV Preview
+   ============================================================ */
+.profil-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.profil-infos {
+    flex: 1;
+}
+
+.cv-preview-wrapper {
+    flex-shrink: 0;
+}
+
+.cv-preview-box {
+    width: 300px;
+    height: 424px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.cv-preview-iframe {
+    width: 794px;
+    height: 1123px;
+    transform: scale(0.378);
+    transform-origin: top left;
+    pointer-events: none;
+    border: none;
+}
+
+/* Mobile : empile verticalement */
+@media (max-width: 768px) {
+    .profil-content {
+        flex-direction: column;
+        align-items: center;
+        /* centre le CV sous les infos */
+    }
+
+    .cv-preview-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cv-preview-box {
+        width: 260px;
+        /* légèrement réduit pour tenir dans 375px */
+        height: 367px;
+    }
+
+    .cv-preview-iframe {
+        transform: scale(0.327);
+        /* 260/794 ≈ 0.327 */
+    }
+}
+
 
 /* ============================================================
    RESPONSIVE — Mobile (≤ 768px)
@@ -1241,21 +1375,18 @@ textarea {
         height: 35px !important;
     }
 
-    .burger-label {
-        display: block;
+    .nav-links {
+        display: none;
+    }
+
+    .burger-btn {
+        display: flex;
     }
 
     .navbar {
-        display: none;
-        flex-direction: column;
-        align-items: stretch;
-        padding: 0;
+        justify-content: flex-start;
     }
 
-    /* Révéler la navbar quand la checkbox est cochée */
-    #menu-toggle:checked~.navbar {
-        display: flex;
-    }
 
     .navbar a {
         padding: 12px 20px;
