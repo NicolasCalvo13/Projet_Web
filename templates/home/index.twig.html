@@ -41,44 +41,41 @@
     </div>
 
     {% if offers is not empty %}
-        <div class="offers-grid">
-            {% for offer in offers %}
-                <article class="offer-card" aria-label="{{ offer.titre }}">
-                    <div class="offer-card-header">
-                        <img
-                            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}"
-                            alt="{{ offer.entreprise_nom }}"
-                            class="offer-card-logo"
-                            width="48"
-                        >
-                        <div>
-                            <h3 class="offer-card-title">{{ offer.titre }}</h3>
-                            <span class="offer-card-company">{{ offer.entreprise_nom }}</span>
-                        </div>
-                    </div>
-                    <div class="offer-meta">
-                        <span class="badge">{{ offer.ville }}</span>
-                        <span class="badge">{{ offer.secteur }}</span>
-                        <span class="badge">{{ offer.remuneration }}€ / mois</span>
-                    </div>
-                    <p class="offer-card-excerpt">
-                        {{ (offer.description|striptags)|slice(0, 120) }}…
-                    </p>
-                    <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn-primary offer-card-btn">
-                        Voir l'offre
-                    </a>
-                </article>
-            {% endfor %}
-        </div>
+    <div class="offers-grid">
+        {% for offer in offers %}
+        <article class="offer-card" aria-label="{{ offer.titre }}">
+            <div class="offer-card-header">
+                <img src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}"
+                    alt="{{ offer.entreprise_nom }}" class="offer-card-logo" width="48">
+                <div>
+                    <h3 class="offer-card-title">{{ offer.titre }}</h3>
+                    <span class="offer-card-company">{{ offer.entreprise_nom }}</span>
+                </div>
+            </div>
+            <div class="offer-meta">
+                <span class="badge">{{ offer.ville }}</span>
+                <span class="badge">{{ offer.secteur }}</span>
+                <span class="badge">{{ offer.remuneration }}€ / mois</span>
+            </div>
+            <p class="offer-card-excerpt">
+                {{ (offer.description|striptags)|slice(0, 120) }}…
+            </p>
+            <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn-primary offer-card-btn">
+                Voir l'offre
+            </a>
+        </article>
+        {% endfor %}
+    </div>
     {% else %}
-        <p class="empty-state">Aucune offre disponible pour le moment. Revenez bientôt !</p>
+    <p class="empty-state">Aucune offre disponible pour le moment. Revenez bientôt !</p>
     {% endif %}
 </section>
-
+{%if session_role !== 'entreprise'%}
 <section class="home-cta section-card" aria-labelledby="cta-title">
     <h2 id="cta-title">Vous êtes une entreprise ?</h2>
     <p>Publiez vos offres de stage et trouvez les meilleurs profils étudiants.</p>
     <a href="/?uri=login" class="btn-primary">Se connecter en tant qu'entreprise</a>
 </section>
+{% endif %}
 
 {% endblock %}

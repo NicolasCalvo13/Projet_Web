@@ -31,9 +31,11 @@
                 <a href="/?uri=login" class="btn-compte">
                     <img src="../assets/images/icon-user.png" alt="Mon compte" width="50" height="50">
                 </a>
+                {%if session_role !== 'entreprise'%}
                 <a href="/?uri=wishlist" class="btn-favs">
                     <img src="../assets/images/icon-fav.png" alt="Favoris" width="50" height="50">
                 </a>
+                {%endif%}
             </div>
         </header>
 

@@ -5,76 +5,78 @@
 {% block body %}
 
 {% if session.flash_success %}
-    <div class="alert-success">
-        {{ session.flash_success }}
-    </div>
+<div class="alert-success">
+  {{ session.flash_success }}
+</div>
 {% endif %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    Dashboard Admin
-  </nav>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <a href="/?uri=home">Accueil</a><span>›</span>
+  Dashboard Admin
+</nav>
 
-  <h1 style="color:#007575;">Tableau de bord — Administrateur</h1>
+<h1 style="color:#007575;">Tableau de bord — Administrateur</h1>
 
-  <!-- Statistiques globales -->
-  <div class="stats-grid" aria-label="Statistiques globales">
-    <div class="stat-card">
-      <div class="stat-number">--</div>
-      <div class="stat-label">Offres disponibles</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">--</div>
-      <div class="stat-label">Entreprises</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">--</div>
-      <div class="stat-label">Étudiants</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">--</div>
-      <div class="stat-label">Pilotes</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">--</div>
-      <div class="stat-label">Note moyenne entreprises</div>
-    </div>
+<!-- Statistiques globales -->
+<div class="stats-grid" aria-label="Statistiques globales">
+  <div class="stat-card">
+    <div class="stat-number">--</div>
+    <div class="stat-label">Offres disponibles</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">--</div>
+    <div class="stat-label">Entreprises</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">--</div>
+    <div class="stat-label">Étudiants</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">--</div>
+    <div class="stat-label">Pilotes</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">--</div>
+    <div class="stat-label">Note moyenne entreprises</div>
+  </div>
+</div>
+
+<!-- Raccourcis de gestion -->
+<div class="admin-grid">
+
+  <div class="admin-card">
+    <h3>📋 Offres de stage</h3>
+    <a href="/?uri=offers">Voir toutes les offres</a>
+    <a href="/?uri=offer_create">Créer une offre</a>
   </div>
 
-  <!-- Raccourcis de gestion -->
-  <div class="admin-grid">
-
-    <div class="admin-card">
-      <h3>📋 Offres de stage</h3>
-      <a href="/?uri=offers">Voir toutes les offres</a>
-      <a href="/?uri=offer_create">Créer une offre</a>
-    </div>
-
-    <div class="admin-card">
-      <h3>🏢 Entreprises</h3>
-      <a href="/?uri=admin_companies">Gérer les entreprises</a>
-      <a href="/?uri=admin_company_create">Créer une entreprise</a>
-    </div>
-
-    <div class="admin-card">
-      <h3>👨‍🏫 Pilotes</h3>
-      <a href="/?uri=admin_pilots">Gérer les pilotes</a>
-      <a href="/?uri=pilot_create">Créer un compte pilote</a>
-    </div>
-
-    <div class="admin-card">
-      <h3>🎓 Étudiants</h3>
-      <a href="/?uri=admin_students">Gérer les étudiants</a>
-      <a href="/?uri=student_create">Créer un compte étudiant</a>
-    </div>
-
-    <div class="admin-card">
-      <h3>📊 Statistiques</h3>
-      <a href="/?uri=stats_offers">Statistiques des offres</a>
-      <a href="/?uri=reviews">Voir les évaluations</a>
-    </div>
-
+  <div class="admin-card">
+    <h3>🏢 Entreprises</h3>
+    <a href="/?uri=admin_companies">Gérer les entreprises</a>
+    <a href="/?uri=admin_company_create">Créer une entreprise</a>
   </div>
 
+  <div class="admin-card">
+    <h3>👨‍🏫 Pilotes</h3>
+    <a href="/?uri=admin_pilots">Gérer les pilotes</a>
+    <a href="/?uri=pilot_create">Créer un compte pilote</a>
+  </div>
+
+  <div class="admin-card">
+    <h3>🎓 Étudiants</h3>
+    <a href="/?uri=admin_students">Gérer les étudiants</a>
+    <a href="/?uri=student_create">Créer un compte étudiant</a>
+  </div>
+
+  <div class="admin-card">
+    <h3>📊 Statistiques</h3>
+    <a href="/?uri=stats_offers">Statistiques des offres</a>
+    <a href="/?uri=reviews">Voir les évaluations</a>
+  </div>
+
+</div>
+
+  <div>
+    <a href="?uri=logout" class="btn btn-danger">Déconnexion</a>
+  </div>
 {% endblock %}
-
