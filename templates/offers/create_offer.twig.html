@@ -1,138 +1,36 @@
 {% extends "base.twig.html" %}
-
 {% block title %}Créer une offre - Stage-Link{% endblock %}
 
 {% block body %}
+
 <nav class="breadcrumb" aria-label="Fil d'Ariane">
     <a href="/?uri=home">Accueil</a><span> › </span>
     <a href="/?uri=company_dashboard">Espace entreprise</a><span> › </span>
     Créer une offre
 </nav>
 
-
 <h1>Créer une offre</h1>
 
-<form method="post" action="/?uri=create_offer">
+{% if errors is defined and errors is not empty %}
+    <div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
+{% endif %}
 
-    <div class="form-row">
-        <label for="titre">Titre de l'offre *</label><br>
-        <input
-            type="text"
-            id="titre"
-            name="titre"
-            value="{{ old.titre|default('') }}"
-            required
-        >
-        {% if errors.titre is defined %}
-            <div class="error">{{ errors.titre }}</div>
+<section class="section-card">
+    <form method="POST" action="/?uri=create_offer" id="offerForm" novalidate>
+
+        {% include '_partials/_offer_form_fields.twig.html' %}
+
+        {% if csrf_token is defined %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         {% endif %}
-    </div>
 
-    <div class="form-row">
-        <label for="ville">Ville *</label><br>
-        <input
-            type="text"
-            id="ville"
-            name="ville"
-            value="{{ old.ville|default('') }}"
-            required
-        >
-        {% if errors.ville is defined %}
-            <div class="error">{{ errors.ville }}</div>
-        {% endif %}
-    </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Publier l'offre</button>
+            <a href="/?uri=company_dashboard" class="btn-secondary">Annuler</a>
+        </div>
 
-    <div class="form-row">
-        <label for="duree">Durée (en mois) *</label><br>
-        <input
-            type="number"
-            id="duree"
-            name="duree"
-            min="1"
-            max="12"
-            value="{{ old.duree|default('') }}"
-            required
-        >
-        {% if errors.duree is defined %}
-            <div class="error">{{ errors.duree }}</div>
-        {% endif %}
-    </div>
+    </form>
+</section>
 
-    <div class="form-row">
-        <label for="date_debut">Date de début souhaitée *</label><br>
-        <input
-            type="date"
-            id="date_debut"
-            name="date_debut"
-            value="{{ old.date_debut|default('') }}"
-            required
-        >
-        {% if errors.date_debut is defined %}
-            <div class="error">{{ errors.date_debut }}</div>
-        {% endif %}
-    </div>
-
-    <div class="form-row">
-        <label for="remuneration">Rémunération (€/mois)</label><br>
-        <input
-            type="number"
-            id="remuneration"
-            name="remuneration"
-            min="0"
-            step="10"
-            value="{{ old.remuneration|default('') }}"
-        >
-        {% if errors.remuneration is defined %}
-            <div class="error">{{ errors.remuneration }}</div>
-        {% endif %}
-    </div>
-
-    <div class="form-row">
-        <label for="description">Description de l'offre *</label><br>
-        <textarea
-            id="description"
-            name="description"
-            rows="6"
-            required
-        >{{ old.description|default('') }}</textarea>
-        {% if errors.description is defined %}
-            <div class="error">{{ errors.description }}</div>
-        {% endif %}
-    </div>
-
-    <div class="form-row">
-        <label for="competences">Compétences recherchées *</label><br>
-        <textarea
-            id="competences"
-            name="competences"
-            rows="4"
-            required
-        >{{ old.competences|default('') }}</textarea>
-        {% if errors.competences is defined %}
-            <div class="error">{{ errors.competences }}</div>
-        {% endif %}
-    </div>
-
-    <div class="form-row">
-        <label for="profil">Profil recherché</label><br>
-        <textarea
-            id="profil"
-            name="profil"
-            rows="4"
-        >{{ old.profil|default('') }}</textarea>
-        {% if errors.profil is defined %}
-            <div class="error">{{ errors.profil }}</div>
-        {% endif %}
-    </div>
-
-    {% if csrf_token is defined %}
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    {% endif %}
-
-    <div class="form-row">
-        <button type="submit">Envoyer</button>
-    </div>
-
-</form>
-
+<script src="../assets/js/offer_form_validation.js"></script>
 {% endblock %}

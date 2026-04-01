@@ -3,6 +3,11 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
+
+{% if success %}
+    <div class="alert-success">✅ Avis publié avec succès !</div>
+{%endif%}
+
 <section class="reviews-container">
     <h1 class="text-center">Avis des étudiants sur les entreprises</h1>
 

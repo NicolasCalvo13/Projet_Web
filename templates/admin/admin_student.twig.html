@@ -1,0 +1,73 @@
+{% extends "base.twig.html" %}
+{% block title %}Gérer les étudiants - StageLink{% endblock %}
+
+{% block body %}
+
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+    Gérer les étudiants
+</nav>
+
+<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+    <h1 style="color:#007575;">Gérer les étudiants</h1>
+    <a href="/?uri=admin_student_create" class="btn-primary">+ Créer un étudiant</a>
+</div>
+
+{% if success == 'deleted' %}
+    <div class="alert alert-success">✅ L'étudiant a bien été supprimé.</div>
+{% endif %}
+
+<section class="section-card">
+    {% if etudiants is empty %}
+        <p class="empty-state">Aucun étudiant enregistré pour le moment.</p>
+    {% else %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Nom / Prénom</th>
+                    <th>Email</th>
+                    <th>École</th>
+                    <th>Formation</th>
+                    <th>Téléphone</th>
+                    <th>Inscrit le</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in etudiants %}
+                <tr>
+                    <td data-label="Photo">
+                        {% if e.photo %}
+                            <img src="{{ e.photo }}" alt="Photo de {{ e.prenom }}"
+                                 style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid #A2E9EB;">
+                        {% else %}
+                            <div style="width:36px;height:36px;border-radius:50%;background:#e0fafa;
+                                        display:flex;align-items:center;justify-content:center;
+                                        font-size:1.1rem;">👤</div>
+                        {% endif %}
+                    </td>
+                    <td data-label="Nom / Prénom"><strong>{{ e.nom }} {{ e.prenom }}</strong></td>
+                    <td data-label="Email">{{ e.email }}</td>
+                    <td data-label="École">{{ e.ecole ?? '—' }}</td>
+                    <td data-label="Formation">{{ e.formation ?? '—' }}</td>
+                    <td data-label="Téléphone">{{ e.telephone ?? '—' }}</td>
+                    <td data-label="Inscrit le">{{ e.created_at|date('d/m/Y') }}</td>
+                    <td data-label="Actions" class="table-actions">
+                        <form method="POST" action="/?uri=admin_delete_student">
+                            <input type="hidden" name="user_id" value="{{ e.user_id }}">
+                            <button type="button" class="btn-danger btn-sm"
+                                    onclick="if(confirm('Supprimer {{ e.prenom }} {{ e.nom }} ?\n\nSes candidatures et favoris seront également supprimés.')) this.closest('form').submit()">
+                                Supprimer
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</section>
+
+{% endblock %}

@@ -1,112 +1,48 @@
 {% extends "base.twig.html" %}
-
 {% block title %}Créer une offre - StageLink{% endblock %}
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span> › </span>
+    <a href="/?uri=admin_dashboard">Dashboard admin</a><span> › </span>
     Créer une offre
-  </nav>
+</nav>
 
-  <h1 style="color:#007575;">Créer une offre de stage</h1>
+<h1 style="color:#007575;">Créer une offre de stage <span class="badge badge-admin">Admin</span></h1>
 
-  <section class="section-card">
-    <h2>Informations de l'offre</h2>
-    <form method="POST" action="#" id="createOfferForm" novalidate>
+{% if errors is defined and errors is not empty %}
+    <div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
+{% endif %}
 
-      <div class="form-group">
-        <label for="offer-title">Titre de l'offre <span style="color:red">*</span></label>
-        <input type="text" id="offer-title" name="title" maxlength="150"
-               placeholder="Ex : Développeur Web Full-Stack" required aria-required="true">
-        <span class="form-error" id="title-error">Le titre est obligatoire.</span>
-      </div>
+<section class="section-card">
+    <form method="POST" action="/?uri=offer_create" id="offerForm" novalidate>
 
-      <div class="form-group">
-        <label for="offer-company">Entreprise <span style="color:red">*</span></label>
-        <select id="offer-company" name="company_id" required aria-required="true">
-          <option value="">-- Sélectionner une entreprise --</option>
-          {# plus tard : boucler sur les entreprises venant de la BDD #}
-          <option value="1">Entreprise A</option>
-          <option value="2">Entreprise B</option>
-        </select>
-        <span class="form-error" id="company-error">Veuillez sélectionner une entreprise.</span>
-      </div>
+        {# CHAMP SPÉCIFIQUE ADMIN #}
+        <div class="form-group">
+            <label for="entreprise_id">Entreprise <span class="required">*</span></label>
+            <select id="entreprise_id" name="entreprise_id" required>
+                <option value="" disabled selected>-- Sélectionnez une entreprise --</option>
+                {% for entreprise in entreprises %}
+                    <option value="{{ entreprise.id }}"
+                        {{ old.entreprise_id is defined and old.entreprise_id == entreprise.id ? 'selected' : '' }}>
+                        {{ entreprise.nom }}
+                    </option>
+                {% endfor %}
+            </select>
+            <span class="form-error" id="entreprise-error">Veuillez sélectionner une entreprise.</span>
+        </div>
 
-      <div class="form-group">
-        <label for="offer-desc">Description <span style="color:red">*</span></label>
-        <textarea id="offer-desc" name="description" maxlength="3000"
-                  placeholder="Décrivez les missions, le contexte..."
-                  required aria-required="true"></textarea>
-        <span class="form-error" id="desc-error">
-          La description est obligatoire (minimum 30 caractères).
-        </span>
-      </div>
+        {# CHAMPS COMMUNS #}
+        {% include '_partials/_offer_form_fields.twig.html' %}
 
-      <div class="form-group">
-        <label for="offer-skills">
-          Compétences <span style="font-weight:normal;color:#777;">(séparées par des virgules)</span>
-        </label>
-        <input type="text" id="offer-skills" name="skills"
-               placeholder="Ex : PHP, MySQL, HTML, CSS">
-      </div>
-
-      <div class="form-group">
-        <label for="offer-salary">Base de rémunération (€/mois) <span style="color:red">*</span></label>
-        <input type="number" id="offer-salary" name="salary"
-               min="0" max="10000" placeholder="Ex : 600" required aria-required="true">
-        <span class="form-error" id="salary-error">Veuillez indiquer une rémunération valide.</span>
-      </div>
-
-      <div class="form-group">
-        <label for="offer-date">Date de l'offre <span style="color:red">*</span></label>
-        <input type="date" id="offer-date" name="offer_date" required aria-required="true">
-        <span class="form-error" id="date-error">La date est obligatoire.</span>
-      </div>
-
-      <div style="display:flex;gap:15px;flex-wrap:wrap;">
-        <button type="submit" class="btn-primary">Publier l'offre</button>
-        <a href="/?uri=admin_dashboard" class="btn-secondary">Annuler</a>
-      </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Publier l'offre</button>
+            <a href="/?uri=admin_dashboard" class="btn-secondary">Annuler</a>
+        </div>
 
     </form>
-  </section>
+</section>
 
-  <script>
-    document.getElementById('createOfferForm').addEventListener('submit', function(e) {
-      let valid = true;
-      document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
-
-      const title = document.getElementById('offer-title');
-      const company = document.getElementById('offer-company');
-      const desc = document.getElementById('offer-desc');
-      const salary = document.getElementById('offer-salary');
-      const date = document.getElementById('offer-date');
-
-      if (!title.value.trim()) {
-        document.getElementById('title-error').style.display = 'block';
-        valid = false;
-      }
-      if (!company.value) {
-        document.getElementById('company-error').style.display = 'block';
-        valid = false;
-      }
-      if (desc.value.trim().length < 30) {
-        document.getElementById('desc-error').style.display = 'block';
-        valid = false;
-      }
-      if (!salary.value || salary.value < 0) {
-        document.getElementById('salary-error').style.display = 'block';
-        valid = false;
-      }
-      if (!date.value) {
-        document.getElementById('date-error').style.display = 'block';
-        valid = false;
-      }
-      if (!valid) e.preventDefault();
-    });
-  </script>
-
+<script src="../assets/js/offer_form_validation.js"></script>
 {% endblock %}
-

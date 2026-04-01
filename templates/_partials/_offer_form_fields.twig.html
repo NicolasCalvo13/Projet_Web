@@ -1,0 +1,91 @@
+<div class="form-group">
+    <label for="titre">Titre de l'offre <span class="required">*</span></label>
+    <input type="text" id="titre" name="titre" maxlength="200"
+           placeholder="Ex : Développeur Web Full-Stack"
+           value="{{ old.titre|default('') }}" required aria-required="true">
+    {% if errors.titre is defined %}
+        <span class="form-error">{{ errors.titre }}</span>
+    {% else %}
+        <span class="form-error" id="titre-error">Le titre est obligatoire.</span>
+    {% endif %}
+</div>
+
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="ville">Ville <span class="required">*</span></label>
+        <input type="text" id="ville" name="ville"
+               placeholder="Ex : Paris, Lyon..."
+               value="{{ old.ville|default('') }}" required>
+        {% if errors.ville is defined %}
+            <span class="form-error">{{ errors.ville }}</span>
+        {% else %}
+            <span class="form-error" id="ville-error">La ville est obligatoire.</span>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="duree">Durée (en mois) <span class="required">*</span></label>
+        <input type="number" id="duree" name="duree" min="1" max="12"
+               placeholder="Ex : 6"
+               value="{{ old.duree|default('') }}" required>
+        {% if errors.duree is defined %}
+            <span class="form-error">{{ errors.duree }}</span>
+        {% else %}
+            <span class="form-error" id="duree-error">La durée est obligatoire.</span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="date_debut">Date de début <span class="required">*</span></label>
+        <input type="date" id="date_debut" name="date_debut"
+               value="{{ old.date_debut|default('') }}" required>
+        {% if errors.date_debut is defined %}
+            <span class="form-error">{{ errors.date_debut }}</span>
+        {% else %}
+            <span class="form-error" id="date-error">La date est obligatoire.</span>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="remuneration">Rémunération (€/mois)</label>
+        <input type="number" id="remuneration" name="remuneration"
+               min="0" step="10" placeholder="Ex : 600"
+               value="{{ old.remuneration|default('') }}">
+        {% if errors.remuneration is defined %}
+            <span class="form-error">{{ errors.remuneration }}</span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="description">Description de l'offre <span class="required">*</span></label>
+    <textarea id="description" name="description" rows="8"
+              placeholder="Décrivez le contexte, les missions..."
+              required>{{ old.description|default('') }}</textarea>
+    {% if errors.description is defined %}
+        <span class="form-error">{{ errors.description }}</span>
+    {% else %}
+        <span class="form-error" id="desc-error">La description est obligatoire (30 caractères minimum).</span>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="competences">Compétences recherchées <span class="required">*</span></label>
+    <textarea id="competences" name="competences" rows="3"
+              placeholder="Ex : PHP, MySQL, HTML, CSS... (séparées par des virgules)"
+              required>{{ old.competences|default('') }}</textarea>
+    {% if errors.competences is defined %}
+        <span class="form-error">{{ errors.competences }}</span>
+    {% endif %}
+</div>
+
+<div class="form-group">
+    <label for="profil">Profil recherché</label>
+    <textarea id="profil" name="profil" rows="3"
+              placeholder="Ex : Étudiant(e) en Bac+4/5 informatique...">{{ old.profil|default('') }}</textarea>
+    {% if errors.profil is defined %}
+        <span class="form-error">{{ errors.profil }}</span>
+    {% endif %}
+</div>

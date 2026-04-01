@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Twig\Environment;
+use App\Model\ReviewModel;
+use App\Model\OfferModel;
+use App\Model\UserModel;
+
 
 class AdminController
 {
     private Environment $twig;
+    private ReviewModel $reviewModel;
+    private OfferModel $model;
+    private UserModel $userModel;
 
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
+        $this->reviewModel = new ReviewModel();
+        $this->model = new OfferModel();
+        $this->userModel = new UserModel();
         // On sécurise l'intégralité du contrôleur dès sa construction
         $this->requireRole('admin');
     }
@@ -51,46 +61,129 @@ class AdminController
         $stats = $adminModel->getDashboardStats();
 
         return $this->twig->render('admin/dashboard.twig.html', [
-            'page_title'       => 'Dashboard Admin - Stage-Link',
+            'page_title' => 'Dashboard Admin - Stage-Link',
             'meta_description' => 'Tableau de bord administrateur - StageLink',
-            'admin_nom'        => $_SESSION['nom'] ?? 'Admin',
-            'admin_prenom'     => $_SESSION['prenom'] ?? '',
-            'session'          => ['flash_success' => $flashSuccess],
+            'admin_nom' => $_SESSION['nom'] ?? 'Admin',
+            'admin_prenom' => $_SESSION['prenom'] ?? '',
+            'session' => ['flash_success' => $flashSuccess],
             // On envoie le tableau de stats à Twig !
-            'stats'            => $stats 
+            'stats' => $stats,
+            'success' => $_GET['success'] ?? null,
         ]);
     }
 
     public function createCompanyForm(): string
     {
         return $this->twig->render('admin/company_create.twig.html', [
-            'page_title'       => 'Créer une entreprise - StageLink',
+            'page_title' => 'Créer une entreprise - StageLink',
             'meta_description' => 'Créer une entreprise - StageLink',
+
         ]);
     }
 
     public function createOfferForm(): string
-    {  
+    {
+        // Vérification rôle admin
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $offerModel = new OfferModel();
+        $entreprises = $offerModel->getAllEntreprises();
+
         return $this->twig->render('admin/offer_create.twig.html', [
-            'page_title'       => 'Créer une offre - StageLink',
-            'meta_description' => 'Créer une offre de stage - StageLink',
+            'entreprises' => $entreprises,
         ]);
     }
-    
+
+    public function createOffer(): string
+    {
+        // Vérification rôle admin
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $offerModel = new OfferModel();
+        $entreprises = $offerModel->getAllEntreprises();
+
+        // Récupération des champs POST
+        $titre = trim($_POST['titre'] ?? '');
+        $entrepriseId = (int) ($_POST['entreprise_id'] ?? 0);
+        $ville = trim($_POST['ville'] ?? '');
+        $duree = trim($_POST['duree'] ?? '');
+        $date_debut = trim($_POST['date_debut'] ?? '');
+        $remuneration = $_POST['remuneration'] ?? '';
+        $description = trim($_POST['description'] ?? '');
+        $competences = trim($_POST['competences'] ?? '');
+        $profil = trim($_POST['profil'] ?? '');
+
+        // Validation
+        $errors = [];
+
+        if ($titre === '') {
+            $errors['titre'] = 'Le titre est obligatoire.';
+        }
+        if ($entrepriseId === 0) {
+            $errors['entreprise_id'] = 'Veuillez sélectionner une entreprise.';
+        }
+        if ($ville === '') {
+            $errors['ville'] = 'La ville est obligatoire.';
+        }
+        if ($duree === '' || (int) $duree < 1) {
+            $errors['duree'] = 'La durée est obligatoire (minimum 1 mois).';
+        }
+        if ($date_debut === '') {
+            $errors['date_debut'] = 'La date de début est obligatoire.';
+        }
+        if (strlen($description) < 30) {
+            $errors['description'] = 'La description est obligatoire (minimum 30 caractères).';
+        }
+        if ($competences === '') {
+            $errors['competences'] = 'Les compétences sont obligatoires.';
+        }
+
+        // Si erreurs → on ré-affiche le formulaire avec les valeurs saisies
+        if (!empty($errors)) {
+            return $this->twig->render('admin/offer_create.twig.html', [
+                'entreprises' => $entreprises,
+                'errors' => $errors,
+                'old' => $_POST,  // repopule les champs
+            ]);
+        }
+
+        // Insertion via OfferModel
+        $result = $offerModel->createOffer($_POST, $entrepriseId);
+
+        if ($result) {
+            header('Location: /?uri=admin_dashboard&success=offer_created');
+            exit;
+        }
+
+        // Erreur BDD inattendue
+        return $this->twig->render('offer_create.twig.html', [
+            'entreprises' => $entreprises,
+            'errors' => ['global' => 'Une erreur est survenue, veuillez réessayer.'],
+            'old' => $_POST,
+        ]);
+    }
+
+
     public function createPilotForm(): string
     {
         // Le contrôle de rôle est déjà géré par le constructeur !
         return $this->twig->render('admin/pilot_create.twig.html', [
-            'page_title'       => 'Créer un compte Pilote - StageLink',
+            'page_title' => 'Créer un compte Pilote - StageLink',
             'meta_description' => 'Créer un compte pilote - StageLink',
         ]);
     }
 
     public function createStudentForm(): string
-    {   
+    {
         // Le contrôle de rôle est déjà géré par le constructeur !
         return $this->twig->render('admin/student_create.twig.html', [
-            'page_title'       => 'Créer un compte Étudiant - StageLink',
+            'page_title' => 'Créer un compte Étudiant - StageLink',
             'meta_description' => 'Créer un compte étudiant - StageLink',
         ]);
     }
@@ -100,12 +193,12 @@ class AdminController
     {
         // On vérifie qu'on est bien en POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+
             // 1. Récupération des données
-            $name     = trim($_POST['name'] ?? '');
-            $siret    = trim($_POST['siret'] ?? '');
-            $secteur  = trim($_POST['secteur'] ?? '');
-            $email    = trim($_POST['email'] ?? '');
+            $name = trim($_POST['name'] ?? '');
+            $siret = trim($_POST['siret'] ?? '');
+            $secteur = trim($_POST['secteur'] ?? '');
+            $email = trim($_POST['email'] ?? '');
             $password = trim($_POST['password'] ?? '');
 
             // 2. Validation de base côté serveur
@@ -133,13 +226,143 @@ class AdminController
                 header('Location: /?uri=admin_dashboard');
             } else {
                 $_SESSION['flash_error'] = "Une erreur est survenue lors de la création en base de données.";
-                header('Location: /?uri=admin_company_create');
+                header('Location: /?uri=admin/admin_company_create');
             }
             exit;
         }
-        
+
         // Si on essaie d'accéder à l'URL en GET, on redirige vers le formulaire
         header('Location: /?uri=admin_company_create');
         exit;
     }
+
+
+
+    public function manageOffers(): string
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $offerModel = new OfferModel();
+
+        return $this->twig->render('admin/admin_offers.twig.html', [
+            'offres' => $offerModel->findAll(),
+            'success' => $_GET['success'] ?? null,
+        ]);
+    }
+
+    public function deleteOffer(): void
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $id = (int) ($_POST['offre_id'] ?? 0);
+
+        if ($id > 0) {
+            $offerModel = new OfferModel();
+            $offerModel->deleteOffer($id);
+        }
+
+        header('Location: /?uri=admin_manage_offers&success=deleted');
+        exit;
+    }
+
+    public function manageCompanies(): string
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $offerModel = new OfferModel();
+
+        return $this->twig->render('admin/admin_companies.twig.html', [
+            'entreprises' => $offerModel->getAllEntreprisesDetails(),
+            'success' => $_GET['success'] ?? null,
+        ]);
+    }
+
+    public function deleteCompany(): void
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $id = (int) ($_POST['entreprise_id'] ?? 0);
+
+        if ($id > 0) {
+            $offerModel = new OfferModel();
+            $offerModel->deleteEntreprise($id);
+        }
+
+        header('Location: /?uri=admin_manage_companies&success=deleted');
+        exit;
+    }
+
+    public function manageStudents(): string
+{
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header('Location: /?uri=login');
+        exit;
+    }
+
+    return $this->twig->render('admin/admin_student.twig.html', [
+        'etudiants' => $this->userModel->getAllStudents(),
+        'success'   => $_GET['success'] ?? null,
+    ]);
+}
+
+public function deleteStudent(): void
+{
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header('Location: /?uri=login');
+        exit;
+    }
+
+    $userId = (int) ($_POST['user_id'] ?? 0);
+
+    if ($userId > 0) {
+        $this->userModel->deleteStudent($userId);
+    }
+
+    header('Location: /?uri=admin_manage_students&success=deleted');
+    exit;
+}
+
+
+public function manageReviews(): string
+{
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header('Location: /?uri=login');
+        exit;
+    }
+
+
+    return $this->twig->render('admin/admin_reviews.twig.html', [
+        'avis'    => $this->reviewModel->getAllReviews(),
+        'success' => $_GET['success'] ?? null,
+    ]);
+}
+
+public function deleteReview(): void
+{
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header('Location: /?uri=login');
+        exit;
+    }
+
+    $id = (int) ($_POST['avis_id'] ?? 0);
+
+    if ($id > 0) {
+        $this->reviewModel->deleteReview($id);
+    }
+
+    header('Location: /?uri=admin_manage_reviews&success=deleted');
+    exit;
+}
 }

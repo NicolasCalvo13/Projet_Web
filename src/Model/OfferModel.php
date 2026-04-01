@@ -12,8 +12,8 @@ class OfferModel
 
     public function __construct(?PDO $db = null)
     {
-        $this->db = $db ?? 
-    Database::getConnection();
+        $this->db = $db ??
+            Database::getConnection();
     }
 
     /**
@@ -135,27 +135,27 @@ class OfferModel
 
         $stmt = $this->db->prepare($sql);
 
-        $titre        = trim($postData['titre']        ?? '');
-        $description  = trim($postData['description']  ?? '');
-        $lieu         = trim($postData['ville']        ?? ''); // champ du form = ville
-        $duree        = trim($postData['duree']        ?? '');
-        $date_debut   = trim($postData['date_debut']   ?? '');
-        $remuneration = $postData['remuneration'] !== '' ? (float)$postData['remuneration'] : null;
+        $titre = trim($postData['titre'] ?? '');
+        $description = trim($postData['description'] ?? '');
+        $lieu = trim($postData['ville'] ?? ''); // champ du form = ville
+        $duree = trim($postData['duree'] ?? '');
+        $date_debut = trim($postData['date_debut'] ?? '');
+        $remuneration = $postData['remuneration'] !== '' ? (float) $postData['remuneration'] : null;
 
         $stmt->bindValue(':entreprise_id', $entrepriseId, PDO::PARAM_INT);
-        $stmt->bindValue(':titre',         $titre,       PDO::PARAM_STR);
-        $stmt->bindValue(':description',   $description, PDO::PARAM_STR);
-        $stmt->bindValue(':lieu',          $lieu,        PDO::PARAM_STR);
-        $stmt->bindValue(':duree',         $duree,       PDO::PARAM_STR);
+        $stmt->bindValue(':titre', $titre, PDO::PARAM_STR);
+        $stmt->bindValue(':description', $description, PDO::PARAM_STR);
+        $stmt->bindValue(':lieu', $lieu, PDO::PARAM_STR);
+        $stmt->bindValue(':duree', $duree, PDO::PARAM_STR);
         if ($remuneration === null) {
             $stmt->bindValue(':remuneration', null, PDO::PARAM_NULL);
         } else {
             $stmt->bindValue(':remuneration', $remuneration);
         }
-        $stmt->bindValue(':date_debut',    $date_debut,  PDO::PARAM_STR);
+        $stmt->bindValue(':date_debut', $date_debut, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            return (int)$this->db->lastInsertId();
+            return (int) $this->db->lastInsertId();
         }
 
         return false;
@@ -173,9 +173,9 @@ class OfferModel
             LEFT JOIN entreprises e ON o.entreprise_id = e.id
             WHERE w.student_id = :student_id
         ');
-        
+
         $stmt->execute(['student_id' => $studentId]);
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -189,7 +189,7 @@ class OfferModel
             DELETE FROM wishlist 
             WHERE id = :id AND student_id = :student_id
         ');
-        
+
         return $stmt->execute([
             'id' => $wishlistId,
             'student_id' => $studentId
@@ -228,7 +228,47 @@ class OfferModel
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['keyword' => '%' . $keyword . '%']);
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function getAllEntreprises(): array
+    {
+        $stmt = $this->db->query('SELECT id, nom FROM entreprises ORDER BY nom ASC');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function deleteOffer(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM offres WHERE id = :id');
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function getAllEntreprisesDetails(): array
+{
+    $stmt = $this->db->query('
+        SELECT id, nom, secteur, taille, telephone, logo_path
+        FROM entreprises
+        ORDER BY nom ASC
+    ');
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function deleteEntreprise(int $id): bool
+{
+    // Récupère le user_id lié à cette entreprise
+    $stmt = $this->db->prepare('SELECT user_id FROM entreprises WHERE id = :id');
+    $stmt->execute(['id' => $id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row) return false;
+
+    // Supprimer l'utilisateur → cascade automatique sur :
+    // entreprises → offres → candidatures, wishlist
+    //             → avis
+    $stmt = $this->db->prepare('DELETE FROM utilisateurs WHERE id = :user_id');
+    return $stmt->execute(['user_id' => $row['user_id']]);
+}
 }

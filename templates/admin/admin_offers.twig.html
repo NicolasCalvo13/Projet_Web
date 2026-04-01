@@ -1,0 +1,63 @@
+{% extends "base.twig.html" %}
+{% block title %}Gérer les offres - StageLink{% endblock %}
+
+{% block body %}
+
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+    Gérer les offres
+</nav>
+
+<div
+    style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+    <h1 style="color:#007575;">Gérer les offres</h1>
+    <a href="/?uri=offer_create" class="btn-primary">+ Créer une offre</a>
+</div>
+
+{% if success == 'deleted' %}
+<div class="alert alert-success">✅ L'offre a bien été supprimée.</div>
+{% endif %}
+
+<section class="section-card">
+    {% if offres is empty %}
+    <p class="empty-state">Aucune offre disponible pour le moment.</p>
+    {% else %}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Entreprise</th>
+                <th>Ville</th>
+                <th>Durée</th>
+                <th>Rémunération</th>
+                <th>Date début</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td><strong>{{ offre.titre }}</strong></td>
+                <td>{{ offre.entreprise_nom }}</td>
+                <td>{{ offre.lieu }}</td>
+                <td>{{ offre.duree }}</td>
+                <td>{{ offre.remuneration ? offre.remuneration ~ ' €' : '—' }}</td>
+                <td>{{ offre.date_debut }}</td>
+                <td class="table-actions">
+                    <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-secondary btn-sm">Voir</a>
+
+                    <form method="POST" action="/?uri=admin_delete_offer"
+                        onsubmit="return confirm('Supprimer l\'offre « {{ offre.titre }} » ?')">
+                        <input type="hidden" name="offre_id" value="{{ offre.id }}">
+                        <button type="submit" class="btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</section>
+
+{% endblock %}

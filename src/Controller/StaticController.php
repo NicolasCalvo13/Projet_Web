@@ -21,7 +21,7 @@ class StaticController
         return $this->twig->render('static/reviews.twig.html', [
             'page_title'       => 'Avis - Stage-Link',
             'meta_description' => 'Déposez un avis.',
-            'entreprises'      => (new \App\Model\ReviewModel())->findEntreprises(),
+            'entreprises'      => (new ReviewModel())->findEntreprises(),
             'user'             => $_SESSION['user_id'] ?? null,
             // On ajoute cette ligne pour savoir si c'est un étudiant :
             'is_student'       => isset($_SESSION['student_id'])
@@ -41,7 +41,7 @@ class StaticController
             // Dans ton HTML tu as "commentaires", on le map sur "commentaire" pour la BDD
             $commentaire = htmlspecialchars($_POST['commentaires'] ?? '');
 
-            $reviewModel = new \App\Model\ReviewModel();
+            $reviewModel = new ReviewModel();
             $reviewModel->saveReview($studentId, $entrepriseId, $note, $commentaire);
 
             // Redirection vers le formulaire avec succès
@@ -56,14 +56,15 @@ class StaticController
     {
         $sort = $_GET['sort'] ?? 'recent';
         
-        $reviewModel = new \App\Model\ReviewModel();
+        $reviewModel = new ReviewModel();
         $reviews = $reviewModel->findAllReviews($sort);
 
         // CORRECTION ICI : on pointe vers 'static/all_reviews.twig.html'
         return $this->twig->render('static/all_reviews.twig.html', [
             'page_title'   => 'Tous les avis - Stage-Link',
             'reviews'      => $reviews,
-            'current_sort' => $sort
+            'current_sort' => $sort,
+            'success'      => $_GET['success'] ?? null,
         ]);
     }
 
@@ -78,7 +79,7 @@ class StaticController
             exit;
         }
 
-        $reviewModel = new \App\Model\ReviewModel();
+        $reviewModel = new ReviewModel();
         $reviews = $reviewModel->findReviewsByEntreprise((int) $companyId);
 
         // CORRECTION ICI : on pointe vers 'static/company_reviews.twig.html'

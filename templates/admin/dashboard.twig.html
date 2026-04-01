@@ -4,6 +4,14 @@
 
 {% block body %}
 
+{% if success == 'offer_created' %}
+    <div class="alert alert-success">✅ L'offre a bien été publiée !</div>
+{% elseif success == 'company_created' %}
+    <div class="alert alert-success">✅ L'entreprise a bien été créée !</div>
+{% elseif success == 'user_deleted' %}
+    <div class="alert alert-success">✅ L'utilisateur a bien été supprimé.</div>
+{% endif %}
+
 {% if session.flash_success %}
 <div class="alert-success">
   {{ session.flash_success }}
@@ -44,26 +52,26 @@
 
     <div class="admin-card">
       <h3> Offres de stage</h3>
-      <a href="/?uri=offers">Voir toutes les offres</a>
+      <a href="/?uri=admin_manage_offers">Gérer les offres</a>
       <a href="/?uri=offer_create">Créer une offre</a>
     </div>
 
     <div class="admin-card">
       <h3> Entreprises</h3>
-      <a href="/?uri=admin_companies">Gérer les entreprises</a>
+      <a href="/?uri=admin_manage_companies">Gérer les entreprises</a>
       <a href="/?uri=admin_company_create">Créer une entreprise</a>
     </div>
 
     <div class="admin-card">
       <h3> Étudiants</h3>
-      <a href="/?uri=admin_students">Gérer les étudiants</a>
+      <a href="/?uri=admin_manage_students">Gérer les étudiants</a>
       <a href="/?uri=register">Créer un compte étudiant</a>
     </div>
 
     <div class="admin-card">
       <h3> Statistiques</h3>
       <a href="/?uri=stats_offers">Statistiques des offres</a>
-      <a href="/?uri=reviews">Voir les évaluations</a>
+      <a href="/?uri=admin_manage_reviews">Gérer les avis</a>
     </div>
 
 
