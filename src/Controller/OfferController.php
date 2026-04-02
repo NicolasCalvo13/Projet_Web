@@ -50,10 +50,10 @@ class OfferController
             http_response_code(400);
             return 'Bad request';
         }
-        
+
         $id = (int) $_GET['id'];
         $offer = $this->model->getById($id);
-        
+
         if ($offer === null) {
             http_response_code(404);
             return 'Offre introuvable';
@@ -61,18 +61,18 @@ class OfferController
 
         $inWishlist = false;
         // On utilise student_id pour parler à la base de données !
-        $studentId = $_SESSION['student_id'] ?? null; 
-        
+        $studentId = $_SESSION['student_id'] ?? null;
+
         if ($studentId && $offer !== null) {
-            $inWishlist = $this->model->isInWishlist((int)$studentId, $offer['id']);
+            $inWishlist = $this->model->isInWishlist((int) $studentId, $offer['id']);
         }
 
         return $this->twig->render('offers/detail.twig.html', [
-            'page_title'    => $offer['titre'],
-            'offer'         => $offer,
-            'user'          => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
-            'error'         => $_GET['error'] ?? null,
-            'in_wishlist'   => $inWishlist
+            'page_title' => $offer['titre'],
+            'offer' => $offer,
+            'user' => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
+            'error' => $_GET['error'] ?? null,
+            'in_wishlist' => $inWishlist
         ]);
     }
 
@@ -88,12 +88,12 @@ class OfferController
 
         return $this->twig->render('offers/wishlist.twig.html', [
             'page_title' => 'Wishlist - Stage-Link',
-            'wishlist'   => $mesFavoris,
-            'user_id'    => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
+            'wishlist' => $mesFavoris,
+            'user_id' => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
         ]);
     }
 
-    public function createOfferForm(): string 
+    public function createOfferForm(): string
     {
         return $this->twig->render('offers/create_offer.twig.html', [
             'page_title' => 'Créer une offre - Stage-Link',
@@ -105,14 +105,17 @@ class OfferController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
-            $old    = $_POST;
+            $old = $_POST;
 
-            if (empty($_POST['titre']))       $errors['titre'] = "Le titre est obligatoire.";
-            if (empty($_POST['ville']))       $errors['ville'] = "La ville est obligatoire.";
-            if (empty($_POST['description'])) $errors['description'] = "La description est obligatoire.";
+            if (empty($_POST['titre']))
+                $errors['titre'] = "Le titre est obligatoire.";
+            if (empty($_POST['ville']))
+                $errors['ville'] = "La ville est obligatoire.";
+            if (empty($_POST['description']))
+                $errors['description'] = "La description est obligatoire.";
 
             if (empty($errors)) {
-                $entrepriseId = $_SESSION['entreprise_id']; 
+                $entrepriseId = $_SESSION['entreprise_id'];
 
                 $offerId = $this->model->createOffer($_POST, $entrepriseId);
 
@@ -122,15 +125,15 @@ class OfferController
                 }
 
                 $flash = [
-                    'type'    => 'danger',
+                    'type' => 'danger',
                     'message' => "Une erreur est survenue lors de l'enregistrement de l'offre."
                 ];
             }
 
             echo $this->twig->render('create_offer.twig.html', [
                 'errors' => $errors,
-                'old'    => $old,
-                'flash'  => $flash ?? null,
+                'old' => $old,
+                'flash' => $flash ?? null,
             ]);
             return;
         }
@@ -153,8 +156,8 @@ class OfferController
 
         return $this->twig->render('offers/search_results.twig.html', [
             'page_title' => 'Recherche : ' . $keyword . ' - Stage-Link',
-            'offers'     => $offers,
-            'keyword'    => $keyword 
+            'offers' => $offers,
+            'keyword' => $keyword
         ]);
     }
 
@@ -163,8 +166,8 @@ class OfferController
         header('Content-Type: application/json');
 
         // On utilise student_id !
-        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
-        $wishlistId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
+        $wishlistId = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
         if ($studentId && $wishlistId) {
             $success = $this->model->deleteFromWishlist($wishlistId, $studentId);
@@ -191,9 +194,9 @@ class OfferController
 
         $data = json_decode(file_get_contents('php://input'), true);
         $offerId = isset($data['offer_id']) ? (int) $data['offer_id'] : null;
-        
+
         // On utilise student_id !
-        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
+        $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
 
         if (!$studentId || !$offerId) {
             http_response_code(400);
@@ -218,5 +221,70 @@ class OfferController
             http_response_code(500);
             return json_encode(['success' => false, 'message' => 'Erreur BDD: ' . $e->getMessage()]);
         }
+    }
+
+    public function editOffer(): string
+    {
+        if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
+            header('Location: /?uri=company_dashboard&error=offre_introuvable');
+            exit;
+        }
+
+        $offerId = (int) $_GET['id'];
+
+        $offer = $this->model->findOfferById($offerId);
+
+        
+
+        if (
+            !$offer ||
+            !isset($offer['entreprise_id'])) {
+            header('Location: /?uri=company_dashboard&error=offre_introuvable');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $titre = trim($_POST['titre'] ?? '');
+            $lieu = trim($_POST['lieu'] ?? '');
+            $secteur = trim($_POST['secteur'] ?? '');
+            $remuneration = trim($_POST['remuneration'] ?? '');
+            $typeContrat = trim($_POST['type_contrat'] ?? '');
+            $duree = trim($_POST['duree'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+
+            $errors = [];
+            if ($titre === '') {
+                $errors[] = 'Le titre est obligatoire.';
+            }
+            if ($lieu === '') {
+                $errors[] = 'Le lieu est obligatoire.';
+            }
+
+            if (!empty($errors)) {
+                return $this->twig->render('offer/edit_offer.twig.html', [
+                    'offer' => $offer,
+                    'errors' => $errors,
+                    'success' => false,
+                ]);
+            }
+
+            $this->model->updateOffer(
+                $offerId,
+                $titre,
+                $lieu,
+                $remuneration,
+                $duree,
+                $description
+            );
+
+            header('Location: /?uri=company_dashboard' . '&success_offer=1');
+            exit;
+        }
+
+        return $this->twig->render('offers/edit_offer.twig.html', [
+            'offer' => $offer,
+            'errors' => [],
+            'success' => isset($_GET['success']),
+        ]);
     }
 }
