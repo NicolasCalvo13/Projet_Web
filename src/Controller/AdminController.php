@@ -108,13 +108,22 @@ class AdminController
         $offerModel = new OfferModel();
         $entreprises = $offerModel->getAllEntreprises();
 
+        // Si GET : affichage du formulaire vide
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return $this->twig->render('admin/offer_create.twig.html', [
+                'entreprises' => $entreprises,
+                'errors' => [],
+                'old' => [],
+            ]);
+        }
+
         // Récupération des champs POST
         $titre = trim($_POST['titre'] ?? '');
         $entrepriseId = (int) ($_POST['entreprise_id'] ?? 0);
         $ville = trim($_POST['ville'] ?? '');
         $duree = trim($_POST['duree'] ?? '');
         $date_debut = trim($_POST['date_debut'] ?? '');
-        $remuneration = $_POST['remuneration'] ?? '';
+        $remuneration = trim($_POST['remuneration'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $competences = trim($_POST['competences'] ?? '');
         $profil = trim($_POST['profil'] ?? '');
@@ -122,26 +131,67 @@ class AdminController
         // Validation
         $errors = [];
 
+        // Titre : required, 5-200 caractères
         if ($titre === '') {
             $errors['titre'] = 'Le titre est obligatoire.';
+        } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 200) {
+            $errors['titre'] = 'Le titre doit contenir entre 5 et 200 caractères.';
         }
+
+        // Entreprise obligatoire
         if ($entrepriseId === 0) {
             $errors['entreprise_id'] = 'Veuillez sélectionner une entreprise.';
         }
+
+        // Ville : required, 2-100 caractères
         if ($ville === '') {
             $errors['ville'] = 'La ville est obligatoire.';
+        } elseif (mb_strlen($ville) < 2 || mb_strlen($ville) > 100) {
+            $errors['ville'] = 'La ville doit contenir entre 2 et 100 caractères.';
         }
-        if ($duree === '' || (int) $duree < 1) {
-            $errors['duree'] = 'La durée est obligatoire (minimum 1 mois).';
+
+        // Durée : required, entier 1-12
+        if ($duree === '') {
+            $errors['duree'] = 'La durée est obligatoire.';
+        } elseif (!ctype_digit($duree)) {
+            $errors['duree'] = 'La durée doit être un nombre entier.';
+        } elseif ((int) $duree < 1 || (int) $duree > 12) {
+            $errors['duree'] = 'La durée doit être comprise entre 1 et 12 mois.';
         }
+
+        // Date de début : required + format simple AAAA-MM-JJ
         if ($date_debut === '') {
             $errors['date_debut'] = 'La date de début est obligatoire.';
+        } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date_debut)) {
+            $errors['date_debut'] = 'La date de début doit être au format AAAA-MM-JJ.';
         }
-        if (strlen($description) < 30) {
-            $errors['description'] = 'La description est obligatoire (minimum 30 caractères).';
+
+        // Rémunération : optionnelle, numérique, 0-5000
+        if ($remuneration !== '') {
+            if (!is_numeric($remuneration)) {
+                $errors['remuneration'] = 'La rémunération doit être un nombre.';
+            } elseif ((float) $remuneration < 0 || (float) $remuneration > 5000) {
+                $errors['remuneration'] = 'La rémunération doit être comprise entre 0 et 5000 €.';
+            }
         }
+
+        // Description : required, 30-3000 caractères
+        if ($description === '') {
+            $errors['description'] = 'La description est obligatoire.';
+        } elseif (mb_strlen($description) < 30 || mb_strlen($description) > 3000) {
+            $errors['description'] = 'La description doit contenir entre 30 et 3000 caractères.';
+        }
+
+        // Compétences : required, 3-1000 caractères
         if ($competences === '') {
             $errors['competences'] = 'Les compétences sont obligatoires.';
+        } elseif (mb_strlen($competences) < 3 || mb_strlen($competences) > 1000) {
+            $errors['competences'] = 'Les compétences doivent contenir entre 3 et 1000 caractères.';
+        }
+
+        // Profil : optionnel, max 1500 caractères
+        if ($profil !== '' && mb_strlen($profil) > 1500) {
+            $errors['profil'] = 'Le profil recherché ne doit pas dépasser 1500 caractères.';
         }
 
         // Si erreurs → on ré-affiche le formulaire avec les valeurs saisies
@@ -149,7 +199,7 @@ class AdminController
             return $this->twig->render('admin/offer_create.twig.html', [
                 'entreprises' => $entreprises,
                 'errors' => $errors,
-                'old' => $_POST,  // repopule les champs
+                'old' => $_POST,
             ]);
         }
 
@@ -162,7 +212,7 @@ class AdminController
         }
 
         // Erreur BDD inattendue
-        return $this->twig->render('offer_create.twig.html', [
+        return $this->twig->render('admin/offer_create.twig.html', [
             'entreprises' => $entreprises,
             'errors' => ['global' => 'Une erreur est survenue, veuillez réessayer.'],
             'old' => $_POST,
@@ -305,66 +355,67 @@ class AdminController
     }
 
     public function manageStudents(): string
-{
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header('Location: /?uri=login');
-        exit;
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        return $this->twig->render('admin/admin_student.twig.html', [
+            'etudiants' => $this->userModel->getAllStudents(),
+            'success' => $_GET['success'] ?? null,
+        ]);
     }
 
-    return $this->twig->render('admin/admin_student.twig.html', [
-        'etudiants' => $this->userModel->getAllStudents(),
-        'success'   => $_GET['success'] ?? null,
-    ]);
-}
+    public function deleteStudent(): void
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
 
-public function deleteStudent(): void
-{
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header('Location: /?uri=login');
-        exit;
-    }
+        $userId = (int) ($_POST['user_id'] ?? 0);
 
-    $userId = (int) ($_POST['user_id'] ?? 0);
+        if ($userId > 0) {
+            $this->userModel->deleteStudent($userId);
+        }
 
-    if ($userId > 0) {
-        $this->userModel->deleteStudent($userId);
-    }
-
-    header('Location: /?uri=admin_manage_students&success=deleted');
-    exit;
-}
-
-
-public function manageReviews(): string
-{
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header('Location: /?uri=login');
+        header('Location: /?uri=admin_manage_students&success=deleted');
         exit;
     }
 
 
-    return $this->twig->render('admin/admin_reviews.twig.html', [
-        'avis'    => $this->reviewModel->getAllReviews(),
-        'success' => $_GET['success'] ?? null,
-    ]);
-}
+    public function manageReviews(): string
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
 
-public function deleteReview(): void
-{
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header('Location: /?uri=login');
+
+        return $this->twig->render('admin/admin_reviews.twig.html', [
+            'avis' => $this->reviewModel->getAllReviews(),
+            'success' => $_GET['success'] ?? null,
+        ]);
+    }
+
+    public function deleteReview(): void
+    {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /?uri=login');
+            exit;
+        }
+
+        $id = (int) ($_POST['avis_id'] ?? 0);
+
+        if ($id > 0) {
+            $this->reviewModel->deleteReview($id);
+        }
+
+        header('Location: /?uri=admin_manage_reviews&success=deleted');
         exit;
     }
-
-    $id = (int) ($_POST['avis_id'] ?? 0);
-
-    if ($id > 0) {
-        $this->reviewModel->deleteReview($id);
-    }
-
-    header('Location: /?uri=admin_manage_reviews&success=deleted');
-    exit;
-}
+   
 
 
 public function editCompanyForm(): string

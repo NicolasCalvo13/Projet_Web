@@ -13,41 +13,95 @@
 
     <article>
 
+      {% if error %}
+        <p class="alert alert-error">{{ error }}</p>
+      {% endif %}
+
       <form action="/?uri=register" method="post">
         <div class="form-row">
           <label for="gender">Civilité *</label>
-          <select name="gender" id="gender">
-            <option value="" disabled selected>--Sélectionnez--</option>
-            <option value="ms">Madame</option>
-            <option value="mr">Monsieur</option>
-            <option value="mr">Autre</option>
-            <option value="mr">Non précisé</option>
+          <select name="gender" id="gender" required>
+            <option value="" disabled {{ old.gender is not defined or old.gender == '' ? 'selected' : '' }}>--Sélectionnez--</option>
+            <option value="ms" {{ old.gender is defined and old.gender == 'ms' ? 'selected' : '' }}>Madame</option>
+            <option value="mr" {{ old.gender is defined and old.gender == 'mr' ? 'selected' : '' }}>Monsieur</option>
+            <option value="other" {{ old.gender is defined and old.gender == 'other' ? 'selected' : '' }}>Autre</option>
+            <option value="not_specified" {{ old.gender is defined and old.gender == 'not_specified' ? 'selected' : '' }}>Non précisé</option>
           </select>
+          <span class="form-error">
+            {% if errors.gender is defined %}{{ errors.gender }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="lastname">Nom *</label>
-          <input name="lastname" id="lastname" type="text" required>
+          <input name="lastname"
+                 id="lastname"
+                 type="text"
+                 required
+                 minlength="2"
+                 maxlength="100"
+                 autocomplete="family-name"
+                 value="{{ old.lastname|default('') }}">
+          <span class="form-error">
+            {% if errors.lastname is defined %}{{ errors.lastname }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="surname">Prénom *</label>
-          <input name="surname" id="surname" type="text" required>
+          <input name="surname"
+                 id="surname"
+                 type="text"
+                 required
+                 minlength="2"
+                 maxlength="100"
+                 autocomplete="given-name"
+                 value="{{ old.surname|default('') }}">
+          <span class="form-error">
+            {% if errors.surname is defined %}{{ errors.surname }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="email">Courriel *</label>
-          <input name="email" id="email" type="email" required>
+          <input name="email"
+                 id="email"
+                 type="email"
+                 required
+                 maxlength="255"
+                 autocomplete="email"
+                 value="{{ old.email|default('') }}">
+          <span class="form-error">
+            {% if errors.email is defined %}{{ errors.email }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="password">Mot de passe *</label>
-          <input name="password" id="password" type="password" required>
+          <input name="password"
+                 id="password"
+                 type="password"
+                 required
+                 minlength="8"
+                 maxlength="255"
+                 autocomplete="new-password">
+          <span class="form-error">
+            {% if errors.password is defined %}{{ errors.password }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="password_confirm">Confirmation *</label>
-          <input name="password_confirm" id="password_confirm" type="password" minlength="8" required>
+          <input name="password_confirm"
+                 id="password_confirm"
+                 type="password"
+                 minlength="8"
+                 maxlength="255"
+                 required
+                 autocomplete="new-password">
+          <span class="form-error">
+            {% if errors.password_confirm is defined %}{{ errors.password_confirm }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
@@ -58,4 +112,3 @@
     </article>
   </section>
 {% endblock %}
-

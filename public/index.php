@@ -307,6 +307,16 @@ $router->post('edit_profile', function () use ($twig) {
     return $controller->editStudent();
 });
 
+$router->get('edit_offer', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->editOffer();
+});
+
+$router->post('edit_offer', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->editOffer();
+});
+
 $router->get('application_detail', function () use ($twig) {
     $controller = new ApplicationController($twig);
     return $controller->applicationDetail();

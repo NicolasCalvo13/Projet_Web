@@ -88,10 +88,10 @@ class OfferController
             http_response_code(400);
             return 'Bad request';
         }
-        
+
         $id = (int) $_GET['id'];
         $offer = $this->model->getById($id);
-        
+
         if ($offer === null) {
             http_response_code(404);
             return 'Offre introuvable';
@@ -99,18 +99,18 @@ class OfferController
 
         $inWishlist = false;
         // On utilise student_id pour parler à la base de données !
-        $studentId = $_SESSION['student_id'] ?? null; 
-        
+        $studentId = $_SESSION['student_id'] ?? null;
+
         if ($studentId && $offer !== null) {
-            $inWishlist = $this->model->isInWishlist((int)$studentId, $offer['id']);
+            $inWishlist = $this->model->isInWishlist((int) $studentId, $offer['id']);
         }
 
         return $this->twig->render('offers/detail.twig.html', [
-            'page_title'    => $offer['titre'],
-            'offer'         => $offer,
-            'user'          => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
-            'error'         => $_GET['error'] ?? null,
-            'in_wishlist'   => $inWishlist
+            'page_title' => $offer['titre'],
+            'offer' => $offer,
+            'user' => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
+            'error' => $_GET['error'] ?? null,
+            'in_wishlist' => $inWishlist
         ]);
     }
 
@@ -126,12 +126,12 @@ class OfferController
 
         return $this->twig->render('offers/wishlist.twig.html', [
             'page_title' => 'Wishlist - Stage-Link',
-            'wishlist'   => $mesFavoris,
-            'user_id'    => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
+            'wishlist' => $mesFavoris,
+            'user_id' => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
         ]);
     }
 
-    public function createOfferForm(): string 
+    public function createOfferForm(): string
     {
         return $this->twig->render('offers/create_offer.twig.html', [
             'page_title' => 'Créer une offre - Stage-Link',
@@ -143,14 +143,77 @@ class OfferController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
-            $old    = $_POST;
+            $old = $_POST;
 
-            if (empty($_POST['titre']))       $errors['titre'] = "Le titre est obligatoire.";
-            if (empty($_POST['ville']))       $errors['ville'] = "La ville est obligatoire.";
-            if (empty($_POST['description'])) $errors['description'] = "La description est obligatoire.";
+            $titre = trim($_POST['titre'] ?? '');
+            $ville = trim($_POST['ville'] ?? '');
+            $duree = trim($_POST['duree'] ?? '');
+            $dateDebut = trim($_POST['date_debut'] ?? '');
+            $remuneration = trim($_POST['remuneration'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $competences = trim($_POST['competences'] ?? '');
+            $profil = trim($_POST['profil'] ?? '');
+
+            // Titre : required, 5-200 caractères
+            if ($titre === '') {
+                $errors['titre'] = "Le titre est obligatoire.";
+            } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 200) {
+                $errors['titre'] = "Le titre doit contenir entre 5 et 200 caractères.";
+            }
+
+            // Ville : required, 2-100 caractères
+            if ($ville === '') {
+                $errors['ville'] = "La ville est obligatoire.";
+            } elseif (mb_strlen($ville) < 2 || mb_strlen($ville) > 100) {
+                $errors['ville'] = "La ville doit contenir entre 2 et 100 caractères.";
+            }
+
+            // Durée : required, nombre entier 1-12
+            if ($duree === '') {
+                $errors['duree'] = "La durée est obligatoire.";
+            } elseif (!ctype_digit($duree)) {
+                $errors['duree'] = "La durée doit être un nombre entier (en mois).";
+            } elseif ((int) $duree < 1 || (int) $duree > 12) {
+                $errors['duree'] = "La durée doit être comprise entre 1 et 12 mois.";
+            }
+
+            // Date de début : required, format grossier AAAA-MM-JJ
+            if ($dateDebut === '') {
+                $errors['date_debut'] = "La date de début est obligatoire.";
+            } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateDebut)) {
+                $errors['date_debut'] = "La date de début doit être au format AAAA-MM-JJ.";
+            }
+
+            // Rémunération : optionnelle, numérique 0-5000
+            if ($remuneration !== '') {
+                if (!is_numeric($remuneration)) {
+                    $errors['remuneration'] = "La rémunération doit être un nombre.";
+                } elseif ((float) $remuneration < 0 || (float) $remuneration > 5000) {
+                    $errors['remuneration'] = "La rémunération doit être comprise entre 0 et 5000 €.";
+                }
+            }
+
+            // Description : required, 30-3000 caractères
+            if ($description === '') {
+                $errors['description'] = "La description est obligatoire.";
+            } elseif (mb_strlen($description) < 30 || mb_strlen($description) > 3000) {
+                $errors['description'] = "La description doit contenir entre 30 et 3000 caractères.";
+            }
+
+            // Compétences : required, 3-1000 caractères
+            if ($competences === '') {
+                $errors['competences'] = "Les compétences recherchées sont obligatoires.";
+            } elseif (mb_strlen($competences) < 3 || mb_strlen($competences) > 1000) {
+                $errors['competences'] = "Les compétences doivent contenir entre 3 et 1000 caractères.";
+            }
+
+            // Profil : optionnel, max 1500 caractères
+            if ($profil !== '' && mb_strlen($profil) > 1500) {
+                $errors['profil'] = "Le profil recherché ne doit pas dépasser 1500 caractères.";
+            }
 
             if (empty($errors)) {
-                $entrepriseId = $_SESSION['entreprise_id']; 
+                $entrepriseId = $_SESSION['entreprise_id'];
 
                 $offerId = $this->model->createOffer($_POST, $entrepriseId);
 
@@ -160,15 +223,15 @@ class OfferController
                 }
 
                 $flash = [
-                    'type'    => 'danger',
+                    'type' => 'danger',
                     'message' => "Une erreur est survenue lors de l'enregistrement de l'offre."
                 ];
             }
 
             echo $this->twig->render('create_offer.twig.html', [
                 'errors' => $errors,
-                'old'    => $old,
-                'flash'  => $flash ?? null,
+                'old' => $old,
+                'flash' => $flash ?? null,
             ]);
             return;
         }
@@ -191,8 +254,8 @@ class OfferController
 
         return $this->twig->render('offers/search_results.twig.html', [
             'page_title' => 'Recherche : ' . $keyword . ' - Stage-Link',
-            'offers'     => $offers,
-            'keyword'    => $keyword 
+            'offers' => $offers,
+            'keyword' => $keyword
         ]);
     }
 
@@ -201,8 +264,8 @@ class OfferController
         header('Content-Type: application/json');
 
         // On utilise student_id !
-        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
-        $wishlistId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
+        $wishlistId = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
         if ($studentId && $wishlistId) {
             $success = $this->model->deleteFromWishlist($wishlistId, $studentId);
@@ -229,9 +292,9 @@ class OfferController
 
         $data = json_decode(file_get_contents('php://input'), true);
         $offerId = isset($data['offer_id']) ? (int) $data['offer_id'] : null;
-        
+
         // On utilise student_id !
-        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
+        $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
 
         if (!$studentId || !$offerId) {
             http_response_code(400);
@@ -256,5 +319,95 @@ class OfferController
             http_response_code(500);
             return json_encode(['success' => false, 'message' => 'Erreur BDD: ' . $e->getMessage()]);
         }
+    }
+
+    public function editOffer(): string
+    {
+        if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
+            header('Location: /?uri=company_dashboard&error=offre_introuvable');
+            exit;
+        }
+
+        $offerId = (int) $_GET['id'];
+
+        $offer = $this->model->findOfferById($offerId);
+
+
+
+        if (
+            !$offer ||
+            !isset($offer['entreprise_id'])
+        ) {
+            header('Location: /?uri=company_dashboard&error=offre_introuvable');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $titre = trim($_POST['titre'] ?? '');
+            $lieu = trim($_POST['lieu'] ?? '');
+            $secteur = trim($_POST['secteur'] ?? '');
+            $remuneration = trim($_POST['remuneration'] ?? '');
+            $typeContrat = trim($_POST['type_contrat'] ?? '');
+            $duree = trim($_POST['duree'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+
+            $errors = [];
+
+            if ($titre === '') {
+                $errors['titre'] = 'Le titre est obligatoire.';
+            } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 100) {
+                $errors['titre'] = 'Le titre doit contenir entre 5 et 100 caractères.';
+            }
+
+            if ($lieu === '') {
+                $errors['lieu'] = 'Le lieu est obligatoire.';
+            } elseif (mb_strlen($lieu) < 2 || mb_strlen($lieu) > 100) {
+                $errors['lieu'] = 'Le lieu doit contenir entre 2 et 100 caractères.';
+            }
+
+            if ($remuneration !== '') {
+                if (!is_numeric($remuneration)) {
+                    $errors['remuneration'] = 'La rémunération doit être un nombre.';
+                } elseif ((float) $remuneration < 0 || (float) $remuneration > 5000) {
+                    $errors['remuneration'] = 'La rémunération doit être comprise entre 0 et 5000 €.';
+                }
+            }
+
+            if ($duree !== '' && mb_strlen($duree) > 50) {
+                $errors['duree'] = 'La durée est trop longue.';
+            }
+
+            if ($description === '') {
+                $errors['description'] = 'La description est obligatoire.';
+            } elseif (mb_strlen($description) < 20 || mb_strlen($description) > 3000) {
+                $errors['description'] = 'La description doit contenir entre 20 et 3000 caractères.';
+            }
+
+            if (!empty($errors)) {
+                return $this->twig->render('offer/edit_offer.twig.html', [
+                    'offer' => $offer,
+                    'errors' => $errors,
+                    'success' => false,
+                ]);
+            }
+
+            $this->model->updateOffer(
+                $offerId,
+                $titre,
+                $lieu,
+                $remuneration,
+                $duree,
+                $description
+            );
+
+            header('Location: /?uri=company_dashboard' . '&success_offer=1');
+            exit;
+        }
+
+        return $this->twig->render('offers/edit_offer.twig.html', [
+            'offer' => $offer,
+            'errors' => [],
+            'success' => isset($_GET['success']),
+        ]);
     }
 }

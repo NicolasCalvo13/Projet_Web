@@ -247,32 +247,33 @@ class OfferModel
     }
 
     public function getAllEntreprisesDetails(): array
-{
-    $stmt = $this->db->query('
+    {
+        $stmt = $this->db->query('
         SELECT id, nom, secteur, taille, telephone, logo_path
         FROM entreprises
         ORDER BY nom ASC
     ');
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-public function deleteEntreprise(int $id): bool
-{
-    // Récupère le user_id lié à cette entreprise
-    $stmt = $this->db->prepare('SELECT user_id FROM entreprises WHERE id = :id');
-    $stmt->execute(['id' => $id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function deleteEntreprise(int $id): bool
+    {
+        // Récupère le user_id lié à cette entreprise
+        $stmt = $this->db->prepare('SELECT user_id FROM entreprises WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$row) return false;
+        if (!$row)
+            return false;
 
-    // Supprimer l'utilisateur → cascade automatique sur :
-    // entreprises → offres → candidatures, wishlist
-    //             → avis
-    $stmt = $this->db->prepare('DELETE FROM utilisateurs WHERE id = :user_id');
-    return $stmt->execute(['user_id' => $row['user_id']]);
-}
+        // Supprimer l'utilisateur → cascade automatique sur :
+        // entreprises → offres → candidatures, wishlist
+        //             → avis
+        $stmt = $this->db->prepare('DELETE FROM utilisateurs WHERE id = :user_id');
+        return $stmt->execute(['user_id' => $row['user_id']]);
+    }
 
-/**
+    /**
      * Vérifie si une offre est déjà dans la wishlist de l'étudiant
      */
     public function isInWishlist(int $studentId, int $offerId): bool
@@ -289,11 +290,49 @@ public function deleteEntreprise(int $id): bool
     {
         // On évite les doublons
         if ($this->isInWishlist($studentId, $offerId)) {
-            return true; 
+            return true;
         }
 
         $stmt = $this->db->prepare('INSERT INTO wishlist (student_id, offre_id) VALUES (:student_id, :offre_id)');
         return $stmt->execute(['student_id' => $studentId, 'offre_id' => $offerId]);
+    }
+
+    public function findOfferById(int $id): ?array
+    {
+        $sql = "SELECT * FROM offres WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $offer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $offer ?: null;
+    }
+
+    public function updateOffer(
+        int $id,
+        string $titre,
+        string $lieu,
+        string $remuneration,
+        string $duree,
+        string $description
+    ): bool {
+        $sql = "UPDATE offres
+            SET titre = :titre,
+                lieu = :lieu,
+                remuneration = :remuneration,
+                duree = :duree,
+                description = :description
+            WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':id' => $id,
+            ':titre' => $titre,
+            ':lieu' => $lieu,
+            ':remuneration' => $remuneration,
+            ':duree' => $duree,
+            ':description' => $description,
+        ]);
     }
 /**
  * Récupère les offres de manière paginée

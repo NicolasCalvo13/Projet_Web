@@ -16,13 +16,13 @@
 {% endif %}
 
 <section class="section-card">
-    <form method="POST" action="/?uri=offer_create" id="offerForm" novalidate>
+    <form method="POST" action="/?uri=offer_create" id="offerForm">
 
         {# CHAMP SPÉCIFIQUE ADMIN #}
         <div class="form-group">
             <label for="entreprise_id">Entreprise <span class="required">*</span></label>
             <select id="entreprise_id" name="entreprise_id" required>
-                <option value="" disabled selected>-- Sélectionnez une entreprise --</option>
+                <option value="" disabled {{ old.entreprise_id is not defined or old.entreprise_id == '' ? 'selected' : '' }}>-- Sélectionnez une entreprise --</option>
                 {% for entreprise in entreprises %}
                     <option value="{{ entreprise.id }}"
                         {{ old.entreprise_id is defined and old.entreprise_id == entreprise.id ? 'selected' : '' }}>
@@ -30,7 +30,12 @@
                     </option>
                 {% endfor %}
             </select>
-            <span class="form-error" id="entreprise-error">Veuillez sélectionner une entreprise.</span>
+
+            {% if errors.entreprise_id is defined %}
+                <span class="form-error">{{ errors.entreprise_id }}</span>
+            {% else %}
+                <span class="form-error" id="entreprise-error">Veuillez sélectionner une entreprise.</span>
+            {% endif %}
         </div>
 
         {# CHAMPS COMMUNS #}
@@ -43,6 +48,4 @@
 
     </form>
 </section>
-
-<script src="../assets/js/offer_form_validation.js"></script>
 {% endblock %}

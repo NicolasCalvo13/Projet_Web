@@ -21,79 +21,126 @@
 
     <form action="?uri=edit_profile" method="POST" enctype="multipart/form-data">
 
-        <!-- INFOS PERSONNELLES -->
         <div class="section-card">
             <h2> Informations personnelles</h2>
 
             <div class="form-group">
                 <label for="prenom">Prénom</label>
-                <input type="text" id="prenom" name="prenom" 
-                       value="{{ student.prenom }}" required>
+                <input type="text"
+                       id="prenom"
+                       name="prenom"
+                       value="{{ student.prenom }}"
+                       required
+                       minlength="2"
+                       maxlength="100"
+                       autocomplete="given-name">
+                <span class="form-error">
+                    {% if errors.prenom is defined %}{{ errors.prenom }}{% endif %}
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="nom">Nom</label>
-                <input type="text" id="nom" name="nom" 
-                       value="{{ student.nom }}" required>
+                <input type="text"
+                       id="nom"
+                       name="nom"
+                       value="{{ student.nom }}"
+                       required
+                       minlength="2"
+                       maxlength="100"
+                       autocomplete="family-name">
+                <span class="form-error">
+                    {% if errors.nom is defined %}{{ errors.nom }}{% endif %}
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" 
-                       value="{{ student.email }}" required>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       value="{{ student.email }}"
+                       required
+                       maxlength="255"
+                       autocomplete="email">
+                <span class="form-error">
+                    {% if errors.email is defined %}{{ errors.email }}{% endif %}
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="telephone">Téléphone</label>
-                <input type="text" id="telephone" name="telephone" 
-                       value="{{ student.telephone }}">
+                <input type="text"
+                       id="telephone"
+                       name="telephone"
+                       value="{{ student.telephone }}"
+                       minlength="6"
+                       maxlength="20"
+                       autocomplete="tel">
+                <span class="form-error">
+                    {% if errors.telephone is defined %}{{ errors.telephone }}{% endif %}
+                </span>
             </div>
         </div>
 
-        <!-- FORMATION -->
         <div class="section-card">
             <h2> Formation</h2>
 
             <div class="form-group">
                 <label for="ecole">École</label>
-                <input type="text" id="ecole" name="ecole" 
-                       value="{{ student.ecole }}">
+                <input type="text"
+                       id="ecole"
+                       name="ecole"
+                       value="{{ student.ecole }}"
+                       maxlength="255">
+                <span class="form-error">
+                    {% if errors.ecole is defined %}{{ errors.ecole }}{% endif %}
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="formation">Formation / Filière</label>
-                <input type="text" id="formation" name="formation" 
-                       value="{{ student.formation }}">
+                <input type="text"
+                       id="formation"
+                       name="formation"
+                       value="{{ student.formation }}"
+                       maxlength="255">
+                <span class="form-error">
+                    {% if errors.formation is defined %}{{ errors.formation }}{% endif %}
+                </span>
             </div>
         </div>
 
-        <!-- PHOTO DE PROFIL -->
         <div class="section-card">
             <h2> Photo de profil</h2>
 
             {% if student.photo %}
                 <div class="current-file">
                     <p class="current-file-label">Photo actuelle :</p>
-                    <img src="{{ student.photo }}" alt="Photo de profil" 
+                    <img src="{{ student.photo }}" alt="Photo de profil"
                          class="preview-photo">
                 </div>
             {% endif %}
 
             <div class="form-group">
                 <label for="photo">Changer la photo</label>
-                <input type="file" id="photo" name="photo" 
+                <input type="file"
+                       id="photo"
+                       name="photo"
                        accept="image/*">
                 <small class="form-hint">Formats acceptés : JPG, PNG, WEBP — Max 2 Mo</small>
+                <span class="form-error">
+                    {% if errors.photo is defined %}{{ errors.photo }}{% endif %}
+                </span>
             </div>
         </div>
 
-        <!-- CV -->
         <div class="section-card">
             <h2> Curriculum Vitae</h2>
 
             {% if student.cv_path %}
             <p>CV actuel :</p>
-            <iframe src="{{ student.cv_path }} #toolbar=0&navpanes="
+            <iframe src="{{ student.cv_path }}#toolbar=0&navpanes="
                     width="100%"
                     height="500px"
                     style="border: 1px solid #ccc; border-radius: 8px;">
@@ -104,12 +151,17 @@
 
             <div class="form-group">
                 <label for="cv">Changer le CV</label>
-                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx">
+                <input type="file"
+                       id="cv"
+                       name="cv"
+                       accept=".pdf,.doc,.docx">
                 <small class="form-hint">Formats acceptés : PDF, DOC, DOCX — Max 5 Mo</small>
+                <span class="form-error">
+                    {% if errors.cv is defined %}{{ errors.cv }}{% endif %}
+                </span>
             </div>
         </div>
 
-        <!-- BOUTONS -->
         <div class="form-actions">
             <button type="submit" class="btn-primary">💾 Enregistrer les modifications</button>
             <a href="/?uri=student_dashboard" class="btn-secondary">Annuler</a>
