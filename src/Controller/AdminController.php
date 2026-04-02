@@ -421,4 +421,16 @@ public function editCompanyForm(): string
         header('Location: /?uri=admin_manage_companies');
         exit;
     }
+
+
+    public function statsOffers(): string
+    {
+        $adminModel = new \App\Model\AdminModel();
+        $stats = $adminModel->getDetailedOfferStats();
+
+        return $this->twig->render('admin/offer_stats.twig.html', [
+            'page_title' => 'Statistiques détaillées - StageLink',
+            'stats'      => $stats
+        ]);
+    }
 }

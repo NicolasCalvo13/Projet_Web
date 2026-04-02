@@ -1,0 +1,68 @@
+{% extends "base.twig.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block body %}
+
+<nav class="breadcrumb">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+    Statistiques des offres
+</nav>
+
+<h1 style="color:#007575; text-align: center; margin-bottom: 30px;">Analyse du marché des stages</h1>
+
+<div class="carousel-container" id="statCarousel">
+    
+    <div class="stat-slide">
+        <h3>Offres globales</h3>
+        <p>Opportunités publiées</p>
+        <div class="big-number">{{ stats.total_offres }}</div>
+        <p style="color: #666; font-style: italic;">En ligne sur StageLink</p>
+    </div>
+
+    <div class="stat-slide">
+        <h3>Répartition par durée</h3>
+        <ul class="stat-list">
+            {% for item in stats.repartition_duree %}
+                <li>
+                    <span>{{ item.duree }}</span>
+                    <strong>{{ item.nb }} offres</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="stat-slide">
+        <h3>Top Wishlist</h3>
+        <p>Offres les plus sauvegardées</p>
+        <ul class="stat-list">
+            {% for offer in stats.top_wishlisted %}
+                <li>
+                    <span title="{{ offer.titre }}">{{ offer.titre|slice(0, 25) }}...</span>
+                    <span class="badge" style="background:#007575; color:white;">❤️ {{ offer.total_wish }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="stat-slide">
+        <h3>Moyenne de postulants</h3>
+        <p>Candidatures déposées par offre</p>
+        <div class="big-number">{{ stats.avg_applications }}</div>
+        <p>Étudiants / offre</p>
+    </div>
+
+</div>
+
+<div class="carousel-nav">
+    {% for i in 1..4 %}
+        <div class="nav-dot {{ loop.first ? 'active' : '' }}"></div>
+    {% endfor %}
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+    <a href="/?uri=admin_dashboard" class="btn-secondary">← Retour au dashboard</a>
+</div>
+
+{% endblock %}
