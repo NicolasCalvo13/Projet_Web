@@ -13,58 +13,53 @@
 
 <div class="images">
     {% if offers is empty %}
-        <p>Aucune offre disponible pour le moment.</p>
+    <p>Aucune offre disponible pour le moment.</p>
     {% else %}
-        {% for offer in offers %}
-        <a href="/?uri=offer_detail&id={{ offer.id }}" class="card">
-            <img 
-                src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}"
-                alt="{{ offer.entreprise_nom }}"
-                onerror="this.onerror=null; this.src='/assets/images/placeholder.png';"
-            >
-            <div class="card-info">
-                <h3>{{ offer.titre }}</h3>
-                <p><strong>{{ offer.entreprise_nom }}</strong> — {{ offer.ville }}</p>
-                <p>{{ offer.remuneration }}€ / mois</p>
-                <p>Du {{ offer.date_debut }} au {{ offer.date_fin }}</p>
-            </div>
-        </a>
-        {% endfor %}
+    {% for offer in offers %}
+    <a href="/?uri=offer_detail&id={{ offer.id }}" class="card">
+        <img src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" alt="{{ offer.entreprise_nom }}"
+            onerror="this.onerror=null; this.src='/assets/images/placeholder.png';">
+        <div class="card-info">
+            <h3>{{ offer.titre }}</h3>
+            <p><strong>{{ offer.entreprise_nom }}</strong> — {{ offer.ville }}</p>
+            <p>{{ offer.remuneration }}€ / mois</p>
+            <p>Du {{ offer.date_debut }} au {{ offer.date_fin }}</p>
+        </div>
+    </a>
+    {% endfor %}
     {% endif %}
 </div>
 
-{# --- PAGINATION --- #}
 {% if totalPages > 1 %}
-<div class="pagination-container" style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 40px 0; padding-bottom: 20px;">
-    
-    {# Bouton Précédent #}
+<div class="pagination-container"
+    style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 40px 0; padding-bottom: 20px;">
+
     {% if currentPage > 1 %}
-        <a href="/?uri={{ base_uri }}&page={{ currentPage - 1 }}" 
-           style="padding: 10px 20px; background-color: #B2EBF2; color: #006064; text-decoration: none; border-radius: 25px; font-weight: bold; transition: opacity 0.3s;">
-           &larr; Précédent
-        </a>
+    <a href="/?uri={{ base_uri }}&page={{ currentPage - 1 }}"
+        style="padding: 10px 20px; background-color: #B2EBF2; color: #006064; text-decoration: none; border-radius: 25px; font-weight: bold; transition: opacity 0.3s;">
+        &larr; Précédent
+    </a>
     {% else %}
-        <span style="padding: 10px 20px; color: #aaa; border: 1px solid #ddd; border-radius: 25px; cursor: not-allowed;">
-           &larr; Précédent
-        </span>
+    <span style="padding: 10px 20px; color: #aaa; border: 1px solid #ddd; border-radius: 25px; cursor: not-allowed;">
+        &larr; Précédent
+    </span>
     {% endif %}
 
     <span class="page-info" style="font-size: 1rem; color: #555;">
         Page <strong>{{ currentPage }}</strong> sur {{ totalPages }}
     </span>
 
-    {# Bouton Suivant #}
-    {% if currentPage < totalPages %}
-        <a href="/?uri={{ base_uri }}&page={{ currentPage + 1 }}" 
-           style="padding: 10px 20px; background-color: #00ACC1; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; transition: opacity 0.3s;">
-           Suivant &rarr;
+    {% if currentPage < totalPages %} <a href="/?uri={{ base_uri }}&page={{ currentPage + 1 }}"
+        style="padding: 10px 20px; background-color: #00ACC1; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; transition: opacity 0.3s;">
+        Suivant &rarr;
         </a>
-    {% else %}
-        <span style="padding: 10px 20px; color: #aaa; border: 1px solid #ddd; border-radius: 25px; cursor: not-allowed;">
-           Suivant &rarr;
+        {% else %}
+        <span
+            style="padding: 10px 20px; color: #aaa; border: 1px solid #ddd; border-radius: 25px; cursor: not-allowed;">
+            Suivant &rarr;
         </span>
-    {% endif %}
-    
+        {% endif %}
+
 </div>
 {% endif %}
 

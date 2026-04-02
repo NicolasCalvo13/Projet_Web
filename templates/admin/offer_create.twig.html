@@ -12,33 +12,32 @@
 <h1 style="color:#007575;">Créer une offre de stage <span class="badge badge-admin">Admin</span></h1>
 
 {% if errors is defined and errors is not empty %}
-    <div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
+<div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
 {% endif %}
 
 <section class="section-card">
     <form method="POST" action="/?uri=offer_create" id="offerForm">
 
-        {# CHAMP SPÉCIFIQUE ADMIN #}
         <div class="form-group">
             <label for="entreprise_id">Entreprise <span class="required">*</span></label>
             <select id="entreprise_id" name="entreprise_id" required>
-                <option value="" disabled {{ old.entreprise_id is not defined or old.entreprise_id == '' ? 'selected' : '' }}>-- Sélectionnez une entreprise --</option>
+                <option value="" disabled {{ old.entreprise_id is not defined or old.entreprise_id=='' ? 'selected' : ''
+                    }}>-- Sélectionnez une entreprise --</option>
                 {% for entreprise in entreprises %}
-                    <option value="{{ entreprise.id }}"
-                        {{ old.entreprise_id is defined and old.entreprise_id == entreprise.id ? 'selected' : '' }}>
-                        {{ entreprise.nom }}
-                    </option>
+                <option value="{{ entreprise.id }}" {{ old.entreprise_id is defined and old.entreprise_id==entreprise.id
+                    ? 'selected' : '' }}>
+                    {{ entreprise.nom }}
+                </option>
                 {% endfor %}
             </select>
 
             {% if errors.entreprise_id is defined %}
-                <span class="form-error">{{ errors.entreprise_id }}</span>
+            <span class="form-error">{{ errors.entreprise_id }}</span>
             {% else %}
-                <span class="form-error" id="entreprise-error">Veuillez sélectionner une entreprise.</span>
+            <span class="form-error" id="entreprise-error">Veuillez sélectionner une entreprise.</span>
             {% endif %}
         </div>
 
-        {# CHAMPS COMMUNS #}
         {% include '_partials/_offer_form_fields.twig.html' %}
 
         <div class="form-actions">

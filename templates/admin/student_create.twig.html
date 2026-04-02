@@ -4,108 +4,106 @@
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
-    Créer un compte Étudiant
-  </nav>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <a href="/?uri=home">Accueil</a><span>›</span>
+  <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+  Créer un compte Étudiant
+</nav>
 
-  <h1 style="color:#007575;">Créer un compte Étudiant</h1>
+<h1 style="color:#007575;">Créer un compte Étudiant</h1>
 
-  <section class="section-card">
-    <h2>Informations de l'étudiant</h2>
-    <form method="POST" action="#" id="createStudentForm" novalidate>
+<section class="section-card">
+  <h2>Informations de l'étudiant</h2>
+  <form method="POST" action="#" id="createStudentForm" novalidate>
 
-      <div class="form-group">
-        <label for="stu-firstname">Prénom <span style="color:red">*</span></label>
-        <input type="text" id="stu-firstname" name="firstname" maxlength="100"
-               placeholder="Ex : Marie" required aria-required="true">
-        <span class="form-error" id="sfirst-error">Le prénom est obligatoire.</span>
-      </div>
+    <div class="form-group">
+      <label for="stu-firstname">Prénom <span style="color:red">*</span></label>
+      <input type="text" id="stu-firstname" name="firstname" maxlength="100" placeholder="Ex : Marie" required
+        aria-required="true">
+      <span class="form-error" id="sfirst-error">Le prénom est obligatoire.</span>
+    </div>
 
-      <div class="form-group">
-        <label for="stu-lastname">Nom <span style="color:red">*</span></label>
-        <input type="text" id="stu-lastname" name="lastname" maxlength="100"
-               placeholder="Ex : Martin" required aria-required="true">
-        <span class="form-error" id="slast-error">Le nom est obligatoire.</span>
-      </div>
+    <div class="form-group">
+      <label for="stu-lastname">Nom <span style="color:red">*</span></label>
+      <input type="text" id="stu-lastname" name="lastname" maxlength="100" placeholder="Ex : Martin" required
+        aria-required="true">
+      <span class="form-error" id="slast-error">Le nom est obligatoire.</span>
+    </div>
 
-      <div class="form-group">
-        <label for="stu-email">Email <span style="color:red">*</span></label>
-        <input type="email" id="stu-email" name="email"
-               placeholder="Ex : m.martin@cesi.fr" required aria-required="true">
-        <span class="form-error" id="semail-error">Veuillez saisir un email valide.</span>
-      </div>
+    <div class="form-group">
+      <label for="stu-email">Email <span style="color:red">*</span></label>
+      <input type="email" id="stu-email" name="email" placeholder="Ex : m.martin@cesi.fr" required aria-required="true">
+      <span class="form-error" id="semail-error">Veuillez saisir un email valide.</span>
+    </div>
 
-      <div class="form-group">
-        <label for="stu-pilot">Pilote de promotion</label>
-        <select id="stu-pilot" name="pilot_id">
-          <option value="">-- Sélectionner un pilote --</option>
-          {# plus tard : options dynamiques depuis la BDD #}
-          <option value="1">Pilote A</option>
-          <option value="2">Pilote B</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="stu-pilot">Pilote de promotion</label>
+      <select id="stu-pilot" name="pilot_id">
+        <option value="">-- Sélectionner un pilote --</option>
+        {# plus tard : options dynamiques depuis la BDD #}
+        <option value="1">Pilote A</option>
+        <option value="2">Pilote B</option>
+      </select>
+    </div>
 
-      <div class="form-group">
-        <label for="stu-password">Mot de passe provisoire <span style="color:red">*</span></label>
-        <input type="password" id="stu-password" name="password" minlength="8"
-               placeholder="Minimum 8 caractères" required aria-required="true">
-        <span class="form-error" id="spass-error">
-          Le mot de passe doit contenir au moins 8 caractères.
-        </span>
-      </div>
+    <div class="form-group">
+      <label for="stu-password">Mot de passe provisoire <span style="color:red">*</span></label>
+      <input type="password" id="stu-password" name="password" minlength="8" placeholder="Minimum 8 caractères" required
+        aria-required="true">
+      <span class="form-error" id="spass-error">
+        Le mot de passe doit contenir au moins 8 caractères.
+      </span>
+    </div>
 
-      <div class="form-group">
-        <label for="stu-password-confirm">Confirmer le mot de passe <span style="color:red">*</span></label>
-        <input type="password" id="stu-password-confirm" name="password_confirm" minlength="8"
-               placeholder="Répétez le mot de passe" required aria-required="true">
-        <span class="form-error" id="sconfirm-error">Les mots de passe ne correspondent pas.</span>
-      </div>
+    <div class="form-group">
+      <label for="stu-password-confirm">Confirmer le mot de passe <span style="color:red">*</span></label>
+      <input type="password" id="stu-password-confirm" name="password_confirm" minlength="8"
+        placeholder="Répétez le mot de passe" required aria-required="true">
+      <span class="form-error" id="sconfirm-error">Les mots de passe ne correspondent pas.</span>
+    </div>
 
-      <div style="display:flex;gap:15px;flex-wrap:wrap;">
-        <button type="submit" class="btn-primary">Créer le compte</button>
-        <a href="/?uri=admin_dashboard" class="btn-secondary">Annuler</a>
-      </div>
+    <div style="display:flex;gap:15px;flex-wrap:wrap;">
+      <button type="submit" class="btn-primary">Créer le compte</button>
+      <a href="/?uri=admin_dashboard" class="btn-secondary">Annuler</a>
+    </div>
 
-    </form>
-  </section>
+  </form>
+</section>
 
-  <script>
-    document.getElementById('createStudentForm').addEventListener('submit', function(e) {
-      let valid = true;
-      document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+<script>
+  document.getElementById('createStudentForm').addEventListener('submit', function (e) {
+    let valid = true;
+    document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
 
-      const first = document.getElementById('stu-firstname');
-      const last = document.getElementById('stu-lastname');
-      const email = document.getElementById('stu-email');
-      const pass = document.getElementById('stu-password');
-      const confirm = document.getElementById('stu-password-confirm');
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const first = document.getElementById('stu-firstname');
+    const last = document.getElementById('stu-lastname');
+    const email = document.getElementById('stu-email');
+    const pass = document.getElementById('stu-password');
+    const confirm = document.getElementById('stu-password-confirm');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!first.value.trim()) {
-        document.getElementById('sfirst-error').style.display = 'block';
-        valid = false;
-      }
-      if (!last.value.trim()) {
-        document.getElementById('slast-error').style.display = 'block';
-        valid = false;
-      }
-      if (!emailRegex.test(email.value)) {
-        document.getElementById('semail-error').style.display = 'block';
-        valid = false;
-      }
-      if (pass.value.length < 8) {
-        document.getElementById('spass-error').style.display = 'block';
-        valid = false;
-      }
-      if (pass.value !== confirm.value) {
-        document.getElementById('sconfirm-error').style.display = 'block';
-        valid = false;
-      }
-      if (!valid) e.preventDefault();
-    });
-  </script>
+    if (!first.value.trim()) {
+      document.getElementById('sfirst-error').style.display = 'block';
+      valid = false;
+    }
+    if (!last.value.trim()) {
+      document.getElementById('slast-error').style.display = 'block';
+      valid = false;
+    }
+    if (!emailRegex.test(email.value)) {
+      document.getElementById('semail-error').style.display = 'block';
+      valid = false;
+    }
+    if (pass.value.length < 8) {
+      document.getElementById('spass-error').style.display = 'block';
+      valid = false;
+    }
+    if (pass.value !== confirm.value) {
+      document.getElementById('sconfirm-error').style.display = 'block';
+      valid = false;
+    }
+    if (!valid) e.preventDefault();
+  });
+</script>
 
 {% endblock %}
-

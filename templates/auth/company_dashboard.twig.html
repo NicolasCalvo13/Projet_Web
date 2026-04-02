@@ -24,13 +24,11 @@
     {% endif %}
 
 
-    {# === HEADER BIENVENUE === #}
     <div class="dashboard-header">
         <h1>Bonjour, {{ entreprise.nom }} 👋</h1>
         <p>Bienvenue sur votre espace entreprise Stage-Link</p>
     </div>
 
-    {# === STATS RAPIDES === #}
     <div class="dashboard-stats">
         <div class="stat-card">
             <span class="stat-number">{{ stats.total_offres }}</span>
@@ -48,7 +46,6 @@
 
     <div class="dashboard-grid">
 
-        {# === MES OFFRES (dernières) === #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mes offres</h2>
@@ -100,7 +97,6 @@
             {% endif %}
         </article>
 
-        {# === CANDIDATURES REÇUES (dernières) === #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Candidatures récentes</h2>
@@ -139,14 +135,13 @@
                     <a href="/?uri=application_detail&id={{ c.id }}" class="btn-primary offer-card-btn">
                         Voir la candidature
                     </a>
-                    
+
                 </article>
                 {% endfor %}
             </div>
             {% endif %}
         </article>
 
-        {# === PROFIL ENTREPRISE === #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mon profil entreprise</h2>
@@ -170,7 +165,6 @@
             <a href="/?uri=edit_company" class="btn btn-secondary">✏️ Modifier les informations</a>
         </article>
 
-        {# === ACTIONS RAPIDES === #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Actions rapides</h2>

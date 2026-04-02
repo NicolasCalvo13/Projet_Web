@@ -21,7 +21,7 @@ class OfferModelTest extends TestCase
     {
         $fakeOffers = [
             ['id' => 1, 'titre' => 'Stage Dev Web', 'entreprise_nom' => 'CESI'],
-            ['id' => 2, 'titre' => 'Stage Réseau',  'entreprise_nom' => 'Airbus'],
+            ['id' => 2, 'titre' => 'Stage Réseau', 'entreprise_nom' => 'Airbus'],
         ];
         $stmtMock = $this->createMock(PDOStatement::class);
         $stmtMock->method('fetchAll')->willReturn($fakeOffers);

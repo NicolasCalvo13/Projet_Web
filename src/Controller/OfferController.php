@@ -19,34 +19,32 @@ class OfferController
 
     public function index(): string
     {
-        // 1. Paramètres de pagination
         $limit = 6;
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        if ($page < 1)
+            $page = 1;
         $offset = ($page - 1) * $limit;
 
-        // 2. Récupération des données paginées
         $offers = $this->model->findPaginated($limit, $offset);
-        
-        // 3. Calcul du nombre total de pages
+
         $totalOffers = $this->model->countAll();
         $totalPages = (int) ceil($totalOffers / $limit);
 
-        // 4. Rendu Twig avec les variables de pagination
         return $this->twig->render('offers/list.twig.html', [
-            'page_title'  => 'Toutes les offres - Stage-Link',
-            'offers'      => $offers,
+            'page_title' => 'Toutes les offres - Stage-Link',
+            'offers' => $offers,
             'currentPage' => $page,
-            'totalPages'  => $totalPages,
-            'base_uri'    => 'offers' // <--- C'est ça qui manquait !
+            'totalPages' => $totalPages,
+            'base_uri' => 'offers'
         ]);
     }
 
     public function btplist(): string
     {
         $limit = 6;
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        if ($page < 1)
+            $page = 1;
         $offset = ($page - 1) * $limit;
 
         $offers = $this->model->findPaginated($limit, $offset, 'btp');
@@ -54,19 +52,20 @@ class OfferController
         $totalPages = (int) ceil($totalOffers / $limit);
 
         return $this->twig->render('offers/BTPlist.twig.html', [
-            'page_title'  => 'Offres BTP - Stage-Link',
-            'offers'      => $offers,
+            'page_title' => 'Offres BTP - Stage-Link',
+            'offers' => $offers,
             'currentPage' => $page,
-            'totalPages'  => $totalPages,
-            'base_uri'    => 'btp_offers' // <--- C'est ça qui manquait !
+            'totalPages' => $totalPages,
+            'base_uri' => 'btp_offers'
         ]);
     }
 
     public function itlist(): string
     {
         $limit = 6;
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        if ($page < 1)
+            $page = 1;
         $offset = ($page - 1) * $limit;
 
         $offers = $this->model->findPaginated($limit, $offset, 'informatique');
@@ -74,11 +73,11 @@ class OfferController
         $totalPages = (int) ceil($totalOffers / $limit);
 
         return $this->twig->render('offers/ITlist.twig.html', [
-            'page_title'  => 'Offres IT - Stage-Link',
-            'offers'      => $offers,
+            'page_title' => 'Offres IT - Stage-Link',
+            'offers' => $offers,
             'currentPage' => $page,
-            'totalPages'  => $totalPages, 
-            'base_uri'    => 'it_offers' // <--- C'est ça qui manquait !
+            'totalPages' => $totalPages,
+            'base_uri' => 'it_offers'
         ]);
     }
 
@@ -98,7 +97,6 @@ class OfferController
         }
 
         $inWishlist = false;
-        // On utilise student_id pour parler à la base de données !
         $studentId = $_SESSION['student_id'] ?? null;
 
         if ($studentId && $offer !== null) {
@@ -108,7 +106,7 @@ class OfferController
         return $this->twig->render('offers/detail.twig.html', [
             'page_title' => $offer['titre'],
             'offer' => $offer,
-            'user' => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
+            'user' => $_SESSION['user_id'] ?? null,
             'error' => $_GET['error'] ?? null,
             'in_wishlist' => $inWishlist
         ]);
@@ -116,7 +114,6 @@ class OfferController
 
     public function wishlist(): string
     {
-        // On utilise student_id pour la base de données
         $studentId = $_SESSION['student_id'] ?? null;
         $mesFavoris = [];
 
@@ -127,7 +124,7 @@ class OfferController
         return $this->twig->render('offers/wishlist.twig.html', [
             'page_title' => 'Wishlist - Stage-Link',
             'wishlist' => $mesFavoris,
-            'user_id' => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
+            'user_id' => $_SESSION['user_id'] ?? null
         ]);
     }
 
@@ -154,21 +151,18 @@ class OfferController
             $competences = trim($_POST['competences'] ?? '');
             $profil = trim($_POST['profil'] ?? '');
 
-            // Titre : required, 5-200 caractères
             if ($titre === '') {
                 $errors['titre'] = "Le titre est obligatoire.";
             } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 200) {
                 $errors['titre'] = "Le titre doit contenir entre 5 et 200 caractères.";
             }
 
-            // Ville : required, 2-100 caractères
             if ($ville === '') {
                 $errors['ville'] = "La ville est obligatoire.";
             } elseif (mb_strlen($ville) < 2 || mb_strlen($ville) > 100) {
                 $errors['ville'] = "La ville doit contenir entre 2 et 100 caractères.";
             }
 
-            // Durée : required, nombre entier 1-12
             if ($duree === '') {
                 $errors['duree'] = "La durée est obligatoire.";
             } elseif (!ctype_digit($duree)) {
@@ -177,14 +171,12 @@ class OfferController
                 $errors['duree'] = "La durée doit être comprise entre 1 et 12 mois.";
             }
 
-            // Date de début : required, format grossier AAAA-MM-JJ
             if ($dateDebut === '') {
                 $errors['date_debut'] = "La date de début est obligatoire.";
             } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateDebut)) {
                 $errors['date_debut'] = "La date de début doit être au format AAAA-MM-JJ.";
             }
 
-            // Rémunération : optionnelle, numérique 0-5000
             if ($remuneration !== '') {
                 if (!is_numeric($remuneration)) {
                     $errors['remuneration'] = "La rémunération doit être un nombre.";
@@ -193,21 +185,18 @@ class OfferController
                 }
             }
 
-            // Description : required, 30-3000 caractères
             if ($description === '') {
                 $errors['description'] = "La description est obligatoire.";
             } elseif (mb_strlen($description) < 30 || mb_strlen($description) > 3000) {
                 $errors['description'] = "La description doit contenir entre 30 et 3000 caractères.";
             }
 
-            // Compétences : required, 3-1000 caractères
             if ($competences === '') {
                 $errors['competences'] = "Les compétences recherchées sont obligatoires.";
             } elseif (mb_strlen($competences) < 3 || mb_strlen($competences) > 1000) {
                 $errors['competences'] = "Les compétences doivent contenir entre 3 et 1000 caractères.";
             }
 
-            // Profil : optionnel, max 1500 caractères
             if ($profil !== '' && mb_strlen($profil) > 1500) {
                 $errors['profil'] = "Le profil recherché ne doit pas dépasser 1500 caractères.";
             }
@@ -263,7 +252,6 @@ class OfferController
     {
         header('Content-Type: application/json');
 
-        // On utilise student_id !
         $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
         $wishlistId = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
@@ -293,7 +281,6 @@ class OfferController
         $data = json_decode(file_get_contents('php://input'), true);
         $offerId = isset($data['offer_id']) ? (int) $data['offer_id'] : null;
 
-        // On utilise student_id !
         $studentId = isset($_SESSION['student_id']) ? (int) $_SESSION['student_id'] : null;
 
         if (!$studentId || !$offerId) {

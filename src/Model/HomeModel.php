@@ -59,5 +59,5 @@ class HomeModel
         return (int) $stmt->fetchColumn();
     }
 
-    
+
 }

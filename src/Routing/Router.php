@@ -7,7 +7,7 @@ namespace App\Routing;
 class Router
 {
     private array $routes = [
-        'GET'  => [],
+        'GET' => [],
         'POST' => [],
     ];
 
@@ -24,7 +24,7 @@ class Router
     public function dispatch(string $uri, string $method): string
     {
 
-        
+
         $method = strtoupper($method);
 
         if (!isset($this->routes[$method][$uri])) {
@@ -42,4 +42,3 @@ class Router
         return '';
     }
 }
-

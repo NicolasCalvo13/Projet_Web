@@ -197,7 +197,6 @@ class UserModel
 
         $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Sécuriser un minimum les valeurs (éviter les null dans le Twig)
         return [
             'total_offres' => (int) ($stats['total_offres'] ?? 0),
             'total_candidatures' => (int) ($stats['total_candidatures'] ?? 0),
@@ -376,7 +375,6 @@ class UserModel
 
     public function deleteStudent(int $userId): bool
     {
-        // Supprime l'utilisateur → cascade sur student, candidatures, wishlist, avis
         $stmt = $this->pdo->prepare('DELETE FROM utilisateurs WHERE id = :id AND role = "student"');
         return $stmt->execute(['id' => $userId]);
     }
@@ -425,11 +423,9 @@ class UserModel
         try {
             $this->pdo->beginTransaction();
             
-            // Mise à jour de la table entreprises
             $stmtEnt = $this->pdo->prepare("UPDATE entreprises SET nom = :nom, siret = :siret, secteur = :secteur WHERE id = :id");
             $stmtEnt->execute(['nom' => $nom, 'siret' => $siret, 'secteur' => $secteur, 'id' => $entrepriseId]);
 
-            // Mise à jour de l'email dans la table utilisateurs
             $stmtUser = $this->pdo->prepare("UPDATE utilisateurs SET email = :email WHERE id = :id");
             $stmtUser->execute(['email' => $email, 'id' => $userId]);
 

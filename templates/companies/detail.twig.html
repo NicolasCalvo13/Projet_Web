@@ -4,85 +4,87 @@
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    <a href="/?uri=offers">Offres</a><span>›</span>
-    {{ company.nom }}
-  </nav>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <a href="/?uri=home">Accueil</a><span>›</span>
+  <a href="/?uri=offers">Offres</a><span>›</span>
+  {{ company.nom }}
+</nav>
 
-  <section class="company-hero" aria-labelledby="company-name">
-    <img src="{{ company.logo_path ?? '/assets/images/placeholder.png' }}" alt="Logo de {{ company.nom }}" class="company-logo" style="object-fit:contain;">
-    <div class="company-hero-info">
-      <h1 id="company-name">{{ company.nom }}</h1>
-      <p>📧 <a href="mailto:{{ company.email }}">{{ company.email ?? 'Non renseigné' }}</a></p>
-      <p>📞 {{ company.telephone ?? 'Non renseigné' }}</p>
-      <p>👥 <strong>{{ stats.nb_candidats }}</strong> stagiaire(s) ayant postulé</p>
-      
-      <div class="rating-bar-wrap">
-        <span class="stars" aria-label="Note moyenne">
-           {% for i in 1..5 %}
-              {{ stats.avg_note >= i ? '★' : '☆' }}
-           {% endfor %}
-        </span>
-        <div class="rating-bar">
-            <div class="rating-fill" style="width:{{ (stats.avg_note / 5) * 100 }}%"></div>
-        </div>
-        <strong>{{ stats.avg_note > 0 ? stats.avg_note : '--' }} / 5</strong>
-        <span style="color:#aaa;font-size:.85rem;">({{ stats.nb_avis }} avis)</span>
+<section class="company-hero" aria-labelledby="company-name">
+  <img src="{{ company.logo_path ?? '/assets/images/placeholder.png' }}" alt="Logo de {{ company.nom }}"
+    class="company-logo" style="object-fit:contain;">
+  <div class="company-hero-info">
+    <h1 id="company-name">{{ company.nom }}</h1>
+    <p>📧 <a href="mailto:{{ company.email }}">{{ company.email ?? 'Non renseigné' }}</a></p>
+    <p>📞 {{ company.telephone ?? 'Non renseigné' }}</p>
+    <p>👥 <strong>{{ stats.nb_candidats }}</strong> stagiaire(s) ayant postulé</p>
+
+    <div class="rating-bar-wrap">
+      <span class="stars" aria-label="Note moyenne">
+        {% for i in 1..5 %}
+        {{ stats.avg_note >= i ? '★' : '☆' }}
+        {% endfor %}
+      </span>
+      <div class="rating-bar">
+        <div class="rating-fill" style="width:{{ (stats.avg_note / 5) * 100 }}%"></div>
       </div>
+      <strong>{{ stats.avg_note > 0 ? stats.avg_note : '--' }} / 5</strong>
+      <span style="color:#aaa;font-size:.85rem;">({{ stats.nb_avis }} avis)</span>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section-card" aria-labelledby="desc-title">
-    <h2 id="desc-title">Description</h2>
-    <p>{{ company.description|default("Aucune description fournie par l'entreprise.")|nl2br|raw }}</p>
-  </section>
+<section class="section-card" aria-labelledby="desc-title">
+  <h2 id="desc-title">Description</h2>
+  <p>{{ company.description|default("Aucune description fournie par l'entreprise.")|nl2br|raw }}</p>
+</section>
 
-  <section class="section-card" aria-labelledby="offers-title">
-    <h2 id="offers-title">Offres de stage disponibles</h2>
-    
-    {% if offers is empty %}
-        <p>Aucune offre de stage n'est actuellement proposée par cette entreprise.</p>
-    {% else %}
-        {% for offer in offers %}
-        <div class="offer-mini">
-          <div>
-            <strong>{{ offer.titre }}</strong><br>
-            <span class="badge">{{ offer.lieu ?? 'Lieu non renseigné' }}</span>
-            <span class="badge">{{ offer.remuneration ? offer.remuneration ~ ' €/mois' : 'Non rémunéré' }}</span>
-          </div>
-          <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn-secondary">Voir l'offre</a>
-        </div>
-        {% endfor %}
-    {% endif %}
-  </section>
+<section class="section-card" aria-labelledby="offers-title">
+  <h2 id="offers-title">Offres de stage disponibles</h2>
 
-  <section class="section-card" aria-labelledby="avis-title">
-    <h2 id="avis-title">Avis des stagiaires</h2>
-    
-    {% if reviews is empty %}
-        <p>Aucun avis n'a encore été laissé pour cette entreprise.</p>
-    {% else %}
-        {% for review in reviews %}
-        <div class="avis-card" style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-          <span class="avis-author">{{ review.prenom }} {{ review.nom|slice(0, 1) }}.</span>
-          <span class="avis-date" style="font-size: 0.85em; color: #888; margin-left: 10px;">{{ review.created_at|date("d/m/Y") }}</span>
-          
-          <div class="stars" aria-label="Note de {{ review.note }}/5">
-             {% for i in 1..5 %}
-                 <span style="color: {{ i <= review.note ? '#FFD700' : '#ccc' }};">{{ i <= review.note ? '★' : '☆' }}</span>
-             {% endfor %}
-          </div>
-          <p style="margin-top: 10px;">{{ review.commentaire|nl2br|raw }}</p>
-        </div>
-        {% endfor %}
-    {% endif %}
-
-    <div style="margin-top:20px;">
-      <a href="/?uri=reviews&company_id={{ company.id }}" class="btn-primary">Laisser un avis</a>
+  {% if offers is empty %}
+  <p>Aucune offre de stage n'est actuellement proposée par cette entreprise.</p>
+  {% else %}
+  {% for offer in offers %}
+  <div class="offer-mini">
+    <div>
+      <strong>{{ offer.titre }}</strong><br>
+      <span class="badge">{{ offer.lieu ?? 'Lieu non renseigné' }}</span>
+      <span class="badge">{{ offer.remuneration ? offer.remuneration ~ ' €/mois' : 'Non rémunéré' }}</span>
     </div>
-  </section>
+    <a href="/?uri=offer_detail&id={{ offer.id }}" class="btn-secondary">Voir l'offre</a>
+  </div>
+  {% endfor %}
+  {% endif %}
+</section>
 
-  <a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Retour aux offres</a>
+<section class="section-card" aria-labelledby="avis-title">
+  <h2 id="avis-title">Avis des stagiaires</h2>
+
+  {% if reviews is empty %}
+  <p>Aucun avis n'a encore été laissé pour cette entreprise.</p>
+  {% else %}
+  {% for review in reviews %}
+  <div class="avis-card" style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+    <span class="avis-author">{{ review.prenom }} {{ review.nom|slice(0, 1) }}.</span>
+    <span class="avis-date" style="font-size: 0.85em; color: #888; margin-left: 10px;">{{
+      review.created_at|date("d/m/Y") }}</span>
+
+    <div class="stars" aria-label="Note de {{ review.note }}/5">
+      {% for i in 1..5 %}
+      <span style="color: {{ i <= review.note ? '#FFD700' : '#ccc' }};">{{ i <= review.note ? '★' : '☆' }}</span>
+          {% endfor %}
+    </div>
+    <p style="margin-top: 10px;">{{ review.commentaire|nl2br|raw }}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <div style="margin-top:20px;">
+    <a href="/?uri=reviews&company_id={{ company.id }}" class="btn-primary">Laisser un avis</a>
+  </div>
+</section>
+
+<a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Retour aux offres</a>
 
 {% endblock %}

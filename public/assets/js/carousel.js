@@ -122,14 +122,12 @@
     nextBtn.addEventListener('click', next);
     prevBtn.addEventListener('click', prev);
 
-    // ---- Drag / swipe avec clics encore fonctionnels ----
     let startX = 0;
     let currentX = 0;
     let isDragging = false;
     let hasMoved = false;
 
     viewport.addEventListener('pointerdown', function (event) {
-      // Si on clique sur un lien ou un bouton, on laisse le clic normal
       if (event.target.closest('a, button')) {
         return;
       }
@@ -154,7 +152,6 @@
       const delta = currentX - startX;
       isDragging = false;
 
-      // Si ça n'a presque pas bougé → clic, on n'avance pas le carousel
       if (!hasMoved || Math.abs(delta) < 50) {
         return;
       }
@@ -167,7 +164,6 @@
     viewport.addEventListener('pointercancel', endDrag);
     viewport.addEventListener('lostpointercapture', endDrag);
 
-    // ---- Resize ----
     window.addEventListener('resize', function () {
       createClones();
     });

@@ -5,90 +5,103 @@ namespace App\Controller;
 use App\Model\UserModel;
 use Twig\Environment;
 
-class AuthController {
+class AuthController
+{
 
     private Environment $twig;
     private UserModel $userModel;
 
-    public function __construct(Environment $twig) {
+    public function __construct(Environment $twig)
+    {
         $this->twig = $twig;
         $this->userModel = new UserModel();
     }
 
-    public function loginForm(): string {
-        if (session_status() === PHP_SESSION_NONE) session_start();
+    public function loginForm(): string
+    {
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
 
         if (isset($_SESSION['user_id'])) {
             switch ($_SESSION['role']) {
                 case 'admin':
-                    header('Location: /?uri=admin_dashboard'); break;
+                    header('Location: /?uri=admin_dashboard');
+                    break;
                 case 'entreprise':
-                    header('Location: /?uri=company_dashboard'); break;
+                    header('Location: /?uri=company_dashboard');
+                    break;
                 case 'student':
-                    header('Location: /?uri=student_dashboard'); break;
+                    header('Location: /?uri=student_dashboard');
+                    break;
                 default:
                     session_destroy();
-                    header('Location: /?uri=login'); break;
+                    header('Location: /?uri=login');
+                    break;
             }
             exit;
         }
 
         return $this->twig->render('auth/login.twig.html', [
-            'page_title'       => 'Connexion - Stage-Link',
+            'page_title' => 'Connexion - Stage-Link',
             'meta_description' => 'Connectez-vous à votre espace.',
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
+            'errors' => [],
+            'old' => [],
+            'error' => null,
         ]);
     }
 
-    public function logout(): void {
+    public function logout(): void
+    {
         session_unset();
         session_destroy();
         header('location: /?uri=login');
         exit;
     }
 
-    public function showLoginEnterpriseForm(): string {
+    public function showLoginEnterpriseForm(): string
+    {
         return $this->twig->render('auth/login_entreprise.twig.html', [
-            'page_title'       => 'Connexion Entreprise - Stage-Link',
+            'page_title' => 'Connexion Entreprise - Stage-Link',
             'meta_description' => 'Connectez-vous à votre espace entreprise.',
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
+            'errors' => [],
+            'old' => [],
+            'error' => null,
         ]);
     }
 
-    public function registerForm(): string {
+    public function registerForm(): string
+    {
         return $this->twig->render('auth/register.twig.html', [
-            'page_title'       => 'Inscription - Stage-Link',
+            'page_title' => 'Inscription - Stage-Link',
             'meta_description' => 'Inscrivez-vous pour obtenir une meilleure expérience utilisateur.',
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
+            'errors' => [],
+            'old' => [],
+            'error' => null,
         ]);
     }
 
-    public function registerForm_entreprise(): string {
+    public function registerForm_entreprise(): string
+    {
         return $this->twig->render('auth/register_entreprise.twig.html', [
-            'page_title'       => 'Inscription Entreprise - Stage-Link',
+            'page_title' => 'Inscription Entreprise - Stage-Link',
             'meta_description' => 'Inscrivez votre entreprise pour publier des offres de stage.',
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
+            'errors' => [],
+            'old' => [],
+            'error' => null,
         ]);
     }
 
-    public function register(): string {
+    public function register(): string
+    {
         $errors = [];
         $errorGlobal = null;
 
-        $gender   = trim($_POST['gender']           ?? '');
-        $nom      = trim($_POST['lastname']         ?? '');
-        $prenom   = trim($_POST['surname']          ?? '');
-        $email    = trim($_POST['email']            ?? '');
-        $password = trim($_POST['password']         ?? '');
-        $confirm  = trim($_POST['password_confirm'] ?? '');
+        $gender = trim($_POST['gender'] ?? '');
+        $nom = trim($_POST['lastname'] ?? '');
+        $prenom = trim($_POST['surname'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+        $confirm = trim($_POST['password_confirm'] ?? '');
 
         if ($gender === '') {
             $errors['gender'] = 'La civilité est obligatoire.';
@@ -136,27 +149,28 @@ class AuthController {
 
         return $this->twig->render('auth/register.twig.html', [
             'page_title' => 'Inscription - Stage-Link',
-            'errors'     => $errors,
-            'old'        => [
-                'gender'   => $gender,
+            'errors' => $errors,
+            'old' => [
+                'gender' => $gender,
                 'lastname' => $nom,
-                'surname'  => $prenom,
-                'email'    => $email,
+                'surname' => $prenom,
+                'email' => $email,
             ],
-            'error'      => $errorGlobal,
+            'error' => $errorGlobal,
         ]);
     }
 
-    public function register_entreprise(): string {
+    public function register_entreprise(): string
+    {
         $errors = [];
         $errorGlobal = null;
 
-        $name     = trim($_POST['name']             ?? ''); 
-        $siret    = trim($_POST['siret']            ?? ''); 
-        $secteur  = trim($_POST['secteur']          ?? '');
-        $email    = trim($_POST['email']            ?? '');
-        $password = trim($_POST['password']         ?? '');
-        $confirm  = trim($_POST['password_confirm'] ?? '');
+        $name = trim($_POST['name'] ?? '');
+        $siret = trim($_POST['siret'] ?? '');
+        $secteur = trim($_POST['secteur'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+        $confirm = trim($_POST['password_confirm'] ?? '');
 
         if ($name === '') {
             $errors['name'] = 'Le nom de l’entreprise est obligatoire.';
@@ -206,22 +220,23 @@ class AuthController {
 
         return $this->twig->render('auth/register_entreprise.twig.html', [
             'page_title' => 'Inscription Entreprise - Stage-Link',
-            'errors'     => $errors,
-            'old'        => [
-                'name'    => $name,
-                'siret'   => $siret,
+            'errors' => $errors,
+            'old' => [
+                'name' => $name,
+                'siret' => $siret,
                 'secteur' => $secteur,
-                'email'   => $email,
+                'email' => $email,
             ],
-            'error'      => $errorGlobal,
+            'error' => $errorGlobal,
         ]);
     }
 
-    public function login(): string {
+    public function login(): string
+    {
         $errors = [];
         $errorGlobal = null;
 
-        $email    = trim($_POST['email'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
         if ($email === '') {
@@ -244,17 +259,25 @@ class AuthController {
                     session_start();
                 }
 
-                $_SESSION['user_id']    = $user['id'];
-                $_SESSION['student_id'] = $user['student_id'] ?? null; 
-                $_SESSION['nom']        = $user['nom'];
-                $_SESSION['prenom']     = $user['prenom'];             
-                $_SESSION['role']       = $user['role'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['student_id'] = $user['student_id'] ?? null;
+                $_SESSION['nom'] = $user['nom'];
+                $_SESSION['prenom'] = $user['prenom'];
+                $_SESSION['role'] = $user['role'];
 
                 switch ($user['role']) {
-                    case 'admin':      header('Location: /?uri=admin_dashboard');   break;
-                    case 'entreprise': header('Location: /?uri=company_dashboard'); break;
-                    case 'student':    header('Location: /?uri=student_dashboard'); break;
-                    default:           header('Location: /?uri=home');              break;
+                    case 'admin':
+                        header('Location: /?uri=admin_dashboard');
+                        break;
+                    case 'entreprise':
+                        header('Location: /?uri=company_dashboard');
+                        break;
+                    case 'student':
+                        header('Location: /?uri=student_dashboard');
+                        break;
+                    default:
+                        header('Location: /?uri=home');
+                        break;
                 }
                 exit;
             }
@@ -264,17 +287,18 @@ class AuthController {
 
         return $this->twig->render('auth/login.twig.html', [
             'page_title' => 'Connexion - Stage-Link',
-            'errors'     => $errors,
-            'old'        => ['email' => $email],
-            'error'      => $errorGlobal,
+            'errors' => $errors,
+            'old' => ['email' => $email],
+            'error' => $errorGlobal,
         ]);
     }
 
-    public function login_entreprise(): string {
+    public function login_entreprise(): string
+    {
         $errors = [];
         $errorGlobal = null;
 
-        $email    = trim($_POST['email'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
         if ($email === '') {
@@ -297,16 +321,24 @@ class AuthController {
                     session_start();
                 }
 
-                $_SESSION['user_id']       = $user['id'];
-                $_SESSION['entreprise_id'] = $user['entreprise_id'] ?? null; 
-                $_SESSION['nom']           = $user['nom'];
-                $_SESSION['role']          = $user['role'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['entreprise_id'] = $user['entreprise_id'] ?? null;
+                $_SESSION['nom'] = $user['nom'];
+                $_SESSION['role'] = $user['role'];
 
                 switch ($user['role']) {
-                    case 'admin':      header('Location: /?uri=admin_dashboard');   break;
-                    case 'entreprise': header('Location: /?uri=company_dashboard'); break;
-                    case 'student':    header('Location: /?uri=student_dashboard'); break;
-                    default:           header('Location: /?uri=home');              break;
+                    case 'admin':
+                        header('Location: /?uri=admin_dashboard');
+                        break;
+                    case 'entreprise':
+                        header('Location: /?uri=company_dashboard');
+                        break;
+                    case 'student':
+                        header('Location: /?uri=student_dashboard');
+                        break;
+                    default:
+                        header('Location: /?uri=home');
+                        break;
                 }
                 exit;
             }
@@ -316,17 +348,18 @@ class AuthController {
 
         return $this->twig->render('auth/login_entreprise.twig.html', [
             'page_title' => 'Connexion Entreprise - Stage-Link',
-            'errors'     => $errors,
-            'old'        => ['email' => $email],
-            'error'      => $errorGlobal,
+            'errors' => $errors,
+            'old' => ['email' => $email],
+            'error' => $errorGlobal,
         ]);
     }
 
-    public function loginCheck(): string {
+    public function loginCheck(): string
+    {
         return $this->twig->render('auth/login.twig.html', [
-            'page_title'       => 'Connexion - Stage-Link',
+            'page_title' => 'Connexion - Stage-Link',
             'meta_description' => 'Connectez-vous à votre espace.',
-            'error'            => 'Authentification non implémentée',
+            'error' => 'Authentification non implémentée',
         ]);
     }
 }

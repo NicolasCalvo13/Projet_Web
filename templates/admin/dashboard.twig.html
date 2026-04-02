@@ -5,11 +5,11 @@
 {% block body %}
 
 {% if success == 'offer_created' %}
-    <div class="alert alert-success">✅ L'offre a bien été publiée !</div>
+<div class="alert alert-success">✅ L'offre a bien été publiée !</div>
 {% elseif success == 'company_created' %}
-    <div class="alert alert-success">✅ L'entreprise a bien été créée !</div>
+<div class="alert alert-success">✅ L'entreprise a bien été créée !</div>
 {% elseif success == 'user_deleted' %}
-    <div class="alert alert-success">✅ L'utilisateur a bien été supprimé.</div>
+<div class="alert alert-success">✅ L'utilisateur a bien été supprimé.</div>
 {% endif %}
 
 {% if session.flash_success %}
@@ -25,59 +25,59 @@
 
 <h1 style="color:#007575;">Tableau de bord — Administrateur</h1>
 
-  <div class="stats-grid" aria-label="Statistiques globales">
-    <div class="stat-card">
-      <div class="stat-number">{{ stats.total_offres }}</div>
-      <div class="stat-label">Offres disponibles</div>
+<div class="stats-grid" aria-label="Statistiques globales">
+  <div class="stat-card">
+    <div class="stat-number">{{ stats.total_offres }}</div>
+    <div class="stat-label">Offres disponibles</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ stats.total_entreprises }}</div>
+    <div class="stat-label">Entreprises</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ stats.total_students }}</div>
+    <div class="stat-label">Étudiants</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">
+      {{ stats.avg_note }} {% if stats.avg_note != 'N/A' %}/5{% endif %}
     </div>
-    <div class="stat-card">
-      <div class="stat-number">{{ stats.total_entreprises }}</div>
-      <div class="stat-label">Entreprises</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">{{ stats.total_students }}</div>
-      <div class="stat-label">Étudiants</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">
-        {{ stats.avg_note }} {% if stats.avg_note != 'N/A' %}/5{% endif %}
-      </div>
-      <div class="stat-label">Note moyenne entreprises</div>
-    </div>
+    <div class="stat-label">Note moyenne entreprises</div>
   </div>
 </div>
+</div>
 
-  <!-- Raccourcis de gestion -->
-  <div class="admin-grid">
+<!-- Raccourcis de gestion -->
+<div class="admin-grid">
 
-    <div class="admin-card">
-      <h3> Offres de stage</h3>
-      <a href="/?uri=admin_manage_offers">Gérer les offres</a>
-      <a href="/?uri=offer_create">Créer une offre</a>
-    </div>
+  <div class="admin-card">
+    <h3> Offres de stage</h3>
+    <a href="/?uri=admin_manage_offers">Gérer les offres</a>
+    <a href="/?uri=offer_create">Créer une offre</a>
+  </div>
 
-    <div class="admin-card">
-      <h3> Entreprises</h3>
-      <a href="/?uri=admin_manage_companies">Gérer les entreprises</a>
-      <a href="/?uri=admin_company_create">Créer une entreprise</a>
-    </div>
+  <div class="admin-card">
+    <h3> Entreprises</h3>
+    <a href="/?uri=admin_manage_companies">Gérer les entreprises</a>
+    <a href="/?uri=admin_company_create">Créer une entreprise</a>
+  </div>
 
-    <div class="admin-card">
-      <h3> Étudiants</h3>
-      <a href="/?uri=admin_manage_students">Gérer les étudiants</a>
-      <a href="/?uri=register">Créer un compte étudiant</a>
-    </div>
+  <div class="admin-card">
+    <h3> Étudiants</h3>
+    <a href="/?uri=admin_manage_students">Gérer les étudiants</a>
+    <a href="/?uri=register">Créer un compte étudiant</a>
+  </div>
 
-    <div class="admin-card">
-      <h3> Statistiques</h3>
-      <a href="/?uri=stats_offers">Statistiques des offres</a>
-      <a href="/?uri=admin_manage_reviews">Gérer les avis</a>
-    </div>
+  <div class="admin-card">
+    <h3> Statistiques</h3>
+    <a href="/?uri=stats_offers">Statistiques des offres</a>
+    <a href="/?uri=admin_manage_reviews">Gérer les avis</a>
+  </div>
 
 
 </div>
 
-  <div>
-    <a href="?uri=logout" class="btn btn-danger">Déconnexion</a>
-  </div>
+<div>
+  <a href="?uri=logout" class="btn btn-danger">Déconnexion</a>
+</div>
 {% endblock %}

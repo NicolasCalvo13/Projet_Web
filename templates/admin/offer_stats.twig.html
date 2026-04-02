@@ -13,7 +13,7 @@
 <h1 style="color:#007575; text-align: center; margin-bottom: 30px;">Analyse du marché des stages</h1>
 
 <div class="carousel-container" id="statCarousel">
-    
+
     <div class="stat-slide">
         <h3>Offres globales</h3>
         <p>Opportunités publiées</p>
@@ -25,10 +25,10 @@
         <h3>Répartition par durée</h3>
         <ul class="stat-list">
             {% for item in stats.repartition_duree %}
-                <li>
-                    <span>{{ item.duree }}</span>
-                    <strong>{{ item.nb }} offres</strong>
-                </li>
+            <li>
+                <span>{{ item.duree }}</span>
+                <strong>{{ item.nb }} offres</strong>
+            </li>
             {% endfor %}
         </ul>
     </div>
@@ -38,10 +38,10 @@
         <p>Offres les plus sauvegardées</p>
         <ul class="stat-list">
             {% for offer in stats.top_wishlisted %}
-                <li>
-                    <span title="{{ offer.titre }}">{{ offer.titre|slice(0, 25) }}...</span>
-                    <span class="badge" style="background:#007575; color:white;">❤️ {{ offer.total_wish }}</span>
-                </li>
+            <li>
+                <span title="{{ offer.titre }}">{{ offer.titre|slice(0, 25) }}...</span>
+                <span class="badge" style="background:#007575; color:white;">❤️ {{ offer.total_wish }}</span>
+            </li>
             {% endfor %}
         </ul>
     </div>
@@ -57,7 +57,7 @@
 
 <div class="carousel-nav">
     {% for i in 1..4 %}
-        <div class="nav-dot {{ loop.first ? 'active' : '' }}"></div>
+    <div class="nav-dot {{ loop.first ? 'active' : '' }}"></div>
     {% endfor %}
 </div>
 
