@@ -39,16 +39,9 @@
             <td data-label="Rémunération">{{ item.remuneration }}</td>
             <td data-label="Compétences"><span class="badge">Compétence</span></td>
             <td data-label="Actions">
-              <a href="/?uri=apply&id={{ item.offre_id }}"
-                 class="btn-primary"
-                 style="padding:7px 14px;font-size:.85rem;">Postuler</a>
+              <a href="/?uri=apply_offer&id={{ item.offre_id }}" class="btn-primary">Postuler</a>
               
-              <button class="btn-danger"
-                      onclick="removeWishlist(this, { item,id })"
-                      aria-label="Retirer de la wish-list"
-                      style="padding:7px 14px;font-size:.85rem;">
-                ✕ Retirer
-              </button>
+              <button onclick="removeWishlist(this, {{ item.id }})" class="btn-danger btn-sm">X Retirer</button>
             </td>
           </tr>
           {% else %}
@@ -80,9 +73,12 @@
 
   <a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Voir toutes les offres</a>
 
-  {# Le script JS ne sert que si l'utilisateur est connecté, on peut le laisser ici sans problème #}
   <script>
+    // La fonction correspond maintenant exactement à ce que le bouton attend
     function removeWishlist(btn, wishlistId) {
+      // Demande de confirmation avant suppression
+      if(!confirm('Voulez-vous retirer cette offre de vos favoris ?')) return;
+
       const row = btn.closest('tr');
       row.style.transition = 'opacity .3s';
       row.style.opacity = '0';
@@ -94,14 +90,17 @@
           setTimeout(() => {
             row.remove();
             
-            const remaining = document.querySelectorAll('#wishlist-body tr:not(#empty-row)').length;
+            // Mise à jour du compteur d'offres
+            const remainingRows = document.querySelectorAll('#wishlist-body tr:not(#empty-row)');
+            const remaining = remainingRows.length;
             const countElement = document.getElementById('wishlist-count');
             if(countElement) countElement.textContent = remaining;
 
+            // Si la liste est vide, on affiche le message vide
             if (remaining === 0) {
                 document.getElementById('wishlist-body').innerHTML = '<tr id="empty-row"><td colspan="5" style="text-align: center; padding: 20px;">Votre wish-list est vide pour le moment.</td></tr>';
             }
-          }, 300);
+          }, 300); // 300ms pour laisser le temps à l'animation d'opacité de se faire
         } else {
           alert("Erreur: " + data.message);
           row.style.opacity = '1';

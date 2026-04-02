@@ -317,6 +317,16 @@ $router->post('admin_company_submit', function () use ($twig) {
     return $controller->createCompanySubmit();
 });
 
+$router->post('toggle_wishlist', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->toggleWishlistAjax(); // <-- LE RETURN MANQUANT ÉTAIT ICI !
+});
+
+$router->get('remove_wishlist', function () use ($twig) {
+    $controller = new OfferController($twig);
+    return $controller->removeWishlist(); // <-- ET ICI !
+});
+
 // 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
 $uri    = $_GET['uri'] ?? 'home';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
