@@ -3,10 +3,12 @@
 ├── arbre.txt
 ├── composer.json
 ├── composer.lock
+├── phpunit.xml
 ├── public
 │   ├── assets
 │   │   ├── images
 │   │   │   ├── cv
+│   │   │   │   └── CV Matis BILLET aix .pdf
 │   │   │   ├── icon-all-offer.jpg
 │   │   │   ├── icon-fav.png
 │   │   │   ├── icon-offer-BTP.jpg
@@ -31,7 +33,15 @@
 │   │   │   │   ├── thales.svg
 │   │   │   │   └── vinci.svg
 │   │   │   ├── photos
-│   │   │   └── placeholder.png
+│   │   │   │   └── pdp.jpg
+│   │   │   ├── placeholder.png
+│   │   │   └── search-logo.png
+│   │   ├── js
+│   │   │   ├── alerts.js
+│   │   │   ├── apply.js
+│   │   │   ├── header.js
+│   │   │   ├── navbar.js
+│   │   │   └── offer_form_validation.js
 │   │   └── style.css
 │   └── index.php
 ├── src
@@ -50,21 +60,31 @@
 │   ├── Database
 │   │   └── Database.php
 │   ├── Model
+│   │   ├── AdminModel.php
+│   │   ├── ApplicationModel.php
+│   │   ├── CompanyModel.php
 │   │   ├── HomeModel.php
 │   │   ├── OfferModel.php
 │   │   ├── ReviewModel.php
 │   │   └── UserModel.php
 │   └── Routing
 │       └── Router.php
-├── stage-link.sql
+├── stage-link-V5.sql
 ├── templates
+│   ├── _partials
+│   │   └── _offer_form_fields.twig.html
 │   ├── admin
+│   │   ├── admin_companies.twig.html
+│   │   ├── admin_offers.twig.html
+│   │   ├── admin_reviews.twig.html
+│   │   ├── admin_student.twig.html
 │   │   ├── company_create.twig.html
 │   │   ├── dashboard.twig.html
 │   │   ├── offer_create.twig.html
 │   │   ├── pilot_create.twig.html
 │   │   └── student_create.twig.html
 │   ├── applications
+│   │   ├── application_detail.twig.html
 │   │   ├── applications.twig.html
 │   │   └── apply.twig.html
 │   ├── auth
@@ -88,12 +108,17 @@
 │   │   ├── create_offer.twig.html
 │   │   ├── detail.twig.html
 │   │   ├── list.twig.html
+│   │   ├── search_results.twig.html
 │   │   └── wishlist.twig.html
 │   └── static
+│       ├── all_reviews.twig.html
+│       ├── company_reviews.twig.html
 │       ├── contact.twig.html
 │       ├── cookies.twig.html
 │       ├── legal.twig.html
 │       └── reviews.twig.html
+├── tests
+│   └── OfferModelTest.php
 └── vendor
     ├── autoload.php
     ├── bin
@@ -2342,4 +2367,4 @@
                     ├── ReflectionCallable.php
                     └── TemplateDirIterator.php
 
-299 directories, 2044 files
+302 directories, 2066 files
