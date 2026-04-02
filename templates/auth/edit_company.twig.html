@@ -13,11 +13,11 @@
     </div>
 
     {% if success %}
-        <div class="alert-success">Profil entreprise mis à jour avec succès.</div>
+    <div class="alert-success">Profil entreprise mis à jour avec succès.</div>
     {% endif %}
 
     {% if error %}
-        <div class="alert-error">{{ error }}</div>
+    <div class="alert-error">{{ error }}</div>
     {% endif %}
 
     <form action="?uri=edit_company" method="POST" enctype="multipart/form-data">
@@ -59,10 +59,10 @@
             <h2>Logo de l'entreprise</h2>
 
             {% if company.logo_path %}
-                <div class="current-file">
-                    <p class="current-file-label">Logo actuel :</p>
-                    <img src="{{ company.logo_path }}" alt="Logo de l'entreprise" class="preview-photo">
-                </div>
+            <div class="current-file">
+                <p class="current-file-label">Logo actuel :</p>
+                <img src="{{ company.logo_path }}" alt="Logo de l'entreprise" class="preview-photo">
+            </div>
             {% endif %}
 
             <div class="form-group">

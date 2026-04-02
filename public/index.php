@@ -5,7 +5,6 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-// 1. Autoloader Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Routing\Router;
@@ -20,29 +19,23 @@ use App\Controller\UserController;
 use App\Controller\StudentController;
 use App\Controller\PiloteController;
 session_start();
-// 2. Initialisation du moteur de templates Twig
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
-$twig   = new \Twig\Environment($loader, [
-    'cache' => false, // met un dossier de cache en prod
+$twig = new \Twig\Environment($loader, [
+    'cache' => false,
     'debug' => true,
-    
+
 ]);
 $twig->addGlobal('session_role', $_SESSION['role'] ?? null);
 
 
 
-// 4. Création du Router
 $router = new Router();
 
-// === DÉCLARATION DES ROUTES ===
-
-// --- Accueil ---
 $router->get('home', function () use ($twig) {
     $controller = new HomeController($twig);
     return $controller->index();
 });
 
-// --- Offres ---
 $router->get('offers', function () use ($twig) {
     $controller = new OfferController($twig);
     return $controller->index();
@@ -63,10 +56,9 @@ $router->get('it_offers', function () use ($twig) {
     return $controller->itlist();
 });
 
-// --- Authentification / Inscription ---
 $router->get('login', function () use ($twig) {
     $controller = new AuthController($twig);
-    return $controller->loginForm(); // J'ai gardé loginForm() qui semble être ta méthode finale
+    return $controller->loginForm();
 });
 
 $router->post('login', function () use ($twig) {
@@ -124,7 +116,6 @@ $router->get('logout', function () use ($twig) {
     return $controller->logout();
 });
 
-// --- Tableaux de bord et Profils ---
 $router->get('account', function () use ($twig) {
     $controller = new StudentController($twig);
     return $controller->account();
@@ -141,8 +132,8 @@ $router->get('company_dashboard', function () use ($twig) {
 });
 
 $router->get('admin_dashboard', function () use ($twig) {
-    $controller = new AdminController($twig); // On utilise le bon contrôleur
-    return $controller->dashboard();          // On appelle la méthode dashboard()
+    $controller = new AdminController($twig);
+    return $controller->dashboard();
 });
 
 $router->get('company_detail', function () use ($twig) {
@@ -150,23 +141,21 @@ $router->get('company_detail', function () use ($twig) {
     return $controller->show();
 });
 
-// --- Candidatures et Favoris ---
 $router->get('apply_offer', function () use ($twig) {
     $controller = new ApplicationController($twig);
     return $controller->showApplyForm();
 });
 
-$router->get('applications', function () use ($twig){
+$router->get('applications', function () use ($twig) {
     $controller = new ApplicationController($twig);
     return $controller->applications();
 });
 
-$router->get('wishlist', function () use ($twig){
+$router->get('wishlist', function () use ($twig) {
     $controller = new OfferController($twig);
     return $controller->wishlist();
 });
 
-// --- Administration (Créations) ---
 $router->get('admin_company_create', function () use ($twig) {
     $controller = new AdminController($twig);
     return $controller->createCompanyForm();
@@ -232,7 +221,6 @@ $router->post('admin_delete_review', function () use ($twig) {
     return $controller->deleteReview();
 });
 
-// --- Pages Statiques ---
 $router->get('contact', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->contact();
@@ -248,35 +236,26 @@ $router->get('legal', function () use ($twig) {
     return $controller->legal();
 });
 
-// ==========================================
-// --- NOUVELLES ROUTES POUR LES AVIS ---
-// ==========================================
-
-// Afficher le formulaire pour déposer un avis
 $router->get('reviews', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->reviews();
 });
 
-// Traiter l'envoi du formulaire (POST)
 $router->post('reviews_submit', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->submitReview();
 });
 
-// Afficher tous les avis (Page étudiant)
 $router->get('all_reviews', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->allReviews();
 });
 
-// Afficher les avis de l'entreprise (Page dashboard pro)
 $router->get('reviews_company', function () use ($twig) {
     $controller = new StaticController($twig);
     return $controller->companyReviews();
 });
 
-// ==========================================
 $router->get('create_offer', function () use ($twig) {
     $controller = new OfferController($twig);
     return $controller->createOfferForm();
@@ -339,12 +318,12 @@ $router->post('admin_company_submit', function () use ($twig) {
 
 $router->post('toggle_wishlist', function () use ($twig) {
     $controller = new OfferController($twig);
-    return $controller->toggleWishlistAjax(); // <-- LE RETURN MANQUANT ÉTAIT ICI !
+    return $controller->toggleWishlistAjax();
 });
 
 $router->get('remove_wishlist', function () use ($twig) {
     $controller = new OfferController($twig);
-    return $controller->removeWishlist(); // <-- ET ICI !
+    return $controller->removeWishlist();
 });
 
 $router->get('admin_company_edit', function () use ($twig) {
@@ -362,11 +341,9 @@ $router->get('stats_offers', function () use ($twig) {
     return $controller->statsOffers();
 });
 
-// 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
-$uri    = $_GET['uri'] ?? 'home';
+$uri = $_GET['uri'] ?? 'home';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-// 6. Dispatch et affichage de la réponse
 try {
     $response = $router->dispatch($uri, $method);
     echo $response;

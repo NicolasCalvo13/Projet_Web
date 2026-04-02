@@ -4,101 +4,102 @@
 
 {% block body %}
 
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
-    <a href="/?uri=home">Accueil</a><span>›</span>
-    Ma wish-list
-  </nav>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <a href="/?uri=home">Accueil</a><span>›</span>
+  Ma wish-list
+</nav>
 
-  <h1 style="color:#007575;">Ma wish-list ♡</h1>
+<h1 style="color:#007575;">Ma wish-list ♡</h1>
 
-  {# On vérifie si l'utilisateur est connecté grâce à la variable envoyée par le contrôleur #}
-  {% if user_id %}
-    
-    <section class="section-card">
-      <h2>Offres sauvegardées</h2>
-      <table class="table-list" aria-label="Ma wish-list">
-        <thead>
-          <tr>
-            <th>Offre</th>
-            <th>Entreprise</th>
-            <th>Rémunération</th>
-            <th>Compétences</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="wishlist-body">
-          
-          {% for item in wishlist %}
-          <tr>
-            <td data-label="Offre">
-              <a href="/?uri=offer_detail&id={{ item.offre_id }}" style="color:#008b8b;">{{ item.titre }}</a>
-            </td>
-            <td data-label="Entreprise">
-              {{ item.entreprise_nom }}
-            </td>
-            <td data-label="Rémunération">{{ item.remuneration }}</td>
-            <td data-label="Compétences"><span class="badge">Compétence</span></td>
-            <td data-label="Actions">
-              <a href="/?uri=apply_offer&id={{ item.offre_id }}" class="btn-primary">Postuler</a>
-              
-              <button onclick="removeWishlist(this, {{ item.id }})" class="btn-danger btn-sm">X Retirer</button>
-            </td>
-          </tr>
-          {% else %}
-          <tr id="empty-row">
-            <td colspan="5" style="text-align: center; padding: 20px;">
-              Votre wish-list est vide pour le moment.
-            </td>
-          </tr>
-          {% endfor %}
+{% if user_id %}
 
-        </tbody>
-      </table>
+<section class="section-card">
+  <h2>Offres sauvegardées</h2>
+  <table class="table-list" aria-label="Ma wish-list">
+    <thead>
+      <tr>
+        <th>Offre</th>
+        <th>Entreprise</th>
+        <th>Rémunération</th>
+        <th>Compétences</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="wishlist-body">
 
-      <p style="margin-top:16px;font-size:.9rem;color:#777;">
-        Total : <strong id="wishlist-count">{{ wishlist|length }}</strong> offre(s) en favoris
-      </p>
-    </section>
+      {% for item in wishlist %}
+      <tr>
+        <td data-label="Offre">
+          <a href="/?uri=offer_detail&id={{ item.offre_id }}" style="color:#008b8b;">{{ item.titre }}</a>
+        </td>
+        <td data-label="Entreprise">
+          {{ item.entreprise_nom }}
+        </td>
+        <td data-label="Rémunération">{{ item.remuneration }}</td>
+        <td data-label="Compétences"><span class="badge">Compétence</span></td>
+        <td data-label="Actions">
+          <a href="/?uri=apply_offer&id={{ item.offre_id }}" class="btn-primary">Postuler</a>
 
-  {% else %}
-    
-    {# Si l'utilisateur n'est pas connecté, on affiche ce message à la place de la section #}
-    <section class="section-card" style="text-align: center; padding: 40px;">
-      <p class="alert alert-info" style="font-size: 1.1rem;">
-        Vous devez être <a href="/?uri=login" style="color:#008b8b; font-weight:bold; text-decoration:underline;">connecté</a> pour voir et gérer votre wish-list.
-      </p>
-    </section>
+          <button onclick="removeWishlist(this, {{ item.id }})" class="btn-danger btn-sm">X Retirer</button>
+        </td>
+      </tr>
+      {% else %}
+      <tr id="empty-row">
+        <td colspan="5" style="text-align: center; padding: 20px;">
+          Votre wish-list est vide pour le moment.
+        </td>
+      </tr>
+      {% endfor %}
 
-  {% endif %}
+    </tbody>
+  </table>
 
-  <a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Voir toutes les offres</a>
+  <p style="margin-top:16px;font-size:.9rem;color:#777;">
+    Total : <strong id="wishlist-count">{{ wishlist|length }}</strong> offre(s) en favoris
+  </p>
+</section>
 
-  <script>
-    // La fonction correspond maintenant exactement à ce que le bouton attend
-    function removeWishlist(btn, wishlistId) {
-      // Demande de confirmation avant suppression
-      if(!confirm('Voulez-vous retirer cette offre de vos favoris ?')) return;
+{% else %}
 
-      const row = btn.closest('tr');
-      row.style.transition = 'opacity .3s';
-      row.style.opacity = '0';
+<section class="section-card" style="text-align: center; padding: 40px;">
+  <p class="alert alert-info" style="font-size: 1.1rem;">
+    Vous devez être <a href="/?uri=login"
+      style="color:#008b8b; font-weight:bold; text-decoration:underline;">connecté</a> pour voir et gérer votre
+    wish-list.
+  </p>
+</section>
 
-      fetch(`/?uri=remove_wishlist&id=${wishlistId}`)
+{% endif %}
+
+<a href="/?uri=offers" class="btn-secondary" style="margin-top: 20px; display: inline-block;">← Voir toutes les
+  offres</a>
+
+<script>
+  // La fonction correspond maintenant exactement à ce que le bouton attend
+  function removeWishlist(btn, wishlistId) {
+    // Demande de confirmation avant suppression
+    if (!confirm('Voulez-vous retirer cette offre de vos favoris ?')) return;
+
+    const row = btn.closest('tr');
+    row.style.transition = 'opacity .3s';
+    row.style.opacity = '0';
+
+    fetch(`/?uri=remove_wishlist&id=${wishlistId}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
           setTimeout(() => {
             row.remove();
-            
+
             // Mise à jour du compteur d'offres
             const remainingRows = document.querySelectorAll('#wishlist-body tr:not(#empty-row)');
             const remaining = remainingRows.length;
             const countElement = document.getElementById('wishlist-count');
-            if(countElement) countElement.textContent = remaining;
+            if (countElement) countElement.textContent = remaining;
 
             // Si la liste est vide, on affiche le message vide
             if (remaining === 0) {
-                document.getElementById('wishlist-body').innerHTML = '<tr id="empty-row"><td colspan="5" style="text-align: center; padding: 20px;">Votre wish-list est vide pour le moment.</td></tr>';
+              document.getElementById('wishlist-body').innerHTML = '<tr id="empty-row"><td colspan="5" style="text-align: center; padding: 20px;">Votre wish-list est vide pour le moment.</td></tr>';
             }
           }, 300); // 300ms pour laisser le temps à l'animation d'opacité de se faire
         } else {
@@ -111,7 +112,7 @@
         alert("Impossible de joindre le serveur.");
         row.style.opacity = '1';
       });
-    }
-  </script>
+  }
+</script>
 
 {% endblock %}

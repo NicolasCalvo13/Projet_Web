@@ -14,23 +14,21 @@ class HomeController
 
     public function __construct(Environment $twig)
     {
-        $this->twig  = $twig;
+        $this->twig = $twig;
         $this->model = new HomeModel();
     }
 
     public function index(): string
     {
-        // Exemple de données récupérées depuis le modèle
         $offers = $this->model->getSampleOffers();
         $totalOffers = $this->model->countAllOffers();
 
         return $this->twig->render('home/index.twig.html', [
             'page_title' => 'Accueil – Stages-Link',
-            'offers'     => $offers,
+            'offers' => $offers,
             'total_offers' => $totalOffers,
             'total_companies' => $this->model->countAllEntreprises(),
             'total_sectors' => $this->model->countAllSectors(),
         ]);
     }
 }
-

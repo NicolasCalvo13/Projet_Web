@@ -36,12 +36,12 @@ class ApplicationController
 
         return $this->twig->render('applications/apply.twig.html', [
             'page_title' => 'Postuler à une offre - Stage-Link',
-            'offre'      => $offre,
-            'student'    => $student,
-            'user'       => $student,
-            'error'      => null,
-            'errors'     => [],
-            'old'        => [],
+            'offre' => $offre,
+            'student' => $student,
+            'user' => $student,
+            'error' => null,
+            'errors' => [],
+            'old' => [],
         ]);
     }
 
@@ -56,10 +56,10 @@ class ApplicationController
         $candidatures = $this->applicationModel->getStudentApplications($studentId);
 
         return $this->twig->render('applications/applications.twig.html', [
-            'page_title'   => 'Mes candidatures - Stage-Link',
+            'page_title' => 'Mes candidatures - Stage-Link',
             'candidatures' => $candidatures,
-            'total'        => count($candidatures),
-            'success'      => isset($_GET['success']),
+            'total' => count($candidatures),
+            'success' => isset($_GET['success']),
         ]);
     }
 
@@ -122,12 +122,12 @@ class ApplicationController
         if (!empty($errors)) {
             echo $this->twig->render('applications/apply.twig.html', [
                 'page_title' => 'Postuler à une offre - Stage-Link',
-                'offre'      => $offre,
-                'student'    => $student,
-                'user'       => $student,
-                'errors'     => $errors,
-                'old'        => $old,
-                'error'      => null,
+                'offre' => $offre,
+                'student' => $student,
+                'user' => $student,
+                'errors' => $errors,
+                'old' => $old,
+                'error' => null,
             ]);
             return;
         }
@@ -153,12 +153,12 @@ class ApplicationController
 
         echo $this->twig->render('applications/apply.twig.html', [
             'page_title' => 'Postuler à une offre - Stage-Link',
-            'offre'      => $offre,
-            'student'    => $student,
-            'user'       => $student,
-            'errors'     => [],
-            'old'        => $old,
-            'error'      => 'Une erreur est survenue, veuillez réessayer.',
+            'offre' => $offre,
+            'student' => $student,
+            'user' => $student,
+            'errors' => [],
+            'old' => $old,
+            'error' => 'Une erreur est survenue, veuillez réessayer.',
         ]);
     }
 

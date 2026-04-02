@@ -12,7 +12,7 @@
 <h1>Créer une offre</h1>
 
 {% if errors is defined and errors is not empty %}
-    <div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
+<div class="alert alert-error">❌ Veuillez corriger les erreurs ci-dessous.</div>
 {% endif %}
 
 <section class="section-card">
@@ -21,7 +21,7 @@
         {% include '_partials/_offer_form_fields.twig.html' %}
 
         {% if csrf_token is defined %}
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         {% endif %}
 
         <div class="form-actions">
