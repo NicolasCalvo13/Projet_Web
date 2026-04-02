@@ -190,4 +190,23 @@ class ApplicationController
             'candidature' => $candidature,
         ]);
     }
+
+    public function companyApplications(): string
+    {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['entreprise_id'])) {
+            header('Location: /?uri=login_entreprise');
+            exit;
+        }
+
+        $entrepriseId = (int) $_SESSION['entreprise_id'];
+        $candidatures = $this->applicationModel->getCompanyApplications($entrepriseId);
+
+        return $this->twig->render('companies/company_applications.twig.html', [
+            'page_title' => 'Candidatures reçues - Stage-Link',
+            'candidatures' => $candidatures,
+            'total' => count($candidatures),
+            'success' => isset($_GET['success']),
+            'error' => $_GET['error'] ?? null,
+        ]);
+    }
 }

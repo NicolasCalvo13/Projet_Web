@@ -296,6 +296,21 @@ $router->post('edit_offer', function () use ($twig) {
     return $controller->editOffer();
 });
 
+$router->get('company_applications', function () use ($twig) {
+    $controller = new ApplicationController($twig);
+    return $controller->companyApplications();
+});
+
+$router->get('company_offers', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->companyOffers();
+});
+
+$router->post('company_delete_offer', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->deleteCompanyOffer();
+});
+
 $router->get('application_detail', function () use ($twig) {
     $controller = new ApplicationController($twig);
     return $controller->applicationDetail();

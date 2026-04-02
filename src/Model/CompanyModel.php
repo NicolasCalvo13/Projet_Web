@@ -71,4 +71,5 @@ class CompanyModel
         $stmt->execute(['id' => $id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }
