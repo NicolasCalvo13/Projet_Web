@@ -85,20 +85,26 @@
                 <h2>Mes favoris</h2>
                 <a href="?uri=wishlist" class="btn-link">Voir tout →</a>
             </div>
+
             {% if wishlist is empty %}
             <p class="empty-state">Aucune offre en favoris pour l'instant.</p>
             {% else %}
-            <ul class="wishlist-list">
+            <div class="offers-grid">
                 {% for w in wishlist %}
-                <li class="wishlist-item">
-                    <div>
-                        <strong>{{ w.titre }}</strong>
-                        <span class="company">{{ w.entreprise_nom }}</span>
+                <article class="offer-card" aria-label="{{ w.titre }}">
+                    <div class="offer-card-header">
+                        <div>
+                            <h3 class="offer-card-title">{{ w.titre }}</h3>
+                            <span class="offer-card-company">{{ w.entreprise_nom }}</span>
+                        </div>
                     </div>
-                    <a href="?uri=offer&detail&id={{ w.id }}" class="btn btn-sm">Voir</a>
-                </li>
+
+                    <a href="?uri=offer&detail&id={{ w.id }}" class="btn-primary offer-card-btn">
+                        Voir
+                    </a>
+                </article>
                 {% endfor %}
-            </ul>
+            </div>
             {% endif %}
         </article>
 
