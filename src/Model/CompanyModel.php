@@ -29,7 +29,7 @@ class CompanyModel
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['id' => $id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         return $result ?: null;
     }
 
@@ -54,8 +54,8 @@ class CompanyModel
         $candidatStats = $stmtCandidats->fetch(PDO::FETCH_ASSOC);
 
         return [
-            'avg_note'     => $avisStats['avg_note'] ?? 0,
-            'nb_avis'      => $avisStats['nb_avis'] ?? 0,
+            'avg_note' => $avisStats['avg_note'] ?? 0,
+            'nb_avis' => $avisStats['nb_avis'] ?? 0,
             'nb_candidats' => $candidatStats['nb_candidats'] ?? 0
         ];
     }
@@ -85,4 +85,5 @@ class CompanyModel
         $stmt->execute(['id' => $id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }

@@ -68,7 +68,7 @@ class ApplicationModel
         $stmt = $this->db->prepare("
         SELECT
             c.id,
-            c.statut,
+            c.statut, 
             c.cv,
             c.Lettre,
             c.created_at,
@@ -99,5 +99,31 @@ class ApplicationModel
         UPDATE candidatures SET statut = :statut WHERE id = :id
     ");
         return $stmt->execute([':statut' => $statut, ':id' => $id]);
+    }
+
+    public function getCompanyApplications(int $entrepriseId): array
+    {
+        $stmt = $this->db->prepare("
+        SELECT
+            c.id,
+            c.statut,
+            c.created_at,
+            s.nom AS candidat_nom,
+            s.prenom AS candidat_prenom,
+            s.photo AS candidat_photo,
+            o.id AS offre_id,
+            o.titre AS offre_titre
+        FROM candidatures c
+        JOIN student s ON s.id = c.student_id
+        JOIN offres o ON o.id = c.offre_id
+        WHERE o.entreprise_id = :entreprise_id
+        ORDER BY c.created_at DESC
+    ");
+
+        $stmt->execute([
+            ':entreprise_id' => $entrepriseId
+        ]);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

@@ -192,6 +192,48 @@ class UserController
         }
     }
 
+    public function companyOffers(): string
+    {
+        $companyId = $_SESSION['entreprise_id'] ?? null;
+
+        if ($companyId === null) {
+            header('Location: /?uri=login_entreprise');
+            exit;
+        }
+
+        $offres = $this->userModel->getAllCompanyOffers((int) $companyId);
+
+        return $this->twig->render('companies/company_offers.twig.html', [
+            'page_title' => 'Mes offres - Stage-Link',
+            'offres' => $offres,
+            'total' => count($offres),
+            'success' => $_GET['success'] ?? null,
+            'error' => $_GET['error'] ?? null,
+        ]);
+    }
+
+    public function deleteCompanyOffer(): void
+    {
+        if (!isset($_SESSION['entreprise_id'])) {
+            header('Location: /?uri=login_entreprise');
+            exit;
+        }
+
+        $offreId = (int) ($_POST['offre_id'] ?? 0);
+
+        if ($offreId <= 0) {
+            header('Location: /?uri=company_offers&error=Offre invalide');
+            exit;
+        }
+
+        $offerModel = new \App\Model\OfferModel();
+        $offerModel->deleteOffer($offreId);
+
+        header('Location: /?uri=company_offers&success=deleted');
+        exit;
+    }
+
+
 
 
 

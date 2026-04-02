@@ -424,7 +424,7 @@ class UserModel
     {
         try {
             $this->pdo->beginTransaction();
-            
+
             // Mise à jour de la table entreprises
             $stmtEnt = $this->pdo->prepare("UPDATE entreprises SET nom = :nom, siret = :siret, secteur = :secteur WHERE id = :id");
             $stmtEnt->execute(['nom' => $nom, 'siret' => $siret, 'secteur' => $secteur, 'id' => $entrepriseId]);
@@ -439,6 +439,33 @@ class UserModel
             $this->pdo->rollBack();
             return false;
         }
+    }
+
+    public function getAllCompanyOffers(int $companyId): array
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT 
+            o.id,
+            o.titre,
+            o.lieu,
+            o.duree,
+            o.date_debut,
+            o.remuneration,
+            o.created_at,
+            (
+                SELECT COUNT(*) 
+                FROM candidatures c 
+                WHERE c.offre_id = o.id
+            ) AS total_candidatures
+        FROM offres o
+        WHERE o.entreprise_id = :id
+        ORDER BY o.created_at DESC
+    ");
+
+        $stmt->bindValue(':id', $companyId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
