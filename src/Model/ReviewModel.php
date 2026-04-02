@@ -21,7 +21,6 @@ class ReviewModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 1. Sauvegarder un avis dans la table 'avis'
     public function saveReview(int $studentId, int $entrepriseId, int $note, string $commentaire): bool
     {
         $query = 'INSERT INTO avis (student_id, entreprise_id, note, commentaire, created_at) 
@@ -36,11 +35,9 @@ class ReviewModel
         ]);
     }
 
-    // 2. Récupérer tous les avis (avec tri)
     public function findAllReviews(string $sort = 'recent'): array
     {
-        // Sécurisation du tri
-        $orderBy = 'a.created_at DESC'; // Par défaut : les plus récents
+        $orderBy = 'a.created_at DESC';
 
         if ($sort === 'note_desc') {
             $orderBy = 'a.note DESC';
@@ -48,7 +45,6 @@ class ReviewModel
             $orderBy = 'a.note ASC';
         }
 
-        // On fait des jointures pour récupérer le nom de l'entreprise et du stagiaire
         $query = "
             SELECT a.*, e.nom AS nom_entreprise, s.prenom AS stagiaire_prenom 
             FROM avis a 
@@ -61,7 +57,6 @@ class ReviewModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 3. Récupérer les avis d'une entreprise spécifique
     public function findReviewsByEntreprise(int $entrepriseId): array
     {
         $query = '

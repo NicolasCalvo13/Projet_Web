@@ -9,7 +9,7 @@
     <p>Connectez-vous pour accéder à votre espace recruteur et gérer vos offres de stage.</p>
 
     {% if error is defined and error %}
-        <div class="alert-info">{{ error }}</div>
+    <div class="alert-info">{{ error }}</div>
     {% endif %}
 
     <article>
@@ -19,16 +19,8 @@
 
             <div class="form-row">
                 <label for="email">Email professionnel</label>
-                <input
-                    name="email"
-                    id="email"
-                    type="email"
-                    placeholder="contact@entreprise.fr"
-                    required
-                    maxlength="255"
-                    autocomplete="email"
-                    value="{{ old.email|default('') }}"
-                >
+                <input name="email" id="email" type="email" placeholder="contact@entreprise.fr" required maxlength="255"
+                    autocomplete="email" value="{{ old.email|default('') }}">
                 <span class="form-error">
                     {% if errors.email is defined %}{{ errors.email }}{% endif %}
                 </span>
@@ -36,15 +28,8 @@
 
             <div class="form-row">
                 <label for="password">Mot de passe</label>
-                <input
-                    name="password"
-                    id="password"
-                    type="password"
-                    required
-                    minlength="8"
-                    maxlength="255"
-                    autocomplete="current-password"
-                >
+                <input name="password" id="password" type="password" required minlength="8" maxlength="255"
+                    autocomplete="current-password">
                 <span class="form-error">
                     {% if errors.password is defined %}{{ errors.password }}{% endif %}
                 </span>

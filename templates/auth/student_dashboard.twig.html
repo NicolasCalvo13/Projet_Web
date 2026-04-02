@@ -12,13 +12,11 @@
     <div class="alert alert-error">❌ Une erreur est survenue, vos modifications n'ont pas été enregistrées.</div>
     {% endif %}
 
-    {# HEADER BIENVENUE #}
     <div class="dashboard-header">
         <h1>Bonjour, {{ user.prenom }} 👋</h1>
         <p>Bienvenue sur votre espace étudiant Stage-Link</p>
     </div>
 
-    {# STATS RAPIDES #}
     <div class="dashboard-stats">
         <div class="stat-card">
             <span class="stat-number">{{ stats.total_candidatures }}</span>
@@ -32,7 +30,6 @@
 
     <div class="dashboard-grid">
 
-        {# MES CANDIDATURES #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mes candidatures</h2>
@@ -79,7 +76,6 @@
             {% endif %}
         </article>
 
-        {# MES FAVORIS #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mes favoris</h2>
@@ -108,7 +104,6 @@
             {% endif %}
         </article>
 
-        {# MON PROFIL #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Mon profil</h2>
@@ -116,7 +111,6 @@
 
             <div class="profil-content">
 
-                {# COLONNE GAUCHE : photo + infos #}
                 <div class="profil-infos">
                     <div style="text-align: center; margin-bottom: 1rem;">
                         {% if user.photo %}
@@ -135,7 +129,6 @@
                     <p><strong>École :</strong> {{ user.ecole }}</p>
                 </div>
 
-                {# COLONNE DROITE : aperçu CV #}
                 {% if user.cv_path %}
                 <div class="cv-preview-wrapper">
                     <p style="margin-bottom:0.4rem;font-weight:600;text-align:center;">Mon CV</p>
@@ -153,7 +146,6 @@
             </a>
         </article>
 
-        {# ACTIONS RAPIDES #}
         <article class="dashboard-card">
             <div class="card-header">
                 <h2>Actions rapides</h2>

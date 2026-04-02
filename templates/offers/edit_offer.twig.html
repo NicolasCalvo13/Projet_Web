@@ -13,13 +13,13 @@
     </div>
 
     {% if errors is not empty %}
-        <div class="alert-error">
-            Certaines informations sont invalides. Merci de corriger les champs signalés.
-        </div>
+    <div class="alert-error">
+        Certaines informations sont invalides. Merci de corriger les champs signalés.
+    </div>
     {% endif %}
 
     {% if success %}
-        <div class="alert-success">Offre mise à jour avec succès.</div>
+    <div class="alert-success">Offre mise à jour avec succès.</div>
     {% endif %}
 
     <form action="/?uri=edit_offer&id={{ offer.id }}" method="POST">
@@ -28,13 +28,8 @@
 
             <div class="form-group">
                 <label for="titre">Titre de l'offre</label>
-                <input type="text"
-                       id="titre"
-                       name="titre"
-                       value="{{ offer.titre|default('') }}"
-                       required
-                       minlength="5"
-                       maxlength="100">
+                <input type="text" id="titre" name="titre" value="{{ offer.titre|default('') }}" required minlength="5"
+                    maxlength="100">
                 <div class="form-error">
                     {% if errors.titre is defined %}{{ errors.titre }}{% endif %}
                 </div>
@@ -42,13 +37,8 @@
 
             <div class="form-group">
                 <label for="lieu">Lieu</label>
-                <input type="text"
-                       id="lieu"
-                       name="lieu"
-                       value="{{ offer.lieu|default('') }}"
-                       required
-                       minlength="2"
-                       maxlength="100">
+                <input type="text" id="lieu" name="lieu" value="{{ offer.lieu|default('') }}" required minlength="2"
+                    maxlength="100">
                 <div class="form-error">
                     {% if errors.lieu is defined %}{{ errors.lieu }}{% endif %}
                 </div>
@@ -56,13 +46,8 @@
 
             <div class="form-group">
                 <label for="remuneration">Rémunération (€ / mois)</label>
-                <input type="number"
-                       id="remuneration"
-                       name="remuneration"
-                       min="0"
-                       max="50000"
-                       step="0.01"
-                       value="{{ offer.remuneration|default('') }}">
+                <input type="number" id="remuneration" name="remuneration" min="0" max="50000" step="0.01"
+                    value="{{ offer.remuneration|default('') }}">
                 <div class="form-error">
                     {% if errors.remuneration is defined %}{{ errors.remuneration }}{% endif %}
                 </div>
@@ -74,11 +59,7 @@
 
             <div class="form-group">
                 <label for="duree">Durée</label>
-                <input type="text"
-                       id="duree"
-                       name="duree"
-                       value="{{ offer.duree|default('') }}"
-                       maxlength="50">
+                <input type="text" id="duree" name="duree" value="{{ offer.duree|default('') }}" maxlength="50">
                 <div class="form-error">
                     {% if errors.duree is defined %}{{ errors.duree }}{% endif %}
                 </div>
@@ -86,12 +67,8 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description"
-                          name="description"
-                          rows="8"
-                          required
-                          minlength="20"
-                          maxlength="3000">{{ offer.description|default('') }}</textarea>
+                <textarea id="description" name="description" rows="8" required minlength="20"
+                    maxlength="3000">{{ offer.description|default('') }}</textarea>
                 <div class="form-error">
                     {% if errors.description is defined %}{{ errors.description }}{% endif %}
                 </div>

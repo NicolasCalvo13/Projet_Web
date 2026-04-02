@@ -6,122 +6,107 @@
 
 {% if user.role == 'student' %}
 
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
-        <a href="/?uri=home">Accueil</a><span>›</span>
-        <a href="/?uri=offers">Offres</a><span>›</span>
-        <a href="/?uri=offer_detail&id={{ offre.id }}">{{ offre.titre }}</a><span>›</span>
-        Postuler
-    </nav>
-    <h1 style="color:#007575;">Postuler à une offre</h1>
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=offers">Offres</a><span>›</span>
+    <a href="/?uri=offer_detail&id={{ offre.id }}">{{ offre.titre }}</a><span>›</span>
+    Postuler
+</nav>
+<h1 style="color:#007575;">Postuler à une offre</h1>
 
-    <div class="apply-offer-recap" aria-label="Récapitulatif de l'offre">
-        <div>
-            <strong>{{ offre.titre }}</strong><br>
-            <span>{{ offre.entreprise }}</span>
-        </div>
-        <div>
-            <span class="badge">{{ offre.remuneration }} €/mois</span>
-            <span class="badge">⏱ {{ offre.duree }} mois</span>
-        </div>
+<div class="apply-offer-recap" aria-label="Récapitulatif de l'offre">
+    <div>
+        <strong>{{ offre.titre }}</strong><br>
+        <span>{{ offre.entreprise }}</span>
     </div>
+    <div>
+        <span class="badge">{{ offre.remuneration }} €/mois</span>
+        <span class="badge">⏱ {{ offre.duree }} mois</span>
+    </div>
+</div>
 
-    <section class="section-card">
-        <h2>Votre candidature</h2>
-        <form method="POST"
-              action="/?uri=apply_offer&id={{ offre.id }}"
-              enctype="multipart/form-data"
-              id="applyForm">
+<section class="section-card">
+    <h2>Votre candidature</h2>
+    <form method="POST" action="/?uri=apply_offer&id={{ offre.id }}" enctype="multipart/form-data" id="applyForm">
 
-            <div class="form-group">
-                <label> Curriculum Vitae</label>
+        <div class="form-group">
+            <label> Curriculum Vitae</label>
 
-                {% if user.cv_path %}
-                    <div id="cv-existant">
-                        <p style="margin-bottom: 0.4rem; color: #555;">
-                            Votre CV enregistré sera utilisé automatiquement.
-                        </p>
+            {% if user.cv_path %}
+            <div id="cv-existant">
+                <p style="margin-bottom: 0.4rem; color: #555;">
+                    Votre CV enregistré sera utilisé automatiquement.
+                </p>
 
-                        <div style="width: 180px; height: 254px; overflow: hidden;
+                <div style="width: 180px; height: 254px; overflow: hidden;
                                     border: 1px solid #e0e0e0; border-radius: 8px;
                                     margin-bottom: 0.75rem;">
-                            <iframe src="{{ user.cv_path }}#toolbar=0&navpanes=0&scrollbar=0"
-                                    style="width: 794px; height: 1123px;
+                    <iframe src="{{ user.cv_path }}#toolbar=0&navpanes=0&scrollbar=0" style="width: 794px; height: 1123px;
                                            transform: scale(0.227);
                                            transform-origin: top left;
                                            pointer-events: none;
                                            border: none;">
-                            </iframe>
-                        </div>
-
-                        <input type="hidden" name="cv_path" value="{{ user.cv_path }}">
-
-                        <button type="button" class="btn btn-secondary"
-                                onclick="toggleCvUpload()">
-                            📎 Utiliser un autre CV
-                        </button>
-                    </div>
-
-                    <div id="cv-upload" style="display: none; margin-top: 0.75rem;">
-                        <input type="file" id="cv" name="cv" accept=".pdf,application/pdf">
-                        <small>Format accepté : PDF — Max 5 Mo</small>
-                        <br>
-                        <button type="button" class="btn btn-secondary"
-                                style="margin-top: 0.5rem;"
-                                onclick="toggleCvUpload()">
-                            ↩ Revenir à mon CV enregistré
-                        </button>
-                        <span class="form-error">
-                            {% if errors.cv is defined %}{{ errors.cv }}{% endif %}
-                        </span>
-                    </div>
-                {% else %}
-                    <input type="file"
-                           id="cv"
-                           name="cv"
-                           accept=".pdf,application/pdf"
-                           required>
-                    <small>Format accepté : PDF — Max 5 Mo</small>
-                    <p style="margin-top: 0.4rem; font-size: 0.85rem; color: #888;">
-                        💡 Vous pouvez enregistrer votre CV dans
-                        <a href="?uri=edit_profile">votre profil</a>
-                        pour ne plus avoir à le télécharger à chaque candidature.
-                    </p>
-                    <span class="form-error">
-                        {% if errors.cv is defined %}{{ errors.cv }}{% endif %}
-                    </span>
-                {% endif %}
-            </div>
-
-            <div class="form-group">
-                <label for="lm">Lettre de motivation <span style="color:red">*</span></label>
-                <textarea id="lm"
-                          name="lm"
-                          minlength="50"
-                          maxlength="3000"
-                          placeholder="Rédigez votre lettre de motivation ici..."
-                          required
-                          aria-required="true"
-                          oninput="updateCount(this, 'lm-count')">{{ old.lm|default('') }}</textarea>
-                <div style="font-size:.8rem;color:#aaa;text-align:right;margin-top:4px;">
-                    <span id="lm-count">{{ old.lm|default('')|length }}</span> / 3000 caractères
+                    </iframe>
                 </div>
-                {% if errors.lm is defined %}
-                    <span class="form-error">{{ errors.lm }}</span>
-                {% else %}
-                    <span class="form-error" id="lm-error">La lettre de motivation est obligatoire (50 caractères minimum).</span>
-                {% endif %}
+
+                <input type="hidden" name="cv_path" value="{{ user.cv_path }}">
+
+                <button type="button" class="btn btn-secondary" onclick="toggleCvUpload()">
+                    📎 Utiliser un autre CV
+                </button>
             </div>
 
-            <div class="form-group" style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
-                <button type="submit" class="btn-primary">Envoyer ma candidature</button>
-                <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-secondary">Annuler</a>
+            <div id="cv-upload" style="display: none; margin-top: 0.75rem;">
+                <input type="file" id="cv" name="cv" accept=".pdf,application/pdf">
+                <small>Format accepté : PDF — Max 5 Mo</small>
+                <br>
+                <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="toggleCvUpload()">
+                    ↩ Revenir à mon CV enregistré
+                </button>
+                <span class="form-error">
+                    {% if errors.cv is defined %}{{ errors.cv }}{% endif %}
+                </span>
             </div>
+            {% else %}
+            <input type="file" id="cv" name="cv" accept=".pdf,application/pdf" required>
+            <small>Format accepté : PDF — Max 5 Mo</small>
+            <p style="margin-top: 0.4rem; font-size: 0.85rem; color: #888;">
+                💡 Vous pouvez enregistrer votre CV dans
+                <a href="?uri=edit_profile">votre profil</a>
+                pour ne plus avoir à le télécharger à chaque candidature.
+            </p>
+            <span class="form-error">
+                {% if errors.cv is defined %}{{ errors.cv }}{% endif %}
+            </span>
+            {% endif %}
+        </div>
 
-        </form>
-    </section>
+        <div class="form-group">
+            <label for="lm">Lettre de motivation <span style="color:red">*</span></label>
+            <textarea id="lm" name="lm" minlength="50" maxlength="3000"
+                placeholder="Rédigez votre lettre de motivation ici..." required aria-required="true"
+                oninput="updateCount(this, 'lm-count')">{{ old.lm|default('') }}</textarea>
+            <div style="font-size:.8rem;color:#aaa;text-align:right;margin-top:4px;">
+                <span id="lm-count">{{ old.lm|default('')|length }}</span> / 3000 caractères
+            </div>
+            {% if errors.lm is defined %}
+            <span class="form-error">{{ errors.lm }}</span>
+            {% else %}
+            <span class="form-error" id="lm-error">La lettre de motivation est obligatoire (50 caractères
+                minimum).</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group" style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
+            <button type="submit" class="btn-primary">Envoyer ma candidature</button>
+            <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-secondary">Annuler</a>
+        </div>
+
+    </form>
+</section>
 {% else %}
-    <div class="alert alert-warning" role="alert">
-        Vous devez être connecté en tant qu'étudiant pour postuler à une offre.
-    </div>
+<div class="alert alert-warning" role="alert">
+    Vous devez être connecté en tant qu'étudiant pour postuler à une offre.
+</div>
 {% endif %}
 {% endblock %}

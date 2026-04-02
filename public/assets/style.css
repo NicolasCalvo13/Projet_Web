@@ -1,6 +1,3 @@
-/* ============================================================
-   BASE & TYPOGRAPHIE
-   ============================================================ */
 * {
     box-sizing: border-box;
 }
@@ -48,7 +45,6 @@ main {
     text-align: justify;
 }
 
-/* === HEADER SHRINK === */
 .header-style {
     transition: padding 0.3s ease, box-shadow 0.3s ease;
 }
@@ -63,7 +59,6 @@ main {
     transition: width 0.3s ease;
 }
 
-/* === BURGER BUTTON === */
 .burger-btn {
     display: none;
     flex-direction: column;
@@ -83,7 +78,6 @@ main {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Animation burger → croix */
 .burger-btn[aria-expanded="true"] span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
@@ -96,7 +90,6 @@ main {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* === BURGER MENU === */
 .burger-menu {
     display: none;
     flex-direction: column;
@@ -126,8 +119,6 @@ main {
     background: #f5f5f5;
 }
 
-/* === NAVBAR RESPONSIVE === */
-/* Seuil à adapter selon ta navbar actuelle */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -138,9 +129,6 @@ main {
     }
 }
 
-/* ============================================================
-   HEADER & NAVIGATION
-   ============================================================ */
 .header-style {
     background-color: paleturquoise;
     display: flex;
@@ -201,7 +189,6 @@ main {
     z-index: 1000;
 }
 
-/* Conteneur principal */
 .header-search {
     display: flex;
     flex-grow: 1;
@@ -209,7 +196,6 @@ main {
     margin: 0 20px;
 }
 
-/* Le formulaire agit comme la bordure externe globale */
 .header-search form {
     display: flex;
     align-items: stretch;
@@ -218,16 +204,12 @@ main {
     background-color: white;
     border: 2px solid #008b8b;
     border-radius: 25px;
-    /* Arrondi parfait */
     width: 100%;
     max-width: 350px;
     overflow: hidden;
-    /* La magie est ici : coupe tout ce qui dépasse ! */
     height: 42px;
-    /* On fixe une hauteur pour que tout s'aligne bien */
 }
 
-/* On annule totalement les styles globaux de l'input */
 .header-search input[type="text"] {
     flex-grow: 1;
     border: none !important;
@@ -239,14 +221,11 @@ main {
     outline: none;
 }
 
-/* On annule totalement les styles globaux du bouton */
 .header-search button[type="submit"] {
     background-color: #A2E9EB !important;
     border: none !important;
     border-left: 2px solid #008b8b !important;
-    /* Ligne de séparation nette */
     border-radius: 0 !important;
-    /* On enlève l'arrondi du bouton pour qu'il remplisse l'espace */
     padding: 0 20px !important;
     margin: 0 !important;
     cursor: pointer;
@@ -260,9 +239,6 @@ main {
     background-color: #afeeee !important;
 }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
 .footer-style {
     background-color: #A2E9EB;
     color: black;
@@ -285,9 +261,6 @@ main {
     text-decoration: underline;
 }
 
-/* ============================================================
-   BOUTONS
-   ============================================================ */
 .btn-primary {
     background-color: #A2E9EB;
     color: black;
@@ -377,9 +350,6 @@ input[type="reset"]:hover {
     background-color: #f0fafa;
 }
 
-/* ============================================================
-   ALERTES
-   ============================================================ */
 .alert-info {
     background-color: #e8f8f8;
     border-left: 4px solid #008b8b;
@@ -420,9 +390,6 @@ input[type="reset"]:hover {
     margin-bottom: 20px;
 }
 
-/* ============================================================
-   BADGES & STATUTS
-   ============================================================ */
 .badge {
     background-color: #e0fafa;
     border: 1px solid #A2E9EB;
@@ -471,9 +438,6 @@ input[type="reset"]:hover {
     font-size: 1.1rem;
 }
 
-/* ============================================================
-   FIL D'ARIANE
-   ============================================================ */
 .breadcrumb {
     font-size: 0.85rem;
     color: #777;
@@ -493,9 +457,6 @@ input[type="reset"]:hover {
     margin: 0 6px;
 }
 
-/* ============================================================
-   SECTION CARD (bloc générique)
-   ============================================================ */
 .section-card {
     background: #f9ffff;
     border: 1px solid #A2E9EB;
@@ -524,10 +485,6 @@ input[type="reset"]:hover {
     margin-bottom: 0;
 }
 
-/* ============================================================
-   TABLEAUX
-   ============================================================ */
-/* Wrapper pour forcer le scroll horizontal sur mobile */
 .table-responsive-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -578,9 +535,6 @@ input[type="reset"]:hover {
     background: #f0fefe;
 }
 
-/* ============================================================
-   FORMULAIRES
-   ============================================================ */
 form {
     max-width: 800px;
     margin: 20px auto;
@@ -679,10 +633,6 @@ textarea {
     white-space: nowrap;
 }
 
-
-/* ============================================================
-   GRILLE DE CARTES (.images / .card)
-   ============================================================ */
 .images {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -744,9 +694,6 @@ textarea {
     margin: 0;
 }
 
-/* ============================================================
-   PAGE : À PROPOS
-   ============================================================ */
 .apropos-content {
     display: flex;
     flex-wrap: wrap;
@@ -766,9 +713,6 @@ textarea {
     flex: 1 1 100%;
 }
 
-/* ============================================================
-   PAGE : DÉTAIL OFFRE
-   ============================================================ */
 .offer-hero {
     background: linear-gradient(135deg, #e0fafa, #f9ffff);
     border: 1px solid #A2E9EB;
@@ -858,9 +802,6 @@ textarea {
     color: #004d4d;
 }
 
-/* ============================================================
-   PAGE : DÉTAIL ENTREPRISE
-   ============================================================ */
 .company-hero {
     background: linear-gradient(135deg, #e0fafa, #f9ffff);
     border: 1px solid #A2E9EB;
@@ -947,9 +888,6 @@ textarea {
     border-bottom: none;
 }
 
-/* ============================================================
-   PAGE : POSTULER
-   ============================================================ */
 .apply-offer-recap {
     background: #e0fafa;
     border: 1px solid #A2E9EB;
@@ -968,9 +906,6 @@ textarea {
     font-size: 1.05rem;
 }
 
-/* ============================================================
-   PAGE : ADMIN DASHBOARD
-   ============================================================ */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1043,10 +978,6 @@ textarea {
     background: #e0fafa;
 }
 
-
-/* ============================================================
-   TABLE ADMIN
-   ============================================================ */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -1089,7 +1020,6 @@ textarea {
     line-height: 1.4;
 }
 
-/* Aligne verticalement le form inline dans .table-actions */
 .table-actions form {
     margin: 0;
     padding: 0;
@@ -1118,9 +1048,6 @@ textarea {
     background: #a93226;
 }
 
-/* ============================================================
-   PAGE : HOME
-   ============================================================ */
 .home-hero {
     background: linear-gradient(135deg, #008b8b 0%, #005f5f 100%);
     color: white;
@@ -1268,11 +1195,6 @@ textarea {
     font-style: italic;
 }
 
-/*============================================================
-   Dashboard 
-   ============================================================ */
-
-/* EDIT PROFILE */
 .preview-photo {
     width: 100px;
     height: 100px;
@@ -1356,11 +1278,6 @@ textarea {
     font-weight: bold;
 }
 
-
-/* ============================================================
-   DASHBOARD — Wishlist
-   ============================================================ */
-
 .wishlist-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(280px, 1fr));
@@ -1389,31 +1306,28 @@ textarea {
     font-size: 0.9rem;
 }
 
-/* =========================================
-   Carrousel de Statistiques (Admin)
-========================================= */
 .carousel-container {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 20px;
     padding: 20px 5px;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
 }
 
-.carousel-container::-webkit-scrollbar { 
-    display: none; /* Chrome/Safari */
+.carousel-container::-webkit-scrollbar {
+    display: none;
 }
 
 .stat-slide {
-    flex: 0 0 85%; /* Par défaut occupe presque toute la largeur */
+    flex: 0 0 85%;
     min-width: 280px;
     max-width: 500px;
     scroll-snap-align: center;
     background: white;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     border-top: 5px solid #007575;
 }
@@ -1434,33 +1348,32 @@ textarea {
     transition: background 0.3s ease;
 }
 
-.nav-dot.active { 
-    background: #007575; 
+.nav-dot.active {
+    background: #007575;
 }
 
-.big-number { 
-    font-size: 3.5rem; 
-    font-weight: bold; 
-    color: #007575; 
-    margin: 15px 0; 
+.big-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #007575;
+    margin: 15px 0;
 }
 
-.stat-list { 
-    text-align: left; 
-    margin-top: 15px; 
-    list-style: none; 
-    padding: 0; 
+.stat-list {
+    text-align: left;
+    margin-top: 15px;
+    list-style: none;
+    padding: 0;
 }
 
-.stat-list li { 
-    padding: 10px 0; 
-    border-bottom: 1px solid #eee; 
-    display: flex; 
-    justify-content: space-between; 
+.stat-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-/* Version Desktop : on peut afficher plusieurs cartes */
 @media (min-width: 1024px) {
     .stat-slide {
         flex: 0 0 45%;
@@ -1473,10 +1386,6 @@ textarea {
     }
 }
 
-
-/* ============================================================
-   DASHBOARD — Profil + CV Preview
-   ============================================================ */
 .profil-content {
     display: flex;
     gap: 1.5rem;
@@ -1508,9 +1417,6 @@ textarea {
     border: none;
 }
 
-/* =========================================
-   Bandeau Cookies
-========================================= */
 .cookie-banner {
     position: fixed;
     bottom: 20px;
@@ -1528,12 +1434,10 @@ textarea {
     max-width: 900px;
     width: 90%;
     border-left: 6px solid #007575;
-    /* On le cache par défaut en CSS pour éviter un "clignotement" au chargement */
-    display: none; 
+    display: none;
     padding-left: 24px;
 }
 
-/* Classe ajoutée par le JS pour l'afficher */
 .cookie-banner.show {
     display: flex;
 }
@@ -1555,24 +1459,25 @@ textarea {
 }
 
 @media (max-width: 600px) {
-    .cookie-banner, .cookie-banner.show {
+
+    .cookie-banner,
+    .cookie-banner.show {
         flex-direction: column;
         text-align: center;
         bottom: 10px;
         padding: 15px;
     }
+
     .cookie-buttons {
         width: 100%;
         justify-content: center;
     }
 }
 
-/* Mobile : empile verticalement */
 @media (max-width: 768px) {
     .profil-content {
         flex-direction: column;
         align-items: center;
-        /* centre le CV sous les infos */
     }
 
     .cv-preview-wrapper {
@@ -1584,24 +1489,15 @@ textarea {
 
     .cv-preview-box {
         width: 260px;
-        /* légèrement réduit pour tenir dans 375px */
         height: 367px;
     }
 
     .cv-preview-iframe {
         transform: scale(0.327);
-        /* 260/794 ≈ 0.327 */
     }
 }
 
-
-/* ============================================================
-   RESPONSIVE — Mobile (≤ 768px)
-   ============================================================ */
 @media (max-width: 768px) {
-
-
-    /* Tableau admin → cartes sur mobile */
     .admin-table thead {
         display: none;
     }
@@ -1637,7 +1533,6 @@ textarea {
         margin-right: 10px;
     }
 
-    /* Boutons pleine largeur sauf dans les tables */
     .btn-primary:not(.btn-sm),
     .btn-secondary:not(.btn-sm),
     input[type="submit"],
@@ -1647,7 +1542,6 @@ textarea {
         margin-top: 10px;
     }
 
-    /* Ajustement des espacements globaux pour gagner de la place */
     main {
         padding: 10px;
     }
@@ -1661,7 +1555,6 @@ textarea {
         margin: 10px;
     }
 
-    /* HEADER & NAVIGATION */
     .logo-placement img {
         width: 130px;
     }
@@ -1692,7 +1585,6 @@ textarea {
         text-align: center;
     }
 
-    /* GRILLES ET CARTES */
     .images {
         grid-template-columns: 1fr;
     }
@@ -1705,7 +1597,6 @@ textarea {
         flex: 1 1 100%;
     }
 
-    /* FORMULAIRES ET BOUTONS */
     .form-row {
         flex-direction: column;
         align-items: flex-start;
@@ -1729,7 +1620,6 @@ textarea {
         white-space: normal;
     }
 
-    /* Boutons en pleine largeur sur mobile pour être plus faciles à toucher */
     input[type="submit"],
     button[type="submit"],
     input[type="reset"],
@@ -1741,7 +1631,6 @@ textarea {
         box-sizing: border-box;
     }
 
-    /* FOOTER */
     .footer-style {
         flex-direction: column;
         align-items: center;
@@ -1749,7 +1638,6 @@ textarea {
         padding: 20px 10px;
     }
 
-    /* PAGES SPÉCIFIQUES */
     .offer-hero-left,
     .offer-hero-right {
         flex: 1 1 100%;
@@ -1770,8 +1658,6 @@ textarea {
         height: 80px;
     }
 
-    /* TABLEAUX */
-    /* Empêche le tableau des articles de déborder de l'écran */
     .table-articles {
         display: block;
         width: 100%;
@@ -1805,7 +1691,6 @@ textarea {
         margin-bottom: 10px;
     }
 
-    /* HOME */
     .home-hero {
         padding: 40px 20px;
     }
@@ -1822,16 +1707,13 @@ textarea {
         grid-template-columns: 1fr;
     }
 
-    /* Ajustements de la barre de recherche sur mobile */
     .header-style {
         flex-wrap: wrap;
-        /* Permet aux éléments de passer à la ligne */
         gap: 15px;
     }
 
     .header-search {
         order: 3;
-        /* Place la barre en bas */
         margin: 0;
         width: 100%;
         justify-content: center;
@@ -1841,11 +1723,6 @@ textarea {
         max-width: 100%;
     }
 }
-
-/* ============================================================
-CAROUSEL HOME — Offres récentes
-À coller tout en bas de style.css
-============================================================ */
 
 .offers-grid[data-carousel-ready="true"] {
     display: block;

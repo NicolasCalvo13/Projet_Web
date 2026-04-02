@@ -15,9 +15,6 @@ class CompanyModel
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Récupère les infos de l'entreprise + l'email de connexion associé
-     */
     public function getCompanyById(int $id): ?array
     {
         $sql = '
@@ -33,17 +30,12 @@ class CompanyModel
         return $result ?: null;
     }
 
-    /**
-     * Récupère les stats (note moyenne, nb d'avis, nb d'étudiants ayant postulé)
-     */
     public function getCompanyStats(int $id): array
     {
-        // 1. Note moyenne et nb d'avis
         $stmtAvis = $this->db->prepare('SELECT ROUND(AVG(note), 1) as avg_note, COUNT(id) as nb_avis FROM avis WHERE entreprise_id = :id');
         $stmtAvis->execute(['id' => $id]);
         $avisStats = $stmtAvis->fetch(PDO::FETCH_ASSOC);
 
-        // 2. Nb d'étudiants uniques ayant postulé (via les offres de cette entreprise)
         $stmtCandidats = $this->db->prepare('
             SELECT COUNT(DISTINCT c.student_id) as nb_candidats 
             FROM candidatures c
@@ -60,9 +52,6 @@ class CompanyModel
         ];
     }
 
-    /**
-     * Récupère la liste des offres de cette entreprise
-     */
     public function getOffersByCompany(int $id): array
     {
         $stmt = $this->db->prepare('SELECT * FROM offres WHERE entreprise_id = :id ORDER BY created_at DESC');
@@ -70,9 +59,6 @@ class CompanyModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère la liste des avis laissés sur cette entreprise, avec le nom de l'étudiant
-     */
     public function getReviewsByCompany(int $id): array
     {
         $stmt = $this->db->prepare('

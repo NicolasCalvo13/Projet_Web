@@ -19,15 +19,15 @@ class StaticController
     public function reviews(): string
     {
         return $this->twig->render('static/reviews.twig.html', [
-            'page_title'       => 'Avis - Stage-Link',
+            'page_title' => 'Avis - Stage-Link',
             'meta_description' => 'Déposez un avis.',
-            'entreprises'      => (new ReviewModel())->findEntreprises(),
-            'user'             => $_SESSION['user_id'] ?? null,
-            'is_student'       => isset($_SESSION['student_id']),
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
-            'success'          => isset($_GET['success']),
+            'entreprises' => (new ReviewModel())->findEntreprises(),
+            'user' => $_SESSION['user_id'] ?? null,
+            'is_student' => isset($_SESSION['student_id']),
+            'errors' => [],
+            'old' => [],
+            'error' => null,
+            'success' => isset($_GET['success']),
         ]);
     }
 
@@ -47,10 +47,10 @@ class StaticController
 
         $errors = [];
         $old = [
-            'Entreprise'   => $_POST['Entreprise'] ?? '',
-            'secteur'      => $secteur,
-            'note'         => $note,
-            'recommande'   => $recommande,
+            'Entreprise' => $_POST['Entreprise'] ?? '',
+            'secteur' => $secteur,
+            'note' => $note,
+            'recommande' => $recommande,
             'commentaires' => $commentaire,
         ];
 
@@ -82,15 +82,15 @@ class StaticController
 
         if (!empty($errors)) {
             echo $this->twig->render('static/reviews.twig.html', [
-                'page_title'       => 'Avis - Stage-Link',
+                'page_title' => 'Avis - Stage-Link',
                 'meta_description' => 'Déposez un avis.',
-                'entreprises'      => (new ReviewModel())->findEntreprises(),
-                'user'             => $_SESSION['user_id'] ?? null,
-                'is_student'       => isset($_SESSION['student_id']),
-                'errors'           => $errors,
-                'old'              => $old,
-                'error'            => null,
-                'success'          => false,
+                'entreprises' => (new ReviewModel())->findEntreprises(),
+                'user' => $_SESSION['user_id'] ?? null,
+                'is_student' => isset($_SESSION['student_id']),
+                'errors' => $errors,
+                'old' => $old,
+                'error' => null,
+                'success' => false,
             ]);
             return;
         }
@@ -105,15 +105,15 @@ class StaticController
     public function allReviews(): string
     {
         $sort = $_GET['sort'] ?? 'recent';
-        
+
         $reviewModel = new ReviewModel();
         $reviews = $reviewModel->findAllReviews($sort);
 
         return $this->twig->render('static/all_reviews.twig.html', [
-            'page_title'   => 'Tous les avis - Stage-Link',
-            'reviews'      => $reviews,
+            'page_title' => 'Tous les avis - Stage-Link',
+            'reviews' => $reviews,
             'current_sort' => $sort,
-            'success'      => $_GET['success'] ?? null,
+            'success' => $_GET['success'] ?? null,
         ]);
     }
 
@@ -131,8 +131,8 @@ class StaticController
 
         return $this->twig->render('static/company_reviews.twig.html', [
             'page_title' => 'Avis sur mon entreprise - Stage-Link',
-            'reviews'    => $reviews,
-            'company'    => $_SESSION['company'] ?? []
+            'reviews' => $reviews,
+            'company' => $_SESSION['company'] ?? []
         ]);
     }
 
@@ -144,7 +144,7 @@ class StaticController
 
             $errors = [];
             $old = [
-                'fullname'  => $fullname,
+                'fullname' => $fullname,
                 'feedbacks' => $feedbacks,
             ];
 
@@ -162,39 +162,39 @@ class StaticController
 
             if (!empty($errors)) {
                 return $this->twig->render('static/contact.twig.html', [
-                    'page_title'       => 'Contact - Stage-Link',
+                    'page_title' => 'Contact - Stage-Link',
                     'meta_description' => 'Contactez-nous en utilisant notre formulaire.',
-                    'errors'           => $errors,
-                    'old'              => $old,
-                    'error'            => null,
-                    'success'          => null,
+                    'errors' => $errors,
+                    'old' => $old,
+                    'error' => null,
+                    'success' => null,
                 ]);
             }
 
             return $this->twig->render('static/contact.twig.html', [
-                'page_title'       => 'Contact - Stage-Link',
+                'page_title' => 'Contact - Stage-Link',
                 'meta_description' => 'Contactez-nous en utilisant notre formulaire.',
-                'errors'           => [],
-                'old'              => [],
-                'error'            => null,
-                'success'          => 'Votre message a bien été envoyé.',
+                'errors' => [],
+                'old' => [],
+                'error' => null,
+                'success' => 'Votre message a bien été envoyé.',
             ]);
         }
 
         return $this->twig->render('static/contact.twig.html', [
-            'page_title'       => 'Contact - Stage-Link',
+            'page_title' => 'Contact - Stage-Link',
             'meta_description' => 'Contactez-nous en utilisant notre formulaire.',
-            'errors'           => [],
-            'old'              => [],
-            'error'            => null,
-            'success'          => null,
+            'errors' => [],
+            'old' => [],
+            'error' => null,
+            'success' => null,
         ]);
     }
 
     public function cookies(): string
     {
         return $this->twig->render('static/cookies.twig.html', [
-            'page_title'       => 'Cookies - Stage-Link',
+            'page_title' => 'Cookies - Stage-Link',
             'meta_description' => 'Gestion des cookies sur Stage-Link.',
         ]);
     }
@@ -202,7 +202,7 @@ class StaticController
     public function legal(): string
     {
         return $this->twig->render('static/legal.twig.html', [
-            'page_title'       => 'Mentions Legales - Stage-Link',
+            'page_title' => 'Mentions Legales - Stage-Link',
             'meta_description' => 'Gestion des mentions legales sur Stage-Link.',
         ]);
     }

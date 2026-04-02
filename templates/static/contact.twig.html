@@ -3,66 +3,56 @@
 {% block title %}Contact - Stage-Link{% endblock %}
 
 {% block body %}
-  <section>
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
-      <a href="/?uri=home">Accueil</a><span> › </span>
-      Contact
-    </nav>
+<section>
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span> › </span>
+    Contact
+  </nav>
 
-    <h1 class="text-center">Nous sommes à votre écoute</h1>
+  <h1 class="text-center">Nous sommes à votre écoute</h1>
 
-    <p>
-      Vous pouvez nous contacter directement via
-      <a href="mailto:info@lebonplan.fr">notre adresse de courriel</a>
-      ou utilisez le formulaire ci-dessous. Nous vous répondrons dans tous les cas
-      dans les délais les plus brefs.
-    </p>
+  <p>
+    Vous pouvez nous contacter directement via
+    <a href="mailto:info@lebonplan.fr">notre adresse de courriel</a>
+    ou utilisez le formulaire ci-dessous. Nous vous répondrons dans tous les cas
+    dans les délais les plus brefs.
+  </p>
 
-    <article>
-      <h2>Vous avez la parole</h2>
+  <article>
+    <h2>Vous avez la parole</h2>
 
-      {% if error %}
-        <p class="alert alert-error">{{ error }}</p>
-      {% endif %}
+    {% if error %}
+    <p class="alert alert-error">{{ error }}</p>
+    {% endif %}
 
-      {% if success %}
-        <p class="alert alert-success">{{ success }}</p>
-      {% endif %}
+    {% if success %}
+    <p class="alert alert-success">{{ success }}</p>
+    {% endif %}
 
-      <form method="post" action="#">
-        <div class="form-row">
-          <label for="fullname">Nom complet</label>
-          <input name="fullname"
-                 id="fullname"
-                 type="text"
-                 required
-                 minlength="2"
-                 maxlength="150"
-                 autocomplete="name"
-                 value="{{ old.fullname|default('') }}">
-          <span class="form-error">
-            {% if errors.fullname is defined %}{{ errors.fullname }}{% endif %}
-          </span>
-        </div>
+    <form method="post" action="#">
+      <div class="form-row">
+        <label for="fullname">Nom complet</label>
+        <input name="fullname" id="fullname" type="text" required minlength="2" maxlength="150" autocomplete="name"
+          value="{{ old.fullname|default('') }}">
+        <span class="form-error">
+          {% if errors.fullname is defined %}{{ errors.fullname }}{% endif %}
+        </span>
+      </div>
 
-        <div class="form-row">
-          <label for="feedbacks">Votre message</label>
-          <textarea name="feedbacks"
-                    id="feedbacks"
-                    rows="5"
-                    required
-                    minlength="10"
-                    maxlength="3000">{{ old.feedbacks|default('') }}</textarea>
-          <span class="form-error">
-            {% if errors.feedbacks is defined %}{{ errors.feedbacks }}{% endif %}
-          </span>
-        </div>
+      <div class="form-row">
+        <label for="feedbacks">Votre message</label>
+        <textarea name="feedbacks" id="feedbacks" rows="5" required minlength="10"
+          maxlength="3000">{{ old.feedbacks|default('') }}</textarea>
+        <span class="form-error">
+          {% if errors.feedbacks is defined %}{{ errors.feedbacks }}{% endif %}
+        </span>
+      </div>
 
-        <div class="form-row">
-          <button type="submit">Envoyer</button>
-          <input type="reset" value="Effacer">
-        </div>
-      </form>
-    </article>
-  </section>
+      <div class="form-row">
+        <button type="submit">Envoyer</button>
+        <input type="reset" value="Effacer">
+      </div>
+    </form>
+  </article>
+</section>
 {% endblock %}

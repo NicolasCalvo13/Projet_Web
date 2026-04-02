@@ -16,9 +16,6 @@ class OfferModel
             Database::getConnection();
     }
 
-    /**
-     * Récupère toutes les offres avec leur entreprise.
-     */
     public function findAll(): array
     {
         $sql = '
@@ -44,9 +41,6 @@ class OfferModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère les offres filtrées par secteur de l'entreprise.
-     */
     public function findBySecteur(string $secteur): array
     {
         $sql = '
@@ -74,9 +68,6 @@ class OfferModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère une offre par son id avec infos entreprise.
-     */
     public function getById(int $id): ?array
     {
         $sql = '
@@ -106,9 +97,6 @@ class OfferModel
         return $result ?: null;
     }
 
-    /**
-     * Crée une nouvelle offre pour une entreprise.
-     */
     public function createOffer(array $postData, int $entrepriseId)
     {
         $sql = "
@@ -137,7 +125,7 @@ class OfferModel
 
         $titre = trim($postData['titre'] ?? '');
         $description = trim($postData['description'] ?? '');
-        $lieu = trim($postData['ville'] ?? ''); // champ du form = ville
+        $lieu = trim($postData['ville'] ?? '');
         $duree = trim($postData['duree'] ?? '');
         $date_debut = trim($postData['date_debut'] ?? '');
         $remuneration = $postData['remuneration'] !== '' ? (float) $postData['remuneration'] : null;
@@ -163,9 +151,6 @@ class OfferModel
 
     public function getWishlistByStudent(int $studentId): array
     {
-        // On fait une double jointure : 
-        // 1. Pour lier la wishlist à l'offre
-        // 2. Pour lier l'offre à l'entreprise et récupérer son nom
         $stmt = $this->db->prepare('
             SELECT w.id, w.offre_id, o.titre, o.remuneration, e.nom AS entreprise_nom
             FROM wishlist w
@@ -179,12 +164,8 @@ class OfferModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Supprime une offre de la wishlist
-     */
     public function deleteFromWishlist(int $wishlistId, int $studentId): bool
     {
-        // On supprime la ligne en vérifiant l'ID de la wishlist ET l'ID de l'étudiant
         $stmt = $this->db->prepare('
             DELETE FROM wishlist 
             WHERE id = :id AND student_id = :student_id
@@ -197,9 +178,6 @@ class OfferModel
     }
 
 
-    /**
-     * Recherche des offres selon un mot-clé (dans le titre, description, lieu ou nom entreprise)
-     */
     public function searchOffers(string $keyword): array
     {
         $sql = '
@@ -258,7 +236,6 @@ class OfferModel
 
     public function deleteEntreprise(int $id): bool
     {
-        // Récupère le user_id lié à cette entreprise
         $stmt = $this->db->prepare('SELECT user_id FROM entreprises WHERE id = :id');
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -266,16 +243,10 @@ class OfferModel
         if (!$row)
             return false;
 
-        // Supprimer l'utilisateur → cascade automatique sur :
-        // entreprises → offres → candidatures, wishlist
-        //             → avis
         $stmt = $this->db->prepare('DELETE FROM utilisateurs WHERE id = :user_id');
         return $stmt->execute(['user_id' => $row['user_id']]);
     }
 
-    /**
-     * Vérifie si une offre est déjà dans la wishlist de l'étudiant
-     */
     public function isInWishlist(int $studentId, int $offerId): bool
     {
         $stmt = $this->db->prepare('SELECT id FROM wishlist WHERE student_id = :student_id AND offre_id = :offre_id');
@@ -283,12 +254,8 @@ class OfferModel
         return (bool) $stmt->fetch();
     }
 
-    /**
-     * Ajoute une offre à la wishlist
-     */
     public function addToWishlist(int $studentId, int $offerId): bool
     {
-        // On évite les doublons
         if ($this->isInWishlist($studentId, $offerId)) {
             return true;
         }
@@ -334,15 +301,10 @@ class OfferModel
             ':description' => $description,
         ]);
     }
-/**
- * Récupère les offres de manière paginée
- */
-/**
- * Récupère les offres de manière paginée (avec secteur optionnel)
- */
-public function findPaginated(int $limit, int $offset, ?string $secteur = null): array
-{
-    $sql = '
+
+    public function findPaginated(int $limit, int $offset, ?string $secteur = null): array
+    {
+        $sql = '
         SELECT 
             o.id, o.titre, o.description, o.lieu, o.duree, 
             o.remuneration, o.date_debut, o.created_at,
@@ -351,40 +313,36 @@ public function findPaginated(int $limit, int $offset, ?string $secteur = null):
         FROM offres o
         LEFT JOIN entreprises e ON o.entreprise_id = e.id';
 
-    // Ajout dynamique du filtre secteur si présent
-    if ($secteur) {
-        $sql .= ' WHERE e.secteur = :secteur';
-    }
+        if ($secteur) {
+            $sql .= ' WHERE e.secteur = :secteur';
+        }
 
-    $sql .= ' ORDER BY o.created_at DESC LIMIT :limit OFFSET :offset';
+        $sql .= ' ORDER BY o.created_at DESC LIMIT :limit OFFSET :offset';
 
-    $stmt = $this->db->prepare($sql);
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    if ($secteur) {
-        $stmt->bindValue(':secteur', $secteur, PDO::PARAM_STR);
-    }
-    $stmt->execute();
-
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-/**
- * Compte le nombre total d'offres (avec secteur optionnel)
- */
-public function countAll(?string $secteur = null): int
-{
-    $sql = 'SELECT COUNT(*) FROM offres o LEFT JOIN entreprises e ON o.entreprise_id = e.id';
-    if ($secteur) {
-        $sql .= ' WHERE e.secteur = :secteur';
-    }
-    
-    $stmt = $this->db->prepare($sql);
-    if ($secteur) {
-        $stmt->execute(['secteur' => $secteur]);
-    } else {
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        if ($secteur) {
+            $stmt->bindValue(':secteur', $secteur, PDO::PARAM_STR);
+        }
         $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    return (int) $stmt->fetchColumn();
-}
+
+    public function countAll(?string $secteur = null): int
+    {
+        $sql = 'SELECT COUNT(*) FROM offres o LEFT JOIN entreprises e ON o.entreprise_id = e.id';
+        if ($secteur) {
+            $sql .= ' WHERE e.secteur = :secteur';
+        }
+
+        $stmt = $this->db->prepare($sql);
+        if ($secteur) {
+            $stmt->execute(['secteur' => $secteur]);
+        } else {
+            $stmt->execute();
+        }
+        return (int) $stmt->fetchColumn();
+    }
 }

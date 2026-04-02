@@ -16,56 +16,55 @@
 </div>
 
 {% if success == 'deleted' %}
-    <div class="alert alert-success">✅ L'offre a bien été supprimée.</div>
+<div class="alert alert-success">✅ L'offre a bien été supprimée.</div>
 {% endif %}
 {% if error %}
-    <div class="alert alert-error">{{ error }}</div>
+<div class="alert alert-error">{{ error }}</div>
 {% endif %}
 
 <section class="section-card">
     {% if offres is empty %}
-        <p class="empty-state">Aucune offre disponible pour le moment.</p>
+    <p class="empty-state">Aucune offre disponible pour le moment.</p>
     {% else %}
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Titre</th>
-                    <th>Entreprise</th>
-                    <th>Ville</th>
-                    <th>Durée</th>
-                    <th>Rémunération</th>
-                    <th>Date début</th>
-                    <th colspan="2" scope="colgroup"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for offre in offres %}
-                    <tr>
-                        <td><strong>{{ offre.titre }}</strong></td>
-                        <td>{{ offre.entreprise_nom }}</td>
-                        <td>{{ offre.lieu }}</td>
-                        <td>{{ offre.duree }}</td>
-                        <td>{{ offre.remuneration ? offre.remuneration ~ ' €' : '—' }}</td>
-                        <td>{{ offre.date_debut }}</td>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Entreprise</th>
+                <th>Ville</th>
+                <th>Durée</th>
+                <th>Rémunération</th>
+                <th>Date début</th>
+                <th colspan="2" scope="colgroup"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td><strong>{{ offre.titre }}</strong></td>
+                <td>{{ offre.entreprise_nom }}</td>
+                <td>{{ offre.lieu }}</td>
+                <td>{{ offre.duree }}</td>
+                <td>{{ offre.remuneration ? offre.remuneration ~ ' €' : '—' }}</td>
+                <td>{{ offre.date_debut }}</td>
 
-                        <td class="table-actions">
-                            <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-secondary btn-sm">Voir</a>
-                        </td>
+                <td class="table-actions">
+                    <a href="/?uri=offer_detail&id={{ offre.id }}" class="btn-secondary btn-sm">Voir</a>
+                </td>
 
-                        <td class="table-actions">
-                            <form method="POST"
-                                  action="/?uri=admin_delete_offer"
-                                  onsubmit="return confirm('Supprimer l\'offre « {{ offre.titre }} » ?')">
-                                <input type="hidden" name="offre_id" value="{{ offre.id }}">
-                                <button type="submit" class="btn-danger btn-sm">
-                                    Supprimer
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                <td class="table-actions">
+                    <form method="POST" action="/?uri=admin_delete_offer"
+                        onsubmit="return confirm('Supprimer l\'offre « {{ offre.titre }} » ?')">
+                        <input type="hidden" name="offre_id" value="{{ offre.id }}">
+                        <button type="submit" class="btn-danger btn-sm">
+                            Supprimer
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
 </section>
 

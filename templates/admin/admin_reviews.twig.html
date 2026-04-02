@@ -9,16 +9,17 @@
     Gérer les avis
 </nav>
 
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+<div
+    style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
     <h1 style="color:#007575;">Gérer les avis</h1>
     <span class="badge">{{ avis|length }} avis au total</span>
 </div>
 
 {% if success == 'deleted' %}
-    <div class="alert alert-success">✅ L'avis a bien été supprimé.</div>
+<div class="alert alert-success">✅ L'avis a bien été supprimé.</div>
 {% endif %}
 {% if error %}
-    <div class="alert alert-error">{{ error }}</div>
+<div class="alert alert-error">{{ error }}</div>
 {% endif %}
 
 <form id="delete-form" method="POST" action="/?uri=admin_delete_review" style="display:none;">
@@ -27,61 +28,58 @@
 
 <section class="section-card">
     {% if avis is empty %}
-        <p class="empty-state">Aucun avis pour le moment.</p>
+    <p class="empty-state">Aucun avis pour le moment.</p>
     {% else %}
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Étudiant</th>
-                    <th>Entreprise</th>
-                    <th>Note</th>
-                    <th>Commentaire</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for a in avis %}
-                    <tr>
-                        <td data-label="Étudiant">{{ a.etudiant_prenom }} {{ a.etudiant_nom }}</td>
-                        <td data-label="Entreprise">{{ a.entreprise_nom }}</td>
-                        <td data-label="Note">
-                            <span class="stars">
-                                {% for i in 1..5 %}
-                                    {% if i <= a.note %}⭐{% else %}☆{% endif %}
-                                {% endfor %}
-                            </span>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Étudiant</th>
+                <th>Entreprise</th>
+                <th>Note</th>
+                <th>Commentaire</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in avis %}
+            <tr>
+                <td data-label="Étudiant">{{ a.etudiant_prenom }} {{ a.etudiant_nom }}</td>
+                <td data-label="Entreprise">{{ a.entreprise_nom }}</td>
+                <td data-label="Note">
+                    <span class="stars">
+                        {% for i in 1..5 %}
+                        {% if i <= a.note %}⭐{% else %}☆{% endif %} {% endfor %} </span>
                             <small>({{ a.note }}/5)</small>
-                        </td>
-                        <td data-label="Commentaire">
-                            {% if a.commentaire %}
-                                {{ a.commentaire|slice(0, 80) }}{% if a.commentaire|length > 80 %}…{% endif %}
-                            {% else %}
-                                <em style="color:#aaa;">Aucun commentaire</em>
-                            {% endif %}
-                        </td>
-                        <td data-label="Date">{{ a.created_at|date('d/m/Y') }}</td>
-                        <td data-label="Actions" class="table-actions">
-                            <button type="button"
-                                    class="btn-danger btn-sm"
-                                    onclick="confirmDelete('{{ a.id }}', '{{ a.etudiant_prenom }} {{ a.etudiant_nom }}')">
-                                Supprimer
-                            </button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </td>
+                <td data-label="Commentaire">
+                    {% if a.commentaire %}
+                    {{ a.commentaire|slice(0, 80) }}{% if a.commentaire|length > 80 %}…{% endif %}
+                    {% else %}
+                    <em style="color:#aaa;">Aucun commentaire</em>
+                    {% endif %}
+                </td>
+                <td data-label="Date">{{ a.created_at|date('d/m/Y') }}</td>
+                <td data-label="Actions" class="table-actions">
+                    <button type="button" class="btn-danger btn-sm"
+                        onclick="confirmDelete('{{ a.id }}', '{{ a.etudiant_prenom }} {{ a.etudiant_nom }}')">
+                        Supprimer
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
 </section>
 
 <script>
-function confirmDelete(id, auteur) {
-    if (confirm('Supprimer l\'avis de ' + auteur + ' ?')) {
-        document.getElementById('delete-id').value = id;
-        document.getElementById('delete-form').submit();
+    function confirmDelete(id, auteur) {
+        if (confirm('Supprimer l\'avis de ' + auteur + ' ?')) {
+            document.getElementById('delete-id').value = id;
+            document.getElementById('delete-form').submit();
+        }
     }
-}
 </script>
 
 {% endblock %}

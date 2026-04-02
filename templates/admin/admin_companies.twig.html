@@ -20,15 +20,15 @@
 {% endif %}
 
 {% if success == 'deleted' %}
-    <div class="alert alert-success">✅ L'entreprise a bien été supprimée.</div>
+<div class="alert alert-success">✅ L'entreprise a bien été supprimée.</div>
 {% endif %}
 {% if error %}
-    <div class="alert alert-error">{{ error }}</div>
+<div class="alert alert-error">{{ error }}</div>
 {% endif %}
 
 <section class="section-card">
     {% if entreprises is empty %}
-        <p class="empty-state">Aucune entreprise disponible pour le moment.</p>
+    <p class="empty-state">Aucune entreprise disponible pour le moment.</p>
     {% else %}
     <table class="admin-table">
         <thead>
