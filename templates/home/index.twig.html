@@ -77,5 +77,8 @@
     <a href="/?uri=login" class="btn-primary">Se connecter en tant qu'entreprise</a>
 </section>
 {% endif %}
-
+{% block scripts %}
+    {{ parent() }}
+    <script src="/assets/js/carousel.js"></script>
+{% endblock %}
 {% endblock %}

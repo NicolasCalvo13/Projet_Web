@@ -1358,6 +1358,45 @@ textarea {
 
 
 /* ============================================================
+   DASHBOARD — Wishlist
+   ============================================================ */
+
+.wishlist-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.wishlist-item {
+    background: white;
+    border: 1px solid #A2E9EB;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.wishlist-item .company {
+    display: block;
+    margin-top: 6px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .wishlist-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================
    DASHBOARD — Profil + CV Preview
    ============================================================ */
 .profil-content {
@@ -1663,5 +1702,94 @@ textarea {
 
     .header-search form {
         max-width: 100%;
+    }
+}
+
+/* ============================================================
+CAROUSEL HOME — Offres récentes
+À coller tout en bas de style.css
+============================================================ */
+
+.offers-grid[data-carousel-ready="true"] {
+    display: block;
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.offers-carousel-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.offers-carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.35s ease;
+    will-change: transform;
+}
+
+.offers-grid[data-carousel-ready="true"] .offer-card {
+    flex: 0 0 calc((100% - 40px) / 3);
+    margin: 0;
+}
+
+@media (max-width: 1099px) {
+    .offers-grid[data-carousel-ready="true"] .offer-card {
+        flex: 0 0 calc((100% - 20px) / 2);
+    }
+}
+
+@media (max-width: 699px) {
+    .offers-grid[data-carousel-ready="true"] .offer-card {
+        flex: 0 0 100%;
+    }
+}
+
+.offers-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 999px;
+    background: #008b8b;
+    color: white;
+    cursor: pointer;
+    z-index: 5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.offers-carousel-btn:hover {
+    background: #006d6d;
+}
+
+.offers-carousel-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.offers-carousel-btn-prev {
+    left: -22px;
+}
+
+.offers-carousel-btn-next {
+    right: -22px;
+}
+
+@media (max-width: 768px) {
+    .offers-grid[data-carousel-ready="true"] {
+        padding-inline: 0;
+    }
+
+    .offers-carousel-btn-prev {
+        left: 8px;
+    }
+
+    .offers-carousel-btn-next {
+        right: 8px;
     }
 }

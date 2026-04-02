@@ -192,10 +192,10 @@ class UserModel
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':entreprise_id', $entrepriseId, \PDO::PARAM_INT);
+        $stmt->bindValue(':entreprise_id', $entrepriseId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $stats = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Sécuriser un minimum les valeurs (éviter les null dans le Twig)
         return [
@@ -223,7 +223,7 @@ class UserModel
         LIMIT 5;
     ");
         $stmt->execute([':id' => $companyId]);
-        $offer = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $offer = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $offer ?: null;
     }
@@ -247,10 +247,10 @@ class UserModel
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':entreprise_id', $entrepriseId, \PDO::PARAM_INT);
+        $stmt->bindValue(':entreprise_id', $entrepriseId, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getEntrepriseInfo(int $entrepriseId): ?array
@@ -260,7 +260,9 @@ class UserModel
                 e.nom,
                 e.secteur,
                 u.email,
-                e.telephone
+                e.telephone,
+                e.description,
+                e.logo_path AS logo
             FROM entreprises e
             JOIN utilisateurs u ON e.user_id = u.id
             WHERE e.id = :id
@@ -285,6 +287,79 @@ class UserModel
         $stmt->execute([$nom, $prenom, $telephone, $ecole, $formation, $photo, $cv, $email, $id]);
     }
 
+    public function updateCompany(
+        int $userId,
+        string $nomEntreprise,
+        string $email,
+        string $telephone,
+        string $secteur,
+        string $description,
+        ?string $logo
+    ): bool {
+        try {
+            $this->pdo->beginTransaction();
+
+            if ($logo !== null) {
+                $sqlEntreprise = "
+                UPDATE entreprises
+                SET nom = :nom,
+                    telephone = :telephone,
+                    secteur = :secteur,
+                    description = :description,
+                    logo_path = :logo
+                WHERE user_id = :user_id
+            ";
+
+                $paramsEntreprise = [
+                    ':nom' => $nomEntreprise,
+                    ':telephone' => $telephone,
+                    ':secteur' => $secteur,
+                    ':description' => $description,
+                    ':logo' => $logo,
+                    ':user_id' => $userId,
+                ];
+            } else {
+                $sqlEntreprise = "
+                UPDATE entreprises
+                SET nom = :nom,
+                    telephone = :telephone,
+                    secteur = :secteur,
+                    description = :description
+                WHERE user_id = :user_id
+            ";
+
+                $paramsEntreprise = [
+                    ':nom' => $nomEntreprise,
+                    ':telephone' => $telephone,
+                    ':secteur' => $secteur,
+                    ':description' => $description,
+                    ':user_id' => $userId,
+                ];
+            }
+
+            $stmtEntreprise = $this->pdo->prepare($sqlEntreprise);
+            $stmtEntreprise->execute($paramsEntreprise);
+
+            $sqlUtilisateur = "
+            UPDATE utilisateurs
+            SET email = :email
+            WHERE id = :id
+        ";
+
+            $stmtUtilisateur = $this->pdo->prepare($sqlUtilisateur);
+            $stmtUtilisateur->execute([
+                ':email' => $email,
+                ':id' => $userId,
+            ]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
 
     public function getAllStudents(): array
     {
@@ -304,6 +379,31 @@ class UserModel
         // Supprime l'utilisateur → cascade sur student, candidatures, wishlist, avis
         $stmt = $this->pdo->prepare('DELETE FROM utilisateurs WHERE id = :id AND role = "student"');
         return $stmt->execute(['id' => $userId]);
+    }
+
+    public function findCompanyByUserId(int $userId): ?array
+    {
+        $sql = "
+        SELECT 
+            e.id,
+            e.user_id,
+            e.nom,
+            e.siret,
+            e.secteur,
+            e.taille,
+            e.description,
+            e.logo_path,
+            e.telephone,
+            u.email
+        FROM entreprises e
+        INNER JOIN utilisateurs u ON e.user_id = u.id
+        WHERE e.user_id = :user_id
+    ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':user_id' => $userId]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
 }

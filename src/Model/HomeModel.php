@@ -35,7 +35,7 @@ class HomeModel
             FROM offres o
             JOIN entreprises e ON o.entreprise_id = e.id
             ORDER BY o.created_at DESC
-            LIMIT 5
+            limit 6
         ');
 
         return $stmt->fetchAll();

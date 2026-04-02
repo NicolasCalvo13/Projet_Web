@@ -5,6 +5,18 @@
 {% block body %}
 <section class="dashboard">
 
+    {% if success %}
+    <div class="alert-success">
+        Profil entreprise mis à jour avec succès.
+    </div>
+    {% endif %}
+    
+    {% if error %}
+        <div class="alert-error">
+            Une erreur est survenue.
+        </div>
+    {% endif %}
+
     {# === HEADER BIENVENUE === #}
     <div class="dashboard-header">
         <h1>Bonjour, {{ entreprise.nom }} 👋</h1>
@@ -119,13 +131,24 @@
             <div class="card-header">
                 <h2>Mon profil entreprise</h2>
             </div>
-            <div class="profil-info">
-                <p>Raison sociale : {{ entreprise.nom }}</p>
-                <p>Secteur : {{ entreprise.secteur }}</p>
-                <p>Email : {{ entreprise.email }}</p>
-                <p>Téléphone : {{ entreprise.telephone }}</p>
-            </div>
-            <a href="/?uri=company_account" class="btn btn-secondary">✏️ Modifier les informations</a>
+            <div class="profil-infos">
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        {% if entreprise.logo %}
+                        <img src="{{ entreprise.logo }}" alt="Logo de l'entreprise">
+                        {% else %}
+                        <img src="/assets/images/placeholder.png" alt="Logo de l'entreprise"
+                            style="width:90px;height:90px;border-radius:50%;background:#e0e0e0;
+                                display:flex;align-items:center;justify-content:center;
+                                font-size:2rem;margin:0 auto;"></img>
+                        {% endif %}
+                    </div>
+                    <p><strong>Nom :</strong> {{ entreprise.nom }}</p>
+                    <p><strong>Email :</strong> {{ entreprise.email }}</p>
+                    <p><strong>Téléphone :</strong> {{ entreprise.telephone }}</p>
+                    <p><strong>Secteur :</strong> {{ entreprise.secteur }}</p>
+                    <p><strong>Description :</strong> {{ entreprise.description }}</p>
+                </div>
+            <a href="/?uri=edit_company" class="btn btn-secondary">✏️ Modifier les informations</a>
         </article>
 
         {# === ACTIONS RAPIDES === #}
@@ -134,10 +157,10 @@
                 <h2>Actions rapides</h2>
             </div>
             <div class="quick-actions">
-                <a href="/?uri=create_offer" class="btn btn-primary">➕ Créer une nouvelle offre</a>
-                <a href="/?uri=company_offers" class="btn btn-primary">📄 Gérer mes offres</a>
-                <a href="/?uri=company_applications" class="btn btn-primary">👥 Gérer les candidatures</a>
-                <a href="/?uri=reviews_company" class="btn btn-primary">⭐ Voir les avis étudiants</a>
+                <a href="/?uri=create_offer" class="btn btn-primary"> Créer une nouvelle offre</a>
+                <a href="/?uri=company_offers" class="btn btn-primary"> Gérer mes offres</a>
+                <a href="/?uri=company_applications" class="btn btn-primary"> Gérer les candidatures</a>
+                <a href="/?uri=reviews_company" class="btn btn-primary"> Voir les avis étudiants</a>
             </div>
         </article>
 

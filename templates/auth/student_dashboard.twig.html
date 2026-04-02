@@ -44,30 +44,37 @@
             <a href="/?uri=offers" class="btn btn-primary">Parcourir les offres</a>
             {% else %}
             <div class="offers-grid">
-                <ul class="offer-list">
-                    {% for c in candidatures %}
-                    <article class="offer-card" aria-label="{{ c.titre }}">
-                        <div class="offer-card-header">
-                            <div>
-                                <h3 class="offer-card-title">{{ c.titre }}</h3>
-                                <span class="offer-card-company">{{ c.entreprise_nom }}</span>
-                            </div>
+                {% for c in candidatures %}
+                <article class="offer-card" aria-label="{{ c.titre }}">
+                    <div class="offer-card-header">
+                        <div>
+                            <h3 class="offer-card-title">{{ c.titre }}</h3>
+                            <span class="offer-card-company">{{ c.entreprise_nom }}</span>
                         </div>
-                        <div class="offer-meta">
-                            <span class="badge">📍 {{ c.ville }}</span>
-                            <span class="badge badge-{{ c.statut }}">
-                                {% if c.statut == 'en_attente' %}⏳ En attente
-                                {% elseif c.statut == 'acceptee' %}✅ Acceptée
-                                {% elseif c.statut == 'refusee' %}❌ Refusée
-                                {% endif %}
-                            </span>
-                        </div>
-                        <a href="/?uri=offer_detail&id={{ c.offre_id }}" class="btn-primary offer-card-btn">
-                            Voir l'offre
-                        </a>
-                    </article>
-                    {% endfor %}
-                </ul>
+                    </div>
+
+                    <div class="offer-meta">
+                        <span class="badge">{{ c.ville }}</span>
+                        <span class="badge
+                    {% if c.statut == 'en_attente' %}badge-stat
+                    {% elseif c.statut == 'acceptee' %}status-ok
+                    {% elseif c.statut == 'refusee' %}status-ko
+                    {% endif %}">
+                            {% if c.statut == 'en_attente' %}
+                            En attente
+                            {% elseif c.statut == 'acceptee' %}
+                            Acceptée
+                            {% elseif c.statut == 'refusee' %}
+                            Refusée
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <a href="?uri=offer_detail&id={{ c.offre_id }}" class="btn-primary offer-card-btn">
+                        Voir l'offre
+                    </a>
+                </article>
+                {% endfor %}
             </div>
             {% endif %}
         </article>
@@ -115,11 +122,11 @@
                                 font-size:2rem;margin:0 auto;">👤</div>
                         {% endif %}
                     </div>
-                    <p><strong>{{ user.prenom }} {{ user.nom }}</strong></p>
-                    <p>{{ user.email }}</p>
-                    <p>{{ user.telephone }}</p>
-                    <p>{{ user.formation }}</p>
-                    <p>{{ user.ecole }}</p>
+                    <p><strong>Nom Prénom :</strong> {{ user.prenom }} {{ user.nom }}</p>
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                    <p><strong>Téléphone :</strong> {{ user.telephone }}</p>
+                    <p><strong>Formation :</strong> {{ user.formation }}</p>
+                    <p><strong>École :</strong> {{ user.ecole }}</p>
                 </div>
 
                 {# COLONNE DROITE : aperçu CV #}
@@ -136,7 +143,7 @@
             </div>
 
             <a href="?uri=edit_profile" class="btn btn-secondary" style="margin-top:1rem;display:inline-block;">
-                Modifier mes informations
+                ✏️ Modifier mes informations
             </a>
         </article>
 
