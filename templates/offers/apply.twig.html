@@ -4,7 +4,6 @@
 
 {% block body %}
 
-
     <nav class="breadcrumb" aria-label="Fil d'Ariane">
         <a href="/?uri=home">Accueil</a><span>›</span>
         <a href="/?uri=offers">Offres</a><span>›</span>
@@ -13,7 +12,6 @@
     </nav>
     <h1 style="color:#007575;">Postuler à une offre</h1>
 
-    <!-- Récapitulatif de l'offre -->
     <div class="apply-offer-recap" aria-label="Récapitulatif de l'offre">
         <div>
             <strong>Titre de l'offre</strong><br>
@@ -27,19 +25,39 @@
 
     <section class="section-card">
         <h2>Votre candidature</h2>
-        <form method="POST" action="#" enctype="multipart/form-data" id="applyForm" novalidate>
+        <form method="POST" action="#" enctype="multipart/form-data" id="applyForm">
 
             <div class="form-group">
                 <label for="cv">CV (PDF uniquement, 5 Mo max) <span style="color:red">*</span></label>
-                <input type="file" id="cv" name="cv" accept=".pdf" required aria-required="true">
-                <span class="form-error" id="cv-error">Veuillez fournir un CV au format PDF.</span>
+                <input type="file"
+                       id="cv"
+                       name="cv"
+                       accept=".pdf,application/pdf"
+                       required
+                       aria-required="true">
+                {% if errors.cv is defined %}
+                    <span class="form-error">{{ errors.cv }}</span>
+                {% else %}
+                    <span class="form-error" id="cv-error">Veuillez fournir un CV au format PDF.</span>
+                {% endif %}
             </div>
 
             <div class="form-group">
                 <label for="lm">Lettre de motivation <span style="color:red">*</span></label>
-                <textarea id="lm" name="lm" maxlength="3000" placeholder="Rédigez votre lettre de motivation ici..." required aria-required="true" oninput="updateCount(this, 'lm-count')"></textarea>
-                <div style="font-size:.8rem;color:#aaa;text-align:right;margin-top:4px;"><span id="lm-count">0</span> / 3000 caractères</div>
-                <span class="form-error" id="lm-error">La lettre de motivation est obligatoire (50 caractères minimum).</span>
+                <textarea id="lm"
+                          name="lm"
+                          minlength="50"
+                          maxlength="3000"
+                          placeholder="Rédigez votre lettre de motivation ici..."
+                          required
+                          aria-required="true"
+                          oninput="updateCount(this, 'lm-count')">{{ old.lm|default('') }}</textarea>
+                <div style="font-size:.8rem;color:#aaa;text-align:right;margin-top:4px;"><span id="lm-count">{{ old.lm|default('')|length }}</span> / 3000 caractères</div>
+                {% if errors.lm is defined %}
+                    <span class="form-error">{{ errors.lm }}</span>
+                {% else %}
+                    <span class="form-error" id="lm-error">La lettre de motivation est obligatoire (50 caractères minimum).</span>
+                {% endif %}
             </div>
 
             <div class="form-group" style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
@@ -50,5 +68,3 @@
         </form>
     </section>
 {% endblock %}
-
-

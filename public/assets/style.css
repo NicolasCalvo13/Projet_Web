@@ -1861,3 +1861,12 @@ CAROUSEL HOME — Offres récentes
         right: 8px;
     }
 }
+
+.is-invalid {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15) !important;
+}
+
+.is-valid {
+    border-color: #27ae60;
+}

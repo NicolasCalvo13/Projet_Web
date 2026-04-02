@@ -6,9 +6,9 @@
 
 <section>
     <h1 class="text-center">Espace Entreprise</h1>
-    <p >Connectez-vous pour accéder à votre espace recruteur et gérer vos offres de stage.</p>
+    <p>Connectez-vous pour accéder à votre espace recruteur et gérer vos offres de stage.</p>
 
-    {% if error is defined %}
+    {% if error is defined and error %}
         <div class="alert-info">{{ error }}</div>
     {% endif %}
 
@@ -25,7 +25,13 @@
                     type="email"
                     placeholder="contact@entreprise.fr"
                     required
+                    maxlength="255"
+                    autocomplete="email"
+                    value="{{ old.email|default('') }}"
                 >
+                <span class="form-error">
+                    {% if errors.email is defined %}{{ errors.email }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row">
@@ -35,7 +41,13 @@
                     id="password"
                     type="password"
                     required
+                    minlength="8"
+                    maxlength="255"
+                    autocomplete="current-password"
                 >
+                <span class="form-error">
+                    {% if errors.password is defined %}{{ errors.password }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row">

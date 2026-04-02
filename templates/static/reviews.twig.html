@@ -18,8 +18,12 @@
         Partagez votre expérience pour aider les autres étudiants !
     </p>
 
-    {% if success is defined %}
-    <div class="alert-success">Merci ! Votre avis a bien été envoyé.</div>
+    {% if success is defined and success %}
+        <div class="alert-success">Merci ! Votre avis a bien été envoyé.</div>
+    {% endif %}
+
+    {% if error %}
+        <p class="alert alert-error">{{ error }}</p>
     {% endif %}
 
     <article>
@@ -29,53 +33,71 @@
 
             <div class="form-row">
                 <label for="Entreprise">Entreprise du Stage*</label>
-                <select id="Entreprise" name="Entreprise">
-                    <option value="" disabled selected>-- Sélectionnez Entreprise --</option>
+                <select id="Entreprise" name="Entreprise" required>
+                    <option value="" disabled {{ old.Entreprise is not defined or old.Entreprise == '' ? 'selected' : '' }}>-- Sélectionnez Entreprise --</option>
                     {% for entreprise in entreprises %}
-                    <option value="{{ entreprise.id }}">{{ entreprise.nom }}</option>
+                        <option value="{{ entreprise.id }}" {{ old.Entreprise is defined and old.Entreprise == entreprise.id ? 'selected' : '' }}>
+                            {{ entreprise.nom }}
+                        </option>
                     {% endfor %}
                 </select>
+                <span class="form-error">
+                    {% if errors.Entreprise is defined %}{{ errors.Entreprise }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="secteur">Secteur</label>
-                <select id="secteur" name="secteur">
-                    <option value="" disabled selected>-- Sélectionnez --</option>
-                    <option value="informatique">Informatique</option>
-                    <option value="btp">BTP</option>
-                    <option value="autre">Autre</option>
+                <select id="secteur" name="secteur" required>
+                    <option value="" disabled {{ old.secteur is not defined or old.secteur == '' ? 'selected' : '' }}>-- Sélectionnez --</option>
+                    <option value="informatique" {{ old.secteur is defined and old.secteur == 'informatique' ? 'selected' : '' }}>Informatique</option>
+                    <option value="btp" {{ old.secteur is defined and old.secteur == 'btp' ? 'selected' : '' }}>BTP</option>
+                    <option value="autre" {{ old.secteur is defined and old.secteur == 'autre' ? 'selected' : '' }}>Autre</option>
                 </select>
+                <span class="form-error">
+                    {% if errors.secteur is defined %}{{ errors.secteur }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="note">Note globale*</label>
                 <select id="note" name="note" required>
-                    <option value="" disabled selected>-- Sélectionnez --</option>
-                    <option value="5">⭐⭐⭐⭐⭐ — Excellent</option>
-                    <option value="4">⭐⭐⭐⭐ — Très bien</option>
-                    <option value="3">⭐⭐⭐ — Bien</option>
-                    <option value="2">⭐⭐ — Moyen</option>
-                    <option value="1">⭐ — Décevant</option>
+                    <option value="" disabled {{ old.note is not defined or old.note == '' ? 'selected' : '' }}>-- Sélectionnez --</option>
+                    <option value="5" {{ old.note is defined and old.note == '5' ? 'selected' : '' }}>⭐⭐⭐⭐⭐ — Excellent</option>
+                    <option value="4" {{ old.note is defined and old.note == '4' ? 'selected' : '' }}>⭐⭐⭐⭐ — Très bien</option>
+                    <option value="3" {{ old.note is defined and old.note == '3' ? 'selected' : '' }}>⭐⭐⭐ — Bien</option>
+                    <option value="2" {{ old.note is defined and old.note == '2' ? 'selected' : '' }}>⭐⭐ — Moyen</option>
+                    <option value="1" {{ old.note is defined and old.note == '1' ? 'selected' : '' }}>⭐ — Décevant</option>
                 </select>
+                <span class="form-error">
+                    {% if errors.note is defined %}{{ errors.note }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row form-row--wrap">
                 <label>Recommanderiez-vous cette entreprise ?</label>
                 <div class="radio-group">
                     <label class="check-item">
-                        <input type="radio" name="recommande" value="oui" checked> Oui
+                        <input type="radio" name="recommande" value="oui" {{ old.recommande is not defined or old.recommande == 'oui' ? 'checked' : '' }}> Oui
                     </label>
                     <label class="check-item">
-                        <input type="radio" name="recommande" value="non"> Non
+                        <input type="radio" name="recommande" value="non" {{ old.recommande is defined and old.recommande == 'non' ? 'checked' : '' }}> Non
                     </label>
                 </div>
             </div>
 
             <div class="form-row">
                 <label for="commentaires">Votre avis détaillé*</label>
-                <textarea id="commentaires" name="commentaires" rows="6"
-                    placeholder="Décrivez votre expérience : missions, équipe, ambiance, points forts et points faibles..."
-                    required></textarea>
+                <textarea id="commentaires"
+                          name="commentaires"
+                          rows="6"
+                          minlength="20"
+                          maxlength="3000"
+                          placeholder="Décrivez votre expérience : missions, équipe, ambiance, points forts et points faibles..."
+                          required>{{ old.commentaires|default('') }}</textarea>
+                <span class="form-error">
+                    {% if errors.commentaires is defined %}{{ errors.commentaires }}{% endif %}
+                </span>
             </div>
 
             <div class="form-row">
@@ -84,15 +106,13 @@
             </div>
 
         </form>
-
-        {% else %}
-        <p class="alert alert-info">
-            Vous devez être <a href="/?uri=login">connecté</a> en tant qu'étudiant pour laisser un avis.
-        </p>
-        {% endif %}
     </article>
 </section>
 
-
+{% else %}
+    <p class="alert alert-info">
+        Vous devez être <a href="/?uri=login">connecté</a> en tant qu'étudiant pour laisser un avis.
+    </p>
+{% endif %}
 
 {% endblock %}

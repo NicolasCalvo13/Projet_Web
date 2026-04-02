@@ -14,40 +14,95 @@
     <article>
       <h2>Formulaire d'inscription</h2>
 
+      {% if error %}
+        <p class="alert alert-error">{{ error }}</p>
+      {% endif %}
+
       <form action="/?uri=register_entreprise" method="post">
         <div class="form-row">
           <label for="name">Nom de l'entreprise *</label>
-          <input name="name" id="name" type="text" required>
+          <input name="name"
+                 id="name"
+                 type="text"
+                 required
+                 minlength="2"
+                 maxlength="255"
+                 autocomplete="organization"
+                 value="{{ old.name|default('') }}">
+          <span class="form-error">
+            {% if errors.name is defined %}{{ errors.name }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="siret">Numéro de SIRET *</label>
-          <input name="siret" id="siret" type="text" required>
+          <input name="siret"
+                 id="siret"
+                 type="text"
+                 required
+                 minlength="14"
+                 maxlength="14"
+                 pattern="[0-9]{14}"
+                 inputmode="numeric"
+                 value="{{ old.siret|default('') }}">
+          <span class="form-error">
+            {% if errors.siret is defined %}{{ errors.siret }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="secteur">Secteur *</label>
-          <select id="secteur" name="secteur">
-            <option value="" disabled selected>-- Sélectionnez --</option>
-            <option value="informatique">Informatique</option>
-            <option value="btp">BTP</option>
-            <option value="autre">Autre</option>
+          <select id="secteur" name="secteur" required>
+            <option value="" disabled {{ old.secteur is not defined or old.secteur == '' ? 'selected' : '' }}>-- Sélectionnez --</option>
+            <option value="informatique" {{ old.secteur is defined and old.secteur == 'informatique' ? 'selected' : '' }}>Informatique</option>
+            <option value="btp" {{ old.secteur is defined and old.secteur == 'btp' ? 'selected' : '' }}>BTP</option>
+            <option value="autre" {{ old.secteur is defined and old.secteur == 'autre' ? 'selected' : '' }}>Autre</option>
           </select>
+          <span class="form-error">
+            {% if errors.secteur is defined %}{{ errors.secteur }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="email">Email *</label>
-          <input name="email" id="email" type="email" required>
+          <input name="email"
+                 id="email"
+                 type="email"
+                 required
+                 maxlength="255"
+                 autocomplete="email"
+                 value="{{ old.email|default('') }}">
+          <span class="form-error">
+            {% if errors.email is defined %}{{ errors.email }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="password">Mot de passe *</label>
-          <input name="password" id="password" type="password" required>
+          <input name="password"
+                 id="password"
+                 type="password"
+                 required
+                 minlength="8"
+                 maxlength="255"
+                 autocomplete="new-password">
+          <span class="form-error">
+            {% if errors.password is defined %}{{ errors.password }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="password_confirm">Confirmation *</label>
-          <input name="password_confirm" id="password_confirm" type="password" minlength="8" required>
+          <input name="password_confirm"
+                 id="password_confirm"
+                 type="password"
+                 minlength="8"
+                 maxlength="255"
+                 required
+                 autocomplete="new-password">
+          <span class="form-error">
+            {% if errors.password_confirm is defined %}{{ errors.password_confirm }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
@@ -58,4 +113,3 @@
     </article>
   </section>
 {% endblock %}
-

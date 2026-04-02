@@ -14,11 +14,7 @@
 
     {% if errors is not empty %}
         <div class="alert-error">
-            <ul>
-                {% for e in errors %}
-                    <li>{{ e }}</li>
-                {% endfor %}
-            </ul>
+            Certaines informations sont invalides. Merci de corriger les champs signalés.
         </div>
     {% endif %}
 
@@ -32,20 +28,44 @@
 
             <div class="form-group">
                 <label for="titre">Titre de l'offre</label>
-                <input type="text" id="titre" name="titre"
-                       value="{{ offer.titre }}" required>
+                <input type="text"
+                       id="titre"
+                       name="titre"
+                       value="{{ offer.titre|default('') }}"
+                       required
+                       minlength="5"
+                       maxlength="100">
+                <div class="form-error">
+                    {% if errors.titre is defined %}{{ errors.titre }}{% endif %}
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="lieu">Lieu</label>
-                <input type="text" id="lieu" name="lieu"
-                       value="{{ offer.lieu }}" required>
+                <input type="text"
+                       id="lieu"
+                       name="lieu"
+                       value="{{ offer.lieu|default('') }}"
+                       required
+                       minlength="2"
+                       maxlength="100">
+                <div class="form-error">
+                    {% if errors.lieu is defined %}{{ errors.lieu }}{% endif %}
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="remuneration">Rémunération (€ / mois)</label>
-                <input type="number" id="remuneration" name="remuneration" min="0"
-                       value="{{ offer.remuneration }}">
+                <input type="number"
+                       id="remuneration"
+                       name="remuneration"
+                       min="0"
+                       max="50000"
+                       step="0.01"
+                       value="{{ offer.remuneration|default('') }}">
+                <div class="form-error">
+                    {% if errors.remuneration is defined %}{{ errors.remuneration }}{% endif %}
+                </div>
             </div>
         </div>
 
@@ -54,13 +74,27 @@
 
             <div class="form-group">
                 <label for="duree">Durée</label>
-                <input type="text" id="duree" name="duree"
-                       value="{{ offer.duree }}">
+                <input type="text"
+                       id="duree"
+                       name="duree"
+                       value="{{ offer.duree|default('') }}"
+                       maxlength="50">
+                <div class="form-error">
+                    {% if errors.duree is defined %}{{ errors.duree }}{% endif %}
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" rows="8">{{ offer.description }}</textarea>
+                <textarea id="description"
+                          name="description"
+                          rows="8"
+                          required
+                          minlength="20"
+                          maxlength="3000">{{ offer.description|default('') }}</textarea>
+                <div class="form-error">
+                    {% if errors.description is defined %}{{ errors.description }}{% endif %}
+                </div>
             </div>
         </div>
 

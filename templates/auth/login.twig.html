@@ -14,24 +14,45 @@
       <form method="post" action="/?uri=login">
         <div class="form-row">
           <label for="email">Courriel</label>
-          <input name="email" id="email" type="email" required>
+          <input name="email"
+                 id="email"
+                 type="email"
+                 required
+                 maxlength="255"
+                 autocomplete="email"
+                 value="{{ old.email|default('') }}">
+          <span class="form-error">
+            {% if errors.email is defined %}{{ errors.email }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <label for="password">Mot de passe</label>
-          <input name="password" id="password" type="password" required>
+          <input name="password"
+                 id="password"
+                 type="password"
+                 required
+                 minlength="8"
+                 maxlength="255"
+                 autocomplete="current-password">
+          <span class="form-error">
+            {% if errors.password is defined %}{{ errors.password }}{% endif %}
+          </span>
         </div>
 
         <div class="form-row">
           <button type="submit">Connexion</button>
           <input type="reset" value="Effacer">
         </div>
+
         {% if error %}
           <p class="alert alert-error">{{ error }}</p>
         {% endif %}
+
         <div class="form-row">
           <p>Pas encore de compte ? &nbsp </p><a href="/?uri=register"> Inscrivez-vous !</a>
         </div>
+
         <div class="form-row">
           <p>Vous êtes une entreprise ? &nbsp </p><a href="/?uri=login_entreprise"> Connexion entreprise</a>
         </div>
@@ -39,4 +60,3 @@
     </article>
   </section>
 {% endblock %}
-

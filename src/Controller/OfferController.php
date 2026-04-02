@@ -107,12 +107,72 @@ class OfferController
             $errors = [];
             $old = $_POST;
 
-            if (empty($_POST['titre']))
+            $titre = trim($_POST['titre'] ?? '');
+            $ville = trim($_POST['ville'] ?? '');
+            $duree = trim($_POST['duree'] ?? '');
+            $dateDebut = trim($_POST['date_debut'] ?? '');
+            $remuneration = trim($_POST['remuneration'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $competences = trim($_POST['competences'] ?? '');
+            $profil = trim($_POST['profil'] ?? '');
+
+            // Titre : required, 5-200 caractères
+            if ($titre === '') {
                 $errors['titre'] = "Le titre est obligatoire.";
-            if (empty($_POST['ville']))
+            } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 200) {
+                $errors['titre'] = "Le titre doit contenir entre 5 et 200 caractères.";
+            }
+
+            // Ville : required, 2-100 caractères
+            if ($ville === '') {
                 $errors['ville'] = "La ville est obligatoire.";
-            if (empty($_POST['description']))
+            } elseif (mb_strlen($ville) < 2 || mb_strlen($ville) > 100) {
+                $errors['ville'] = "La ville doit contenir entre 2 et 100 caractères.";
+            }
+
+            // Durée : required, nombre entier 1-12
+            if ($duree === '') {
+                $errors['duree'] = "La durée est obligatoire.";
+            } elseif (!ctype_digit($duree)) {
+                $errors['duree'] = "La durée doit être un nombre entier (en mois).";
+            } elseif ((int) $duree < 1 || (int) $duree > 12) {
+                $errors['duree'] = "La durée doit être comprise entre 1 et 12 mois.";
+            }
+
+            // Date de début : required, format grossier AAAA-MM-JJ
+            if ($dateDebut === '') {
+                $errors['date_debut'] = "La date de début est obligatoire.";
+            } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateDebut)) {
+                $errors['date_debut'] = "La date de début doit être au format AAAA-MM-JJ.";
+            }
+
+            // Rémunération : optionnelle, numérique 0-5000
+            if ($remuneration !== '') {
+                if (!is_numeric($remuneration)) {
+                    $errors['remuneration'] = "La rémunération doit être un nombre.";
+                } elseif ((float) $remuneration < 0 || (float) $remuneration > 5000) {
+                    $errors['remuneration'] = "La rémunération doit être comprise entre 0 et 5000 €.";
+                }
+            }
+
+            // Description : required, 30-3000 caractères
+            if ($description === '') {
                 $errors['description'] = "La description est obligatoire.";
+            } elseif (mb_strlen($description) < 30 || mb_strlen($description) > 3000) {
+                $errors['description'] = "La description doit contenir entre 30 et 3000 caractères.";
+            }
+
+            // Compétences : required, 3-1000 caractères
+            if ($competences === '') {
+                $errors['competences'] = "Les compétences recherchées sont obligatoires.";
+            } elseif (mb_strlen($competences) < 3 || mb_strlen($competences) > 1000) {
+                $errors['competences'] = "Les compétences doivent contenir entre 3 et 1000 caractères.";
+            }
+
+            // Profil : optionnel, max 1500 caractères
+            if ($profil !== '' && mb_strlen($profil) > 1500) {
+                $errors['profil'] = "Le profil recherché ne doit pas dépasser 1500 caractères.";
+            }
 
             if (empty($errors)) {
                 $entrepriseId = $_SESSION['entreprise_id'];
@@ -234,11 +294,12 @@ class OfferController
 
         $offer = $this->model->findOfferById($offerId);
 
-        
+
 
         if (
             !$offer ||
-            !isset($offer['entreprise_id'])) {
+            !isset($offer['entreprise_id'])
+        ) {
             header('Location: /?uri=company_dashboard&error=offre_introuvable');
             exit;
         }
@@ -253,11 +314,35 @@ class OfferController
             $description = trim($_POST['description'] ?? '');
 
             $errors = [];
+
             if ($titre === '') {
-                $errors[] = 'Le titre est obligatoire.';
+                $errors['titre'] = 'Le titre est obligatoire.';
+            } elseif (mb_strlen($titre) < 5 || mb_strlen($titre) > 100) {
+                $errors['titre'] = 'Le titre doit contenir entre 5 et 100 caractères.';
             }
+
             if ($lieu === '') {
-                $errors[] = 'Le lieu est obligatoire.';
+                $errors['lieu'] = 'Le lieu est obligatoire.';
+            } elseif (mb_strlen($lieu) < 2 || mb_strlen($lieu) > 100) {
+                $errors['lieu'] = 'Le lieu doit contenir entre 2 et 100 caractères.';
+            }
+
+            if ($remuneration !== '') {
+                if (!is_numeric($remuneration)) {
+                    $errors['remuneration'] = 'La rémunération doit être un nombre.';
+                } elseif ((float) $remuneration < 0 || (float) $remuneration > 5000) {
+                    $errors['remuneration'] = 'La rémunération doit être comprise entre 0 et 5000 €.';
+                }
+            }
+
+            if ($duree !== '' && mb_strlen($duree) > 50) {
+                $errors['duree'] = 'La durée est trop longue.';
+            }
+
+            if ($description === '') {
+                $errors['description'] = 'La description est obligatoire.';
+            } elseif (mb_strlen($description) < 20 || mb_strlen($description) > 3000) {
+                $errors['description'] = 'La description doit contenir entre 20 et 3000 caractères.';
             }
 
             if (!empty($errors)) {

@@ -15,7 +15,6 @@
     <section class="section-card">
         <div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
 
-            {# COLONNE GAUCHE : infos + actions #}
             <div style="flex: 1; min-width: 250px;">
 
                 <div style="text-align: center; margin-bottom: 1.5rem;">
@@ -46,7 +45,6 @@
                                 style="color:#008b8b;">{{ candidature.offre_titre }}</a></p>
                 </div>
 
-                {# STATUT #}
                 <div style="margin-top: 1.5rem;">
                     <p style="font-weight: 600; margin-bottom: 0.5rem;">Statut actuel :</p>
                     {% if candidature.statut == 'en_attente' %}
@@ -58,7 +56,6 @@
                     {% endif %}
                 </div>
 
-                {# FORMULAIRE ACTIONS #}
                 <form method="POST"
                       action="/?uri=application_detail&id={{ candidature.id }}"
                       style="margin-top: 1.5rem;">
@@ -76,11 +73,13 @@
                                     class="btn btn-secondary">↩ Remettre en attente</button>
                         {% endif %}
                     </div>
+                    <span class="form-error">
+                        {% if errors.statut is defined %}{{ errors.statut }}{% endif %}
+                    </span>
                 </form>
 
             </div>
 
-            {# COLONNE DROITE : LM + CV #}
             <div style="flex: 1; min-width: 280px;">
 
                 {% if candidature.Lettre %}
