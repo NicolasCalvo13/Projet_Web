@@ -68,6 +68,17 @@
         </nav>
     </div>
 
+    <div id="cookie-banner" class="cookie-banner">
+        <div class="cookie-content">
+            <p style="font-size: 1.1rem;">🍪 <strong>Nous respectons votre vie privée</strong></p>
+            <p>Ce site utilise des cookies pour vous garantir la meilleure expérience sur notre plateforme et réaliser des statistiques de visites. <a href="/?uri=cookies" style="color: #007575; text-decoration: underline; font-weight: bold;">En savoir plus</a>.</p>
+        </div>
+        <div class="cookie-buttons">
+            <button id="accept-cookies" class="btn-primary">Accepter</button>
+            <button id="decline-cookies" class="btn-secondary">Refuser</button>
+        </div>
+    </div>
+
     <main>
         {% block body %}{% endblock %}
     </main>
@@ -76,8 +87,10 @@
         <a href="/?uri=legal"><span>Mentions légales</span></a>
         <div>&copy; 2026 - Tous droits réservés</div>
         <a href="/?uri=cookies"><span>Gestion des cookies</span></a>
-    </footer>
+    </footer>    
+</body>
 
+    <script src="../assets/js/cookies.js"></script>
     <script src="../assets/js/alerts.js"></script>
     <script src="../assets/js/apply.js"></script>
     <script src="../assets/js/navbar.js"></script>

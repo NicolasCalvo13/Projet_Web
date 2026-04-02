@@ -1391,6 +1391,65 @@ textarea {
     border: none;
 }
 
+/* =========================================
+   Bandeau Cookies
+========================================= */
+.cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    z-index: 9999;
+    max-width: 900px;
+    width: 90%;
+    border-left: 6px solid #007575;
+    /* On le cache par défaut en CSS pour éviter un "clignotement" au chargement */
+    display: none; 
+    padding-left: 24px;
+}
+
+/* Classe ajoutée par le JS pour l'afficher */
+.cookie-banner.show {
+    display: flex;
+}
+
+.cookie-content p {
+    margin: 0 0 5px 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.cookie-content p:last-child {
+    margin-bottom: 0;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .cookie-banner, .cookie-banner.show {
+        flex-direction: column;
+        text-align: center;
+        bottom: 10px;
+        padding: 15px;
+    }
+    .cookie-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* Mobile : empile verticalement */
 @media (max-width: 768px) {
     .profil-content {
