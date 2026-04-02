@@ -287,6 +287,16 @@ $router->post('create_offer', function () use ($twig) {
     return $controller->createOffer();
 });
 
+$router->get('edit_company', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->editCompany();
+});
+
+$router->post('edit_company', function () use ($twig) {
+    $controller = new UserController($twig);
+    return $controller->editCompany();
+});
+
 $router->get('edit_profile', function () use ($twig) {
     $controller = new UserController($twig);
     return $controller->editStudent();
