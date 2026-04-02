@@ -406,4 +406,39 @@ class UserModel
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
+
+    public function getCompanyByIdForAdmin(int $entrepriseId): ?array
+    {
+        $sql = "
+            SELECT e.*, u.email 
+            FROM entreprises e
+            JOIN utilisateurs u ON e.user_id = u.id
+            WHERE e.id = :id
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $entrepriseId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function updateCompanyByAdmin(int $entrepriseId, int $userId, string $nom, string $siret, string $secteur, string $email): bool
+    {
+        try {
+            $this->pdo->beginTransaction();
+            
+            // Mise à jour de la table entreprises
+            $stmtEnt = $this->pdo->prepare("UPDATE entreprises SET nom = :nom, siret = :siret, secteur = :secteur WHERE id = :id");
+            $stmtEnt->execute(['nom' => $nom, 'siret' => $siret, 'secteur' => $secteur, 'id' => $entrepriseId]);
+
+            // Mise à jour de l'email dans la table utilisateurs
+            $stmtUser = $this->pdo->prepare("UPDATE utilisateurs SET email = :email WHERE id = :id");
+            $stmtUser->execute(['email' => $email, 'id' => $userId]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
 }

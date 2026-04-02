@@ -415,4 +415,73 @@ class AdminController
         header('Location: /?uri=admin_manage_reviews&success=deleted');
         exit;
     }
+   
+
+
+public function editCompanyForm(): string
+    {
+        $id = (int) ($_GET['id'] ?? 0);
+        if ($id === 0) {
+            header('Location: /?uri=admin_manage_companies');
+            exit;
+        }
+
+        $company = $this->userModel->getCompanyByIdForAdmin($id);
+        if (!$company) {
+            header('Location: /?uri=admin_manage_companies');
+            exit;
+        }
+
+        // On gère les erreurs flash
+        $flashError = $_SESSION['flash_error'] ?? null;
+        unset($_SESSION['flash_error']);
+
+        return $this->twig->render('admin/company_edit.twig.html', [
+            'page_title' => 'Modifier une entreprise - StageLink',
+            'company'    => $company,
+            'flash_error'=> $flashError
+        ]);
+    }
+
+    public function editCompanySubmit(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $entrepriseId = (int) ($_POST['entreprise_id'] ?? 0);
+            $userId       = (int) ($_POST['user_id'] ?? 0);
+            $name         = trim($_POST['name'] ?? '');
+            $siret        = trim($_POST['siret'] ?? '');
+            $secteur      = trim($_POST['secteur'] ?? '');
+            $email        = trim($_POST['email'] ?? '');
+
+            if (empty($name) || empty($siret) || empty($secteur) || empty($email) || $entrepriseId === 0 || $userId === 0) {
+                $_SESSION['flash_error'] = "Veuillez remplir tous les champs.";
+                header('Location: /?uri=admin_company_edit&id=' . $entrepriseId);
+                exit;
+            }
+
+            $success = $this->userModel->updateCompanyByAdmin($entrepriseId, $userId, $name, $siret, $secteur, $email);
+
+            if ($success) {
+                header('Location: /?uri=admin_manage_companies&success=updated');
+            } else {
+                $_SESSION['flash_error'] = "Erreur lors de la mise à jour.";
+                header('Location: /?uri=admin_company_edit&id=' . $entrepriseId);
+            }
+            exit;
+        }
+        header('Location: /?uri=admin_manage_companies');
+        exit;
+    }
+
+
+    public function statsOffers(): string
+    {
+        $adminModel = new \App\Model\AdminModel();
+        $stats = $adminModel->getDetailedOfferStats();
+
+        return $this->twig->render('admin/offer_stats.twig.html', [
+            'page_title' => 'Statistiques détaillées - StageLink',
+            'stats'      => $stats
+        ]);
+    }
 }

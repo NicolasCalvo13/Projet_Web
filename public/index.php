@@ -347,6 +347,21 @@ $router->get('remove_wishlist', function () use ($twig) {
     return $controller->removeWishlist(); // <-- ET ICI !
 });
 
+$router->get('admin_company_edit', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->editCompanyForm();
+});
+
+$router->post('admin_company_edit_submit', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->editCompanySubmit();
+});
+
+$router->get('stats_offers', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->statsOffers();
+});
+
 // 5. Récupération de l’URI (?uri=home, ?uri=offers, etc.)
 $uri    = $_GET['uri'] ?? 'home';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';

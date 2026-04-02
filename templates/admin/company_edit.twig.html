@@ -1,0 +1,83 @@
+{% extends "base.twig.html" %}
+
+{% block title %}Modifier l'entreprise - StageLink{% endblock %}
+
+{% block body %}
+
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+    <a href="/?uri=admin_manage_companies">Gérer les entreprises</a><span>›</span>
+    Modifier : {{ company.nom }}
+  </nav>
+
+  <h1 style="color:#007575;">Modifier la fiche entreprise</h1>
+
+  <section class="section-card">
+    <h2>Informations de l'entreprise</h2>
+    
+    {% if flash_error %}
+        <div class="alert-error" style="color: red; margin-bottom: 15px;">{{ flash_error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/?uri=admin_company_edit_submit" id="editCompanyForm" novalidate>
+      
+      <input type="hidden" name="entreprise_id" value="{{ company.id }}">
+      <input type="hidden" name="user_id" value="{{ company.user_id }}">
+
+      <div class="form-group">
+        <label for="comp-name">Nom de l'entreprise <span style="color:red">*</span></label>
+        <input type="text" id="comp-name" name="name" maxlength="150" value="{{ company.nom }}" required>
+        <span class="form-error" id="cname-error" style="display:none; color:red;">Le nom est obligatoire.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="comp-siret">Numéro SIRET <span style="color:red">*</span></label>
+        <input type="text" id="comp-siret" name="siret" maxlength="14" value="{{ company.siret }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="comp-secteur">Secteur d'activité <span style="color:red">*</span></label>
+        <select id="comp-secteur" name="secteur" required>
+            <option value="Informatique" {% if company.secteur == 'Informatique' %}selected{% endif %}>Informatique</option>
+            <option value="BTP" {% if company.secteur == 'BTP' %}selected{% endif %}>BTP</option>
+            <option value="Autre" {% if company.secteur == 'Autre' %}selected{% endif %}>Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="comp-email">Email de connexion <span style="color:red">*</span></label>
+        <input type="email" id="comp-email" name="email" value="{{ company.email }}" required>
+        <span class="form-error" id="cemail-error" style="display:none; color:red;">Veuillez saisir un email valide.</span>
+      </div>
+
+      <div style="display:flex;gap:15px;flex-wrap:wrap; margin-top: 20px;">
+        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+        <a href="/?uri=admin_manage_companies" class="btn-secondary">Annuler</a>
+      </div>
+
+    </form>
+  </section>
+
+  <script>
+    document.getElementById('editCompanyForm').addEventListener('submit', function(e) {
+      let valid = true;
+      document.querySelectorAll('.form-error').forEach(el => el.style.display = 'none');
+
+      const name = document.getElementById('comp-name');
+      const email = document.getElementById('comp-email');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!name.value.trim()) {
+        document.getElementById('cname-error').style.display = 'block';
+        valid = false;
+      }
+      if (!emailRegex.test(email.value)) {
+        document.getElementById('cemail-error').style.display = 'block';
+        valid = false;
+      }
+      if (!valid) e.preventDefault();
+    });
+  </script>
+
+{% endblock %}

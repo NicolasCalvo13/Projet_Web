@@ -1389,6 +1389,84 @@ textarea {
     font-size: 0.9rem;
 }
 
+/* =========================================
+   Carrousel de Statistiques (Admin)
+========================================= */
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 20px 5px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.carousel-container::-webkit-scrollbar { 
+    display: none; /* Chrome/Safari */
+}
+
+.stat-slide {
+    flex: 0 0 85%; /* Par défaut occupe presque toute la largeur */
+    min-width: 280px;
+    max-width: 500px;
+    scroll-snap-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    border-top: 5px solid #007575;
+}
+
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.nav-dot.active { 
+    background: #007575; 
+}
+
+.big-number { 
+    font-size: 3.5rem; 
+    font-weight: bold; 
+    color: #007575; 
+    margin: 15px 0; 
+}
+
+.stat-list { 
+    text-align: left; 
+    margin-top: 15px; 
+    list-style: none; 
+    padding: 0; 
+}
+
+.stat-list li { 
+    padding: 10px 0; 
+    border-bottom: 1px solid #eee; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+/* Version Desktop : on peut afficher plusieurs cartes */
+@media (min-width: 1024px) {
+    .stat-slide {
+        flex: 0 0 45%;
+    }
+}
+
 @media (max-width: 768px) {
     .wishlist-list {
         grid-template-columns: 1fr;
