@@ -177,6 +177,11 @@ $router->get('offer_create', function () use ($twig) {
     return $controller->createOfferForm();
 });
 
+$router->post('offer_create', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->createOffer();
+});
+
 $router->get('admin_pilot_create', function () use ($twig) {
     $controller = new AdminController($twig);
     return $controller->createPilotForm();
@@ -185,6 +190,46 @@ $router->get('admin_pilot_create', function () use ($twig) {
 $router->get('admin_student_create', function () use ($twig) {
     $controller = new AdminController($twig);
     return $controller->createStudentForm();
+});
+
+$router->get('admin_manage_offers', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->manageOffers();
+});
+
+$router->post('admin_delete_offer', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->deleteOffer();
+});
+
+$router->get('admin_manage_companies', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->manageCompanies();
+});
+
+$router->post('admin_delete_company', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->deleteCompany();
+});
+
+$router->get('admin_manage_students', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->manageStudents();
+});
+
+$router->post('admin_delete_student', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->deleteStudent();
+});
+
+$router->get('admin_manage_reviews', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->manageReviews();
+});
+
+$router->post('admin_delete_review', function () use ($twig) {
+    $controller = new AdminController($twig);
+    return $controller->deleteReview();
 });
 
 // --- Pages Statiques ---

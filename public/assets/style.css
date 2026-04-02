@@ -344,9 +344,6 @@ main {
     font-size: 0.9rem;
 }
 
-.btn-danger:hover {
-    background-color: #ffe0e0;
-}
 
 input[type="submit"],
 button[type="submit"] {
@@ -1046,6 +1043,81 @@ textarea {
     background: #e0fafa;
 }
 
+
+/* ============================================================
+   TABLE ADMIN
+   ============================================================ */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+
+
+.admin-table thead tr {
+    background: #f5f5f5;
+    color: #555;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+
+.admin-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.table-actions {
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.9rem !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 0 !important;
+    width: auto !important;
+    margin-top: 0 !important;
+    line-height: 1.4;
+}
+
+/* Aligne verticalement le form inline dans .table-actions */
+.table-actions form {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    max-width: none;
+}
+
+.btn-danger[type="submit"],
+.table-actions .btn-danger {
+    background-color: #fff0f0 !important;
+    color: #c0392b !important;
+    border: 1px solid #e74c3c !important;
+}
+
+.btn-danger[type="submit"]:hover,
+.table-actions .btn-danger:hover {
+    background: #ffe0e0 !important;
+}
+
+
+.btn-danger:hover {
+    background: #a93226;
+}
+
 /* ============================================================
    PAGE : HOME
    ============================================================ */
@@ -1351,6 +1423,53 @@ textarea {
    RESPONSIVE — Mobile (≤ 768px)
    ============================================================ */
 @media (max-width: 768px) {
+
+
+    /* Tableau admin → cartes sur mobile */
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tr {
+        display: block;
+        border: 1px solid #A2E9EB;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        padding: 10px;
+        background: #f9ffff;
+    }
+
+    .admin-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 8px;
+        border-bottom: 1px solid #e0fafa;
+        font-size: 0.9rem;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #007575;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    /* Boutons pleine largeur sauf dans les tables */
+    .btn-primary:not(.btn-sm),
+    .btn-secondary:not(.btn-sm),
+    input[type="submit"],
+    button[type="submit"] {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
 
     /* Ajustement des espacements globaux pour gagner de la place */
     main {

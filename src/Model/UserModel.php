@@ -3,14 +3,17 @@ namespace App\Model;
 use App\Database\Database;
 use PDO;
 
-class UserModel {
+class UserModel
+{
     private PDO $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->pdo = Database::getConnection();
     }
 
-    public function register(string $gender, string $nom, string $prenom, string $email, string $password): bool {
+    public function register(string $gender, string $nom, string $prenom, string $email, string $password): bool
+    {
         try {
             $this->pdo->beginTransaction();
 
@@ -30,7 +33,8 @@ class UserModel {
         }
     }
 
-    public function register_entreprises(string $name, string $siret, string $secteur, string $email, string $password): bool {
+    public function register_entreprises(string $name, string $siret, string $secteur, string $email, string $password): bool
+    {
         try {
             $this->pdo->beginTransaction();
 
@@ -48,17 +52,19 @@ class UserModel {
             return true;
         } catch (Exception $e) {
             $this->pdo->rollBack();
-            return false; 
+            return false;
         }
     }
 
-    public function emailExists(string $email): bool {
+    public function emailExists(string $email): bool
+    {
         $stmt = $this->pdo->prepare("SELECT id FROM utilisateurs WHERE email = :email");
         $stmt->execute([':email' => $email]);
         return (bool) $stmt->fetch();
     }
 
-    public function login(string $email, string $password): ?array {
+    public function login(string $email, string $password): ?array
+    {
         $stmt = $this->pdo->prepare("
             SELECT u.*, s.id AS student_id, s.nom, s.prenom, s.gender, s.ecole, s.formation, s.cv_path, s.photo
             FROM utilisateurs u
@@ -73,7 +79,8 @@ class UserModel {
         return null;
     }
 
-    public function login_entreprise(string $email, string $password): ?array {
+    public function login_entreprise(string $email, string $password): ?array
+    {
         $stmt = $this->pdo->prepare("
             SELECT u.*, e.id AS entreprise_id, e.nom AS entreprise_nom, e.siret, e.secteur
             FROM utilisateurs u
@@ -87,7 +94,8 @@ class UserModel {
         return null;
     }
 
-    public function findById(int $id): ?array {
+    public function findById(int $id): ?array
+    {
         $stmt = $this->pdo->prepare("
             SELECT u.*, s.id AS student_id, s.nom, s.prenom, s.gender, s.ecole, s.formation, s.cv_path, s.photo, s.telephone
             FROM utilisateurs u
@@ -98,7 +106,8 @@ class UserModel {
         return $stmt->fetch() ?: null;
     }
 
-    public function getRecentCandidatures(int $studentId, int $limit = 2): array {
+    public function getRecentCandidatures(int $studentId, int $limit = 2): array
+    {
         $stmt = $this->pdo->prepare("
             SELECT c.*, o.titre, o.lieu AS ville, e.nom AS entreprise_nom
             FROM candidatures c
@@ -114,7 +123,8 @@ class UserModel {
         return $stmt->fetchAll();
     }
 
-    public function getRecentWishlist(int $studentId, int $limit = 2): array {
+    public function getRecentWishlist(int $studentId, int $limit = 2): array
+    {
         $stmt = $this->pdo->prepare("
             SELECT o.*, e.nom AS entreprise_nom
             FROM wishlist w
@@ -130,7 +140,8 @@ class UserModel {
         return $stmt->fetchAll();
     }
 
-    public function getStudentStats(int $studentId): array {
+    public function getStudentStats(int $studentId): array
+    {
         $stmt = $this->pdo->prepare("
             SELECT
                 COUNT(*) AS total_candidatures,
@@ -188,17 +199,17 @@ class UserModel {
 
         // Sécuriser un minimum les valeurs (éviter les null dans le Twig)
         return [
-            'total_offres'        => (int)($stats['total_offres'] ?? 0),
-            'total_candidatures'  => (int)($stats['total_candidatures'] ?? 0),
-            'total_candidats'     => (int)($stats['total_candidats'] ?? 0),
-            'note_moyenne'        => $stats['note_moyenne'] !== null ? (float)$stats['note_moyenne'] : null,
-            'total_avis'          => (int)($stats['total_avis'] ?? 0),
+            'total_offres' => (int) ($stats['total_offres'] ?? 0),
+            'total_candidatures' => (int) ($stats['total_candidatures'] ?? 0),
+            'total_candidats' => (int) ($stats['total_candidats'] ?? 0),
+            'note_moyenne' => $stats['note_moyenne'] !== null ? (float) $stats['note_moyenne'] : null,
+            'total_avis' => (int) ($stats['total_avis'] ?? 0),
         ];
     }
 
     public function getRecentCompanyOffers(int $companyId): ?array
-{
-    $stmt = $this->pdo->prepare("
+    {
+        $stmt = $this->pdo->prepare("
         SELECT 
             o.*,
             e.nom       AS entreprise_nom,
@@ -211,11 +222,11 @@ class UserModel {
         ORDER BY o.created_at DESC
         LIMIT 5;
     ");
-    $stmt->execute([':id' => $companyId]);
-    $offer = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->execute([':id' => $companyId]);
+        $offer = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-    return $offer ?: null;
-}
+        return $offer ?: null;
+    }
 
     public function getRecentCompanyApplications(int $entrepriseId): array
     {
@@ -272,6 +283,27 @@ class UserModel {
             WHERE u.id = ?
         ");
         $stmt->execute([$nom, $prenom, $telephone, $ecole, $formation, $photo, $cv, $email, $id]);
+    }
+
+
+    public function getAllStudents(): array
+    {
+        $stmt = $this->pdo->query('
+        SELECT s.id, s.user_id, s.nom, s.prenom, s.ecole,
+               s.formation, s.telephone, s.photo,
+               u.email, u.created_at
+        FROM student s
+        JOIN utilisateurs u ON s.user_id = u.id
+        ORDER BY s.nom ASC, s.prenom ASC
+    ');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteStudent(int $userId): bool
+    {
+        // Supprime l'utilisateur → cascade sur student, candidatures, wishlist, avis
+        $stmt = $this->pdo->prepare('DELETE FROM utilisateurs WHERE id = :id AND role = "student"');
+        return $stmt->execute(['id' => $userId]);
     }
 
 }

@@ -1,0 +1,67 @@
+{% extends "base.twig.html" %}
+{% block title %}Gérer les entreprises - StageLink{% endblock %}
+
+{% block body %}
+
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/?uri=home">Accueil</a><span>›</span>
+    <a href="/?uri=admin_dashboard">Dashboard</a><span>›</span>
+    Gérer les entreprises
+</nav>
+
+<div
+    style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+    <h1 style="color:#007575;">Gérer les entreprises</h1>
+    <a href="/?uri=admin_company_create" class="btn-primary">+ Créer une entreprise</a>
+</div>
+
+{% if success == 'deleted' %}
+<div class="alert alert-success">✅ L'entreprise a bien été supprimée.</div>
+{% endif %}
+
+<section class="section-card">
+    {% if entreprises is empty %}
+    <p class="empty-state">Aucune entreprise disponible pour le moment.</p>
+    {% else %}
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Secteur</th>
+                <th>Taille</th>
+                <th>Téléphone</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entreprise in entreprises %}
+            <tr>
+                <td>
+                    {% if entreprise.logo_path %}
+                    <img src="{{ entreprise.logo_path }}" alt="Logo {{ entreprise.nom }}"
+                        style="width:24px;height:24px;object-fit:contain;vertical-align:middle;margin-right:0.4rem;">
+                    {% endif %}
+                    <strong>{{ entreprise.nom }}</strong>
+                </td>
+                <td>{{ entreprise.secteur ?? '—' }}</td>
+                <td>{{ entreprise.taille ?? '—' }}</td>
+                <td>{{ entreprise.telephone ?? '—' }}</td>
+                <td class="table-actions">
+                    <a href="/?uri=company_detail&id={{ entreprise.id }}" class="btn-secondary btn-sm">Voir</a>
+                </td>
+                <td class="table-actions">
+                    <form method="POST" action="/?uri=admin_delete_company"
+                        onsubmit="return confirm('Supprimer « {{ entreprise.nom }} » ?\n\nAttention : ses offres, candidatures et avis seront également supprimés.')">
+                        <input type="hidden" name="entreprise_id" value="{{ entreprise.id }}">
+                        <button type="submit" class="btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</section>
+
+{% endblock %}
