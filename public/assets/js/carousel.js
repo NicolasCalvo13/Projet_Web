@@ -50,6 +50,16 @@
       return firstCard ? firstCard.getBoundingClientRect().width : 0;
     }
 
+    function moveTo(index, withTransition = true) {
+      const offset = index * (getCardWidth() + getGap());
+      track.style.transition = withTransition ? 'transform 0.35s ease' : 'none';
+      track.style.transform = `translateX(-${offset}px)`;
+    }
+
+    function jumpTo(index) {
+      moveTo(index, false);
+    }
+
     function createClones() {
       updateVisibleCards();
 
@@ -77,16 +87,6 @@
       cards = Array.from(track.querySelectorAll('.offer-card'));
       currentIndex = visibleCards;
       jumpTo(currentIndex);
-    }
-
-    function moveTo(index, withTransition = true) {
-      const offset = index * (getCardWidth() + getGap());
-      track.style.transition = withTransition ? 'transform 0.35s ease' : 'none';
-      track.style.transform = `translateX(-${offset}px)`;
-    }
-
-    function jumpTo(index) {
-      moveTo(index, false);
     }
 
     function next() {
@@ -122,12 +122,20 @@
     nextBtn.addEventListener('click', next);
     prevBtn.addEventListener('click', prev);
 
+    // ---- Drag / swipe avec clics encore fonctionnels ----
     let startX = 0;
     let currentX = 0;
     let isDragging = false;
+    let hasMoved = false;
 
     viewport.addEventListener('pointerdown', function (event) {
+      // Si on clique sur un lien ou un bouton, on laisse le clic normal
+      if (event.target.closest('a, button')) {
+        return;
+      }
+
       isDragging = true;
+      hasMoved = false;
       startX = event.clientX;
       currentX = startX;
       viewport.setPointerCapture(event.pointerId);
@@ -136,12 +144,20 @@
     viewport.addEventListener('pointermove', function (event) {
       if (!isDragging) return;
       currentX = event.clientX;
+      if (Math.abs(currentX - startX) > 5) {
+        hasMoved = true;
+      }
     });
 
-    function endDrag() {
+    function endDrag(event) {
       if (!isDragging) return;
       const delta = currentX - startX;
       isDragging = false;
+
+      // Si ça n'a presque pas bougé → clic, on n'avance pas le carousel
+      if (!hasMoved || Math.abs(delta) < 50) {
+        return;
+      }
 
       if (delta < -50) next();
       else if (delta > 50) prev();
@@ -151,6 +167,7 @@
     viewport.addEventListener('pointercancel', endDrag);
     viewport.addEventListener('lostpointercapture', endDrag);
 
+    // ---- Resize ----
     window.addEventListener('resize', function () {
       createClones();
     });
