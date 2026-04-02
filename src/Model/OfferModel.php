@@ -271,4 +271,28 @@ public function deleteEntreprise(int $id): bool
     $stmt = $this->db->prepare('DELETE FROM utilisateurs WHERE id = :user_id');
     return $stmt->execute(['user_id' => $row['user_id']]);
 }
+
+/**
+     * Vérifie si une offre est déjà dans la wishlist de l'étudiant
+     */
+    public function isInWishlist(int $studentId, int $offerId): bool
+    {
+        $stmt = $this->db->prepare('SELECT id FROM wishlist WHERE student_id = :student_id AND offre_id = :offre_id');
+        $stmt->execute(['student_id' => $studentId, 'offre_id' => $offerId]);
+        return (bool) $stmt->fetch();
+    }
+
+    /**
+     * Ajoute une offre à la wishlist
+     */
+    public function addToWishlist(int $studentId, int $offerId): bool
+    {
+        // On évite les doublons
+        if ($this->isInWishlist($studentId, $offerId)) {
+            return true; 
+        }
+
+        $stmt = $this->db->prepare('INSERT INTO wishlist (student_id, offre_id) VALUES (:student_id, :offre_id)');
+        return $stmt->execute(['student_id' => $studentId, 'offre_id' => $offerId]);
+    }
 }

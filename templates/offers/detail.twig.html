@@ -5,9 +5,9 @@
 {% block body %}
 
 {% if error == 'exists' %}
-    <div class="alert alert-error">
-        ⚠️ Vous avez déjà postulé à cette offre.
-    </div>
+<div class="alert alert-error">
+    ⚠️ Vous avez déjà postulé à cette offre.
+</div>
 {% endif %}
 
 <nav class="breadcrumb" aria-label="Fil d'Ariane">
@@ -30,27 +30,25 @@
         </div>
     </div>
     <div class="offer-hero-right">
-        <img 
-            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" 
-            alt="{{ offer.entreprise_nom }}"
-            width="80"
-        >
+        <img src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" alt="{{ offer.entreprise_nom }}"
+            width="80">
         <a href="/?uri=apply_offer&id={{ offer.id }}" class="btn-primary">Postuler à cette offre</a>
-        <button class="btn-secondary btn-wishlist" id="wishlistBtn"
-                onclick="toggleWishlist(this)" aria-pressed="false">
-            Ajouter aux favoris
+        <button class="btn-secondary btn-wishlist {{ in_wishlist ? 'active' : '' }}" id="wishlistBtn"
+            onclick="toggleWishlist(this, {{ offer.id }}, {{ user ? 'true' : 'false' }})"
+            aria-pressed="{{ in_wishlist ? 'true' : 'false' }}">
+            {{ in_wishlist ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
         </button>
     </div>
 </section>
 {%if not user %}
-    <div class="alert-info" role="note">
-        Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
-    </div>
+<div class="alert-info" role="note">
+    Vous devez être <a href="/?uri=login">connecté</a> pour postuler ou ajouter une offre à vos favoris.
+</div>
 {% endif %}
 
 <article class="section-card">
     <h2>Description du stage</h2>
-    <p>{{ offer.description|nl2br|raw  }}</p>
+    <p>{{ offer.description|nl2br|raw }}</p>
 </article>
 
 <section class="section-card" aria-labelledby="infos-title">
@@ -84,11 +82,8 @@
 <section class="section-card" aria-labelledby="company-title">
     <h2 id="company-title">À propos de l'entreprise</h2>
     <div class="company-mini-card">
-        <img 
-            src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" 
-            alt="{{ offer.entreprise_nom }}"
-            width="100"
-        >
+        <img src="{{ offer.entreprise_logo ?? '/assets/images/placeholder.png' }}" alt="{{ offer.entreprise_nom }}"
+            width="100">
         <div class="company-mini-info">
             <p><strong>{{ offer.entreprise_nom }}</strong></p>
             <p>{{ offer.entreprise_ville }}</p>
@@ -105,12 +100,38 @@
 </div>
 
 <script>
-function toggleWishlist(btn) {
-    const isActive = btn.classList.toggle('active');
-    btn.setAttribute('aria-pressed', isActive);
-    btn.textContent = isActive ? 'Retiré des favoris' : 'Ajouter aux favoris';
-    // TODO: appel AJAX vers wishlist controller
-}
+    function toggleWishlist(btn, offerId, isLoggedIn) {
+        // Vérification 100% JavaScript, plus d'erreur d'éditeur !
+        if (!isLoggedIn) {
+            alert("Vous devez être connecté en tant qu'étudiant pour ajouter aux favoris.");
+            window.location.href = "/?uri=login";
+            return;
+        }
+
+        // Appel AJAX vers la route
+        fetch('/?uri=toggle_wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ offer_id: offerId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mise à jour visuelle du bouton
+                    const isActive = btn.classList.toggle('active');
+                    btn.setAttribute('aria-pressed', isActive);
+                    btn.textContent = isActive ? 'Retirer des favoris' : 'Ajouter aux favoris';
+                } else {
+                    alert("Erreur: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur AJAX:', error);
+                alert("Une erreur de communication est survenue.");
+            });
+    }
 </script>
 
 {% endblock %}

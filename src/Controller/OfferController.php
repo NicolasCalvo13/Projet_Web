@@ -50,40 +50,51 @@ class OfferController
             http_response_code(400);
             return 'Bad request';
         }
+        
         $id = (int) $_GET['id'];
         $offer = $this->model->getById($id);
+        
         if ($offer === null) {
             http_response_code(404);
             return 'Offre introuvable';
         }
+
+        $inWishlist = false;
+        // On utilise student_id pour parler à la base de données !
+        $studentId = $_SESSION['student_id'] ?? null; 
+        
+        if ($studentId && $offer !== null) {
+            $inWishlist = $this->model->isInWishlist((int)$studentId, $offer['id']);
+        }
+
         return $this->twig->render('offers/detail.twig.html', [
             'page_title'    => $offer['titre'],
             'offer'         => $offer,
-            'user'          => $_SESSION['user_id'] ?? null,
-            'error' => $_GET['error'] ?? null,
+            'user'          => $_SESSION['user_id'] ?? null, // Juste pour l'affichage HTML
+            'error'         => $_GET['error'] ?? null,
+            'in_wishlist'   => $inWishlist
         ]);
     }
 
     public function wishlist(): string
     {
-        // On récupère l'ID de l'utilisateur connecté (null s'il ne l'est pas)
-        $studentId = $_SESSION['user_id'] ?? null;
+        // On utilise student_id pour la base de données
+        $studentId = $_SESSION['student_id'] ?? null;
         $mesFavoris = [];
 
-        // S'il est connecté, on va chercher ses favoris dans la base de données
         if ($studentId !== null) {
             $mesFavoris = $this->model->getWishlistByStudent((int) $studentId);
         }
 
-        // On rend la vue en lui passant les favoris ET l'identifiant de l'utilisateur
         return $this->twig->render('offers/wishlist.twig.html', [
             'page_title' => 'Wishlist - Stage-Link',
             'wishlist'   => $mesFavoris,
-            'user_id'    => $studentId // Cette variable va nous servir pour le {% if %}
+            'user_id'    => $_SESSION['user_id'] ?? null // Pour afficher la page si connecté
         ]);
     }
 
-    public function createOfferForm(): string {
+    public function createOfferForm(): string 
+    {
         return $this->twig->render('offers/create_offer.twig.html', [
             'page_title' => 'Créer une offre - Stage-Link',
             'meta_description' => 'Publiez une nouvelle offre de stage.',
@@ -93,7 +104,6 @@ class OfferController
     public function createOffer()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $errors = [];
             $old    = $_POST;
 
@@ -102,9 +112,8 @@ class OfferController
             if (empty($_POST['description'])) $errors['description'] = "La description est obligatoire.";
 
             if (empty($errors)) {
-                $entrepriseId = $_SESSION['entreprise_id']; // adapte selon ton système
+                $entrepriseId = $_SESSION['entreprise_id']; 
 
-                // ICI on appelle le modèle, pas $this->db
                 $offerId = $this->model->createOffer($_POST, $entrepriseId);
 
                 if ($offerId !== false) {
@@ -128,53 +137,86 @@ class OfferController
 
         echo $this->twig->render('create_offer.twig.html');
     }
-    public function removeWishlist(): void
-    {
-        // On indique que cette page renvoie du JSON (pratique pour AJAX)
-        header('Content-Type: application/json');
-
-        $studentId = $_SESSION['user_id'] ?? null;
-        $wishlistId = $_GET['id'] ?? null;
-
-        // On vérifie que l'utilisateur est connecté et que l'ID est valide
-        if ($studentId && $wishlistId && ctype_digit($wishlistId)) {
-            
-            // On appelle le modèle pour supprimer la ligne
-            // On passe aussi studentId par sécurité (pour qu'un étudiant ne supprime pas le favori d'un autre)
-            $success = $this->model->deleteFromWishlist((int) $wishlistId, (int) $studentId);
-
-            if ($success) {
-                echo json_encode(['success' => true]);
-            } else {
-                http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'Erreur lors de la suppression']);
-            }
-        } else {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Requête invalide']);
-        }
-    }
 
 
     public function search(): string
     {
-        // On récupère le mot clé depuis l'URL (?uri=search&q=motcle)
         $keyword = $_GET['q'] ?? '';
         $keyword = trim(htmlspecialchars($keyword));
 
-        // Si la recherche est vide, on redirige vers la liste complète
         if ($keyword === '') {
             header('Location: /?uri=offers');
             exit;
         }
 
-        // On récupère les offres correspondantes
         $offers = $this->model->searchOffers($keyword);
 
         return $this->twig->render('offers/search_results.twig.html', [
             'page_title' => 'Recherche : ' . $keyword . ' - Stage-Link',
             'offers'     => $offers,
-            'keyword'    => $keyword // Pour réafficher le mot-clé dans la barre
+            'keyword'    => $keyword 
         ]);
+    }
+
+    public function removeWishlist(): string
+    {
+        header('Content-Type: application/json');
+
+        // On utilise student_id !
+        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
+        $wishlistId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
+        if ($studentId && $wishlistId) {
+            $success = $this->model->deleteFromWishlist($wishlistId, $studentId);
+            if ($success) {
+                return json_encode(['success' => true]);
+            }
+            http_response_code(500);
+            return json_encode(['success' => false, 'message' => 'Erreur lors de la suppression']);
+        }
+
+        http_response_code(400);
+        return json_encode(['success' => false, 'message' => 'Requête invalide']);
+    }
+
+
+    public function toggleWishlistAjax(): string
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            return json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        $offerId = isset($data['offer_id']) ? (int) $data['offer_id'] : null;
+        
+        // On utilise student_id !
+        $studentId = isset($_SESSION['student_id']) ? (int)$_SESSION['student_id'] : null;
+
+        if (!$studentId || !$offerId) {
+            http_response_code(400);
+            return json_encode(['success' => false, 'message' => 'Requête invalide ou non connecté']);
+        }
+
+        try {
+            $isAlreadyFavorited = $this->model->isInWishlist($studentId, $offerId);
+
+            if ($isAlreadyFavorited) {
+                $stmt = \App\Database\Database::getConnection()->prepare('DELETE FROM wishlist WHERE student_id = :student AND offre_id = :offer');
+                $success = $stmt->execute(['student' => $studentId, 'offer' => $offerId]);
+                $action = 'removed';
+            } else {
+                $success = $this->model->addToWishlist($studentId, $offerId);
+                $action = 'added';
+            }
+
+            return json_encode(['success' => $success, 'action' => $action]);
+
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            return json_encode(['success' => false, 'message' => 'Erreur BDD: ' . $e->getMessage()]);
+        }
     }
 }
