@@ -295,4 +295,57 @@ public function deleteEntreprise(int $id): bool
         $stmt = $this->db->prepare('INSERT INTO wishlist (student_id, offre_id) VALUES (:student_id, :offre_id)');
         return $stmt->execute(['student_id' => $studentId, 'offre_id' => $offerId]);
     }
+/**
+ * Récupère les offres de manière paginée
+ */
+/**
+ * Récupère les offres de manière paginée (avec secteur optionnel)
+ */
+public function findPaginated(int $limit, int $offset, ?string $secteur = null): array
+{
+    $sql = '
+        SELECT 
+            o.id, o.titre, o.description, o.lieu, o.duree, 
+            o.remuneration, o.date_debut, o.created_at,
+            e.id AS entreprise_id, e.nom AS entreprise_nom, 
+            e.logo_path AS entreprise_logo
+        FROM offres o
+        LEFT JOIN entreprises e ON o.entreprise_id = e.id';
+
+    // Ajout dynamique du filtre secteur si présent
+    if ($secteur) {
+        $sql .= ' WHERE e.secteur = :secteur';
+    }
+
+    $sql .= ' ORDER BY o.created_at DESC LIMIT :limit OFFSET :offset';
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    if ($secteur) {
+        $stmt->bindValue(':secteur', $secteur, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Compte le nombre total d'offres (avec secteur optionnel)
+ */
+public function countAll(?string $secteur = null): int
+{
+    $sql = 'SELECT COUNT(*) FROM offres o LEFT JOIN entreprises e ON o.entreprise_id = e.id';
+    if ($secteur) {
+        $sql .= ' WHERE e.secteur = :secteur';
+    }
+    
+    $stmt = $this->db->prepare($sql);
+    if ($secteur) {
+        $stmt->execute(['secteur' => $secteur]);
+    } else {
+        $stmt->execute();
+    }
+    return (int) $stmt->fetchColumn();
+}
 }

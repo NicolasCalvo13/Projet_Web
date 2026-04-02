@@ -19,28 +19,66 @@ class OfferController
 
     public function index(): string
     {
-        $offers = $this->model->findAll();
+        // 1. Paramètres de pagination
+        $limit = 6;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $offset = ($page - 1) * $limit;
+
+        // 2. Récupération des données paginées
+        $offers = $this->model->findPaginated($limit, $offset);
+        
+        // 3. Calcul du nombre total de pages
+        $totalOffers = $this->model->countAll();
+        $totalPages = (int) ceil($totalOffers / $limit);
+
+        // 4. Rendu Twig avec les variables de pagination
         return $this->twig->render('offers/list.twig.html', [
-            'page_title' => 'Toutes les offres - Stage-Link',
-            'offers' => $offers,
+            'page_title'  => 'Toutes les offres - Stage-Link',
+            'offers'      => $offers,
+            'currentPage' => $page,
+            'totalPages'  => $totalPages,
+            'base_uri'    => 'offers' // <--- C'est ça qui manquait !
         ]);
     }
 
     public function btplist(): string
     {
-        $offers = $this->model->findBySecteur('btp');
+        $limit = 6;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $offset = ($page - 1) * $limit;
+
+        $offers = $this->model->findPaginated($limit, $offset, 'btp');
+        $totalOffers = $this->model->countAll('btp');
+        $totalPages = (int) ceil($totalOffers / $limit);
+
         return $this->twig->render('offers/BTPlist.twig.html', [
-            'page_title' => 'Offres BTP - Stage-Link',
-            'offers' => $offers,
+            'page_title'  => 'Offres BTP - Stage-Link',
+            'offers'      => $offers,
+            'currentPage' => $page,
+            'totalPages'  => $totalPages,
+            'base_uri'    => 'btp_offers' // <--- C'est ça qui manquait !
         ]);
     }
 
     public function itlist(): string
     {
-        $offers = $this->model->findBySecteur('informatique');
+        $limit = 6;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $offset = ($page - 1) * $limit;
+
+        $offers = $this->model->findPaginated($limit, $offset, 'informatique');
+        $totalOffers = $this->model->countAll('informatique');
+        $totalPages = (int) ceil($totalOffers / $limit);
+
         return $this->twig->render('offers/ITlist.twig.html', [
-            'page_title' => 'Offres IT - Stage-Link',
-            'offers' => $offers,
+            'page_title'  => 'Offres IT - Stage-Link',
+            'offers'      => $offers,
+            'currentPage' => $page,
+            'totalPages'  => $totalPages, 
+            'base_uri'    => 'it_offers' // <--- C'est ça qui manquait !
         ]);
     }
 
